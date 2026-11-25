@@ -25,7 +25,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ETAT, stockage, GEL, prototype, vraieApp, ouvrirPagePlus, ecart, sonde, P_ } from './aides.ts';
+import { ETAT, stockage, GEL, prototype, vraieApp, ouvrirPagePlus, ecart, sonde, P_, MAC_DE_TOM } from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'page-plus');
 
@@ -65,7 +65,7 @@ async function matiere(pg: Page): Promise<Zone | null> {
 async function zones(A: Page, P: Page): Promise<Zone[]> {
   const ms = (await Promise.all([matiere(A), matiere(P)])).filter((z): z is Zone => !!z);
   const peauf = await A.evaluate(() => document.getElementById('createSheet')!.classList.contains('pp-peauf'));
-  const horsMac = process.platform !== 'darwin';
+  const horsMac = !MAC_DE_TOM;
   const autres = (await A.evaluate((horsMac) => {
     const z: number[][] = [];
     const C = document.getElementById('createSheet')!.getBoundingClientRect();
@@ -266,6 +266,8 @@ type Cas = {
     | 'tailles'
     | 'couleurs'
     | 'long';
+  /** 3b (lot-PINCEAU, Q128) : le pinceau touché dans le rail avant tout le reste — le trait se peint dans sa matière */
+  pinceau?: string;
 };
 /** 2c, les textes longs (C-244 §5.1, `redteam_textes_longs`) : une parole de 280 caractères (la limite) et un nom de Cercle de 40 */
 const BASE_LONG = (
@@ -306,6 +308,8 @@ const CAS: Cas[] = [
   { nat: 'promi', choix: null, etat: 'long' },
   { nat: 'chiche', choix: null, etat: 'long' },
   { nat: 'nuee', choix: null, etat: 'long' },
+  { nat: 'promi', choix: null, etat: 'prete', pinceau: 'Coulé' },
+  { nat: 'chiche', choix: null, etat: 'prete', pinceau: 'Sec' },
 ];
 /** un toucher sur l'élément de `sel` dont le texte commence par `mot` (une rangée de Peaufiner par son libellé, une pastille de choix) */
 async function toucheTexte(p: Page, sel: string, mot: string, proto: boolean): Promise<void> {
@@ -368,6 +372,15 @@ async function protoPose(P: Page): Promise<void> {
 /** l'état demandé, des deux côtés (le prototype écoute le clic ; on attend la fin de ses minuteurs, et dans la vraie app la fin des mouvements) */
 async function poser(P: Page, A: Page, c: Cas): Promise<void> {
   const titre = c.nat === 'nuee' ? '.pp-phrase .ph-m[data-np="nom"]' : '.pp-phrase .ph-m[data-ph="titre"]';
+  if (c.pinceau) {
+    await finTrace(P);
+    await protoPose(P);
+    const sel = `#csPinceau .pc-t[data-t="${c.pinceau}"]`;
+    // la sonde (sur « identité au pixel : la page + promi, prete, pinceau Coulé, sombre ») : la vraie app garde le trait plein
+    if (sonde('pinceau-plein')) await toucheSel(P, sel, true);
+    else await Promise.all([toucheSel(P, sel, true), toucheSel(A, sel, false)]);
+    await P.waitForTimeout(1500);
+  }
   if (c.etat === 'saisie' || c.etat === 'tape' || c.etat === 'prete' || c.etat === 'long') {
     await finTrace(P);
     await protoPose(P);
@@ -555,7 +568,7 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
 
 for (const theme of ['sombre', 'clair'] as const)
   for (const c of CAS)
-    test(`identité au pixel : la page + ${c.nat}${c.choix ? ', le choix des personnes ouvert' : ''}${c.etat ? `, ${c.etat}` : ''}, ${theme}`, async ({
+    test(`identité au pixel : la page + ${c.nat}${c.choix ? ', le choix des personnes ouvert' : ''}${c.etat ? `, ${c.etat}` : ''}${c.pinceau ? `, pinceau ${c.pinceau}` : ''}, ${theme}`, async ({
       browser,
     }) => {
       const ls: Record<string, string> = { ...stockage(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
@@ -610,7 +623,7 @@ for (const theme of ['sombre', 'clair'] as const)
           if (pose) break;
         }
         mkdirSync(RES, { recursive: true });
-        const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}${c.etat ? '-' + c.etat : ''}`;
+        const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}${c.etat ? '-' + c.etat : ''}${c.pinceau ? '-' + c.pinceau : ''}`;
         writeFileSync(join(RES, `${nom}-prototype.png`), ip);
         writeFileSync(join(RES, `${nom}-app.png`), ia);
         const e = ecart(ip, ia);

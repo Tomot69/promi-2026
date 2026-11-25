@@ -34,6 +34,7 @@ import {
   vraieApp,
   type EcranPorte,
   ecartAdmis,
+  MAC_DE_TOM,
 } from './aides.ts';
 import { AMORCE, GRAINE, T_FIGE } from './banc.ts';
 
@@ -621,7 +622,7 @@ test('jamais de kaki : la Toile des vingt mondes rendue par la vraie app, clair 
       const part = t ? k / t : 0;
       // la dette ne grandit pas : sa part relevée (arrondie au dixième de point) + l'arrondi — jugé sur le Mac (le WebKit de l'iPhone), où
       // la dette a été relevée ; sous Linux le lissage des bords la fait grandir de 1 à 1,5 point (Q616) : non jugé, comme les images figées
-      if (cle in DETTE_KAKI && process.platform === 'darwin' && part > DETTE_KAKI[cle]! + 0.0005)
+      if (cle in DETTE_KAKI && MAC_DE_TOM && part > DETTE_KAKI[cle]! + 0.0005)
         neuf.push(
           `${cle} : la dette grandit — ${(100 * part).toFixed(2)} % kaki (relevé : ${(100 * DETTE_KAKI[cle]!).toFixed(1)} %)`,
         );

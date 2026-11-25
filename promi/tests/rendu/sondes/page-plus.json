@@ -8,5 +8,10 @@
     "nom": "dessin-sec",
     "test": "identité au pixel : la page + promi, dessin, sombre",
     "defaut": "le mode dessin paraît d'un coup (sa transition en flaques retirée)"
+  },
+  {
+    "nom": "pinceau-plein",
+    "test": "identité au pixel : la page + promi, prete, pinceau Coulé, sombre",
+    "defaut": "le pinceau choisi dans le prototype seul : la vraie app garde le trait plein (lot-PINCEAU, Q128)"
   }
 ]

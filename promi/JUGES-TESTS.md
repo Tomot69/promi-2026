@@ -397,3 +397,26 @@ haut, découpés 7 pt au-dessus du trait) et retire la photo (v140, C-086) ; l'�
 (redteam_croix, C-173) — sous Linux, l'encre lue de la croix du plateau de la page + et de la fiche fait 24,3 × 21,3 pt pour 25,0 × 21,7 au X
 de référence (PromiLate 29,5) ; la taille et la police déclarées sont justes. Cause non nommée (la phase de la croix dans le pixel, ou la mesure
 de PromiLate par le canevas sous Linux : à relever, comme pour le X de la fiche au 3b-1). Même croix, même cause probable : socle-1 › « aspect B » (le « X » de la fiche, 2,04 % de pixels écartés, sombre et clair), rouge sous Linux sur 827cd63 et 8f5c640.
+
+## Lot 3b-7 — LE TRAIT choisi depuis Peaufiner ; la matière des pinceaux (lot-PINCEAU, lot-PINCEAU-PEAUFINER, lot-V163B-PINCEAU ; Q128, C-196)
+
+Porté : les tracés des douze pinceaux, relevés du prototype (`lot-PINCEAU-data`) dans un JSON engendré par `outils/reprendre.py`
+(`src/animation/repris/pinceaux-traces.json`, jamais retouché), derrière `src/animation/trace/pinceau.ts` (`matiereTrait` : la ligne moyenne de la
+planche reportée sur l'onde de l'écran). La matière remplace le plein du trait de la fiche (`ligne.ts` : la moitié plantée, la moitié tracée, la
+crête, les parts — et donc l'instant et le trait plat de la jonction), et l'amorce, la part tirée et la moitié signée de la page + (`trait.ts`).
+**Avant ce lot, un pinceau choisi sur la page + ne changeait rien au trait** : c'est corrigé. Dans Peaufiner, la rangée LE TRAIT déplie le rail
+(298 pt qui glissent, douze pastilles ; ceux de Ma Parole ! en murs flous) ; un toucher choisit, la rangée se replie, le trait se refait.
+
+| Juge du prototype                                                                | Test                                                                                    | Sonde                                 |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------- |
+| le rail de Peaufiner, le choix, la fiche dans la matière (lot-PINCEAU-PEAUFINER) | `fiche-pinceau.spec` (4 fiches × 2 thèmes : en cours, tenue, à plusieurs, tenue à deux) | `trait-sans-matiere`, `rail-sans-mur` |
+| le trait de la page + dans la matière choisie (lot-PINCEAU)                      | `page-plus.spec` › « … prete, pinceau Coulé / Sec »                                     | `pinceau-plein`                       |
+
+**Repris du prototype, relevé sur son rendu** : l'échantillon d'une pastille à 72 % (`#detailPoster [style*="opacity"]` l'atteint) ; déplié, « LE
+TRAIT » à 12 pt et le nom d'un pinceau à 13 (le plancher d'`echelle()`). **Exception nommée N1** (après un choix) : le champ de la NOTE — le
+prototype rebâtit Peaufiner et repose sa marge par une mesure (15,6 ou 16,3 pt selon l'instant). **Protocole** : le prototype posé — sa passe des
+plateaux (`_plateauPartout`, le plancher des textes) passée une fois après le choix, comme il le fait de lui-même.
+
+**La CI (Tom, 25 nov.)** : les tranches de rendu tournent sur macOS (macos-15, gratuites : le dépôt est public) — le WebKit de l'iPhone ; hors
+macOS, le X d'une croix jugé à 1 pt de son encre (exception nommée). Les jugements fins (durées image par image, bords lissés, dettes relevées)
+restent ceux du **Mac de Tom** (`MAC_DE_TOM` : macOS hors CI) — la machine macOS de la CI est plus lente et lisse autrement les coins de l'appareil.

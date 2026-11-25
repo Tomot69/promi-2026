@@ -18,7 +18,17 @@ import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { fichesPilotees, images, ecart, sonde, stockageFiches, CAS_FICHES, PAROLE_CERCLE, type Zone } from './aides.ts';
+import {
+  fichesPilotees,
+  images,
+  ecart,
+  sonde,
+  stockageFiches,
+  CAS_FICHES,
+  PAROLE_CERCLE,
+  type Zone,
+  MAC_DE_TOM,
+} from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'fiche-peaufiner');
 
@@ -47,7 +57,7 @@ const COINS: Zone[] = [
   [366, 820, 24, 24],
 ];
 async function zones(A: Page): Promise<Zone[]> {
-  if (process.platform === 'darwin') return COINS;
+  if (MAC_DE_TOM) return COINS;
   return (await A.evaluate((coins) => {
     const z: number[][] = [];
     const C = document.getElementById('device')!.getBoundingClientRect();

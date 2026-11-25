@@ -8,6 +8,7 @@ import { cheminOnde, onde, type Onde } from '../page-plus/onde.ts';
 import { chevron, ORANGE_DEPART, TRAIT_K, TRAIT_PTS } from '../page-plus/trait.ts';
 import type { EtatParts, ModeTrait } from '../../metier/fiche.ts';
 import { palette } from '../../design/jetons.ts';
+import { matiereTrait } from '../../animation/trace/pinceau.ts';
 
 export const W = 390;
 /** la crête : le trait d'une parole tenue (`CRETE`) */
@@ -26,6 +27,11 @@ export interface LigneFiche {
   parts?: { S: EtatParts; initiales: string[]; encre: string } | undefined;
   /** pendant le geste (lot 3a-2) : l'abscisse du doigt */
   doigt?: number | undefined;
+  /**
+   * le pinceau de CETTE parole (Q128, lot-PINCEAU) : sa matière remplace le plein, jamais la courbe ; le chevron et les points restent ceux du
+   * §2.6 (ils disent ce qui manque, et cela ne dépend pas du pinceau). « Plein » (ou rien) : le trait plein.
+   */
+  pinceau?: string | undefined;
 }
 
 /** la ligne de la fiche, peinte dans `g` (en pt 390), sur l'onde (base, amp) */
@@ -41,7 +47,9 @@ export function peindreLigne(g: CanvasRenderingContext2D, base: number, amp: num
   g.lineWidth = ep;
   g.lineCap = 'round';
   g.lineJoin = 'round';
+  const pin = l.pinceau && l.pinceau !== 'Plein' ? l.pinceau : null;
   const plein = (a: number, b: number, c = l.col): void => {
+    if (pin && matiereTrait(g, pin, y, a, b, c)) return;
     g.strokeStyle = c;
     g.beginPath();
     cheminOnde(g, y, a, b, W);

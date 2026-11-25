@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import { loadavg } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ETAT, RACINE, refermerPagePlus, sonde, stockage, fermerFiche } from './aides.ts';
+import { ETAT, RACINE, refermerPagePlus, sonde, stockage, fermerFiche, MAC_DE_TOM } from './aides.ts';
 
 type Ls = Record<string, string>;
 
@@ -61,7 +61,7 @@ const MONDES = [
 
 /** une durée fine ne se juge que sur le Mac (le WebKit de l'iPhone), machine calme */
 function calme(): boolean {
-  return process.platform === 'darwin' && (loadavg()[0] ?? 99) < 4;
+  return MAC_DE_TOM && (loadavg()[0] ?? 99) < 4;
 }
 function nonJuge(quoi: string): void {
   test.info().annotations.push({ type: 'non jugé', description: quoi });

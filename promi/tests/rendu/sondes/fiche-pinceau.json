@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "trait-sans-matiere",
+    "test": "le trait choisi depuis Peaufiner, comme le prototype : Promi en cours, à soi, Coulé, sombre",
+    "defaut": "la vraie app reprend le trait plein avant la fermeture de Peaufiner : la fiche n'a plus la matière du pinceau"
+  },
+  {
+    "nom": "rail-sans-mur",
+    "test": "le trait choisi depuis Peaufiner, comme le prototype : Chiche à Rachel et Marion, une part tracée, Sec, clair",
+    "defaut": "les pinceaux de Ma Parole ! nets dans le rail, sans leur mur flou (C-196)"
+  }
+]

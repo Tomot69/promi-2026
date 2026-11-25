@@ -20,6 +20,12 @@ export function sonde(nom: string): boolean {
 
 /** la vraie app, en JavaScript dans la page : `window.__promi` (src/main.ts) */
 export const P_ = 'window.__promi';
+/**
+ * LE MAC DE TOM (le banc de référence : WebKit de macOS, une image en 16 ms, le rendu sur lequel les dettes et les cadences ont été relevées).
+ * Une machine macOS de la CI n'en est pas un : son WebKit est celui de l'iPhone (le X de PromiLate y est exact), mais elle est plus lente (une
+ * image jusqu'à 0,1 s) et lisse autrement les coins de l'appareil — ses durées fines, ses bords et ses dettes relevées s'y jugent comme hors du Mac.
+ */
+export const MAC_DE_TOM = process.platform === 'darwin' && !process.env['CI'];
 
 export const RACINE = join(import.meta.dirname, '..', '..', '..');
 export const ETAT = process.env['PROMI_ETAT']
@@ -148,7 +154,7 @@ export function ecart(a: Buffer, b: Buffer): { n: number; boite: number[] | null
   const W = A.width;
   const H = A.height;
   const k = W / 390;
-  const strict = process.platform === 'darwin';
+  const strict = MAC_DE_TOM;
   const lum = (x: number, y: number): number => {
     const i = (y * W + x) * 4;
     return 0.299 * A.data[i]! + 0.587 * A.data[i + 1]! + 0.114 * A.data[i + 2]!;
@@ -234,7 +240,7 @@ export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee
       nat,
       { timeout: 60000 },
     );
-    await page.waitForTimeout(process.platform === 'darwin' ? 1500 : 4000);
+    await page.waitForTimeout(MAC_DE_TOM ? 1500 : 4000);
   } else
     await page.waitForFunction(
       () => {

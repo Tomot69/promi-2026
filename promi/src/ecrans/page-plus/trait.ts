@@ -6,6 +6,7 @@
  */
 import { cheminOnde, type Onde } from './onde.ts';
 import { palette } from '../../design/jetons.ts';
+import { matiereTrait } from '../../animation/trace/pinceau.ts';
 
 export const TRAIT_K = 1.3;
 export const TRAIT_PTS = 1.15;
@@ -107,6 +108,8 @@ export interface TraitPeint {
   etat: 'plate' | 'cours' | 'signe';
   doigt: number;
   entier: boolean;
+  /** le pinceau choisi (Q128, lot-PINCEAU) : sa matière remplace l'amorce, la part tirée et la moitié signée ; « Plein » : le trait plein */
+  pinceau?: string | undefined;
 }
 
 /** le trait de la page + (le prototype, `trait()` § 3 et 4) ; rend l'abscisse du chevron */
@@ -125,7 +128,21 @@ export function peindreTrait(t: TraitPeint): number {
   gD.lineWidth = ep;
   gD.lineCap = 'round';
   gD.lineJoin = 'round';
-  if (t.etat === 'cours') {
+  // le pinceau : sa matière, de −3 % à la pointe (au repos : jusqu'au bout de l'amorce) — à l'orange du départ, à la couleur du trait une fois signé
+  const pin = t.pinceau && t.pinceau !== 'Plein' ? t.pinceau : null;
+  const fait =
+    !!pin &&
+    matiereTrait(
+      t.etat === 'signe' ? t.champ : gD,
+      pin,
+      y,
+      -W * 0.03,
+      t.etat === 'plate' ? bout : cx,
+      t.etat === 'signe' ? col : ORANGE_DEPART,
+    );
+  if (fait) {
+    // la matière est posée
+  } else if (t.etat === 'cours') {
     gD.beginPath();
     cheminOnde(gD, y, 0, cx, W);
     gD.stroke();
@@ -134,7 +151,7 @@ export function peindreTrait(t: TraitPeint): number {
     gD.fill();
   }
   gD.restore();
-  if (t.etat === 'signe') {
+  if (t.etat === 'signe' && !fait) {
     // signée, la moitié reprend la couleur du trait
     const g = t.champ;
     g.save();

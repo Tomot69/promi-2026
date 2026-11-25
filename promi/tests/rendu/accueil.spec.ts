@@ -27,6 +27,7 @@ import {
   P_,
   sonde,
   fermerFiche,
+  MAC_DE_TOM,
 } from './aides.ts';
 
 /**
@@ -602,7 +603,7 @@ function enFlaquesVu(fl: Fl[], pour: string, mode: 'ouvre' | 'couvre', n: number
   const L = fl.filter((x) => x.pour === pour && x.mode === mode);
   if (!L.length) return `aucun passage « ${mode} » sur #${pour}`;
   if (L.some((x) => !x.vu)) return `le passage « ${mode} » sur #${pour} n'est pas appliqué (aucun masque au rendu)`;
-  if (process.platform !== 'darwin') return null;
+  if (!MAC_DE_TOM) return null;
   const u = new Set(L.filter((x) => x.u > 0 && x.u < 1).map((x) => x.u.toFixed(2)));
   return u.size >= n
     ? null

@@ -28,5 +28,10 @@
   "source": "variantes/flaques.js",
   "sha256": "b8d4853b0095f641e2f39eb4b66edcffb58a336f29620f8abff0676962da55eb",
   "octets": 40696
+ },
+ "animation/repris/pinceaux-traces.json": {
+  "source": "app.html#lot-PINCEAU-data",
+  "sha256": "f6bf59b62958bc7ba9a2e7177c06455ab40d176fbe003a759cc5528c41a616c4",
+  "octets": 68065
  }
 }

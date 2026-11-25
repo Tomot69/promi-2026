@@ -17,6 +17,7 @@ import { masqueFlaques, type ControlePassage } from '../../animation/flaques/pas
 import { creerPeauf } from '../peaufiner/briques.ts';
 import { PINCEAUX } from '../page-plus/pinceaux.ts';
 import { el, surToucher } from '../commun.ts';
+import { horloge } from '../../animation/horloge.ts';
 import { motAvant, dateQuand } from '../../metier/echeance.ts';
 import { recue } from '../../metier/fiche.ts';
 import { TEXTES_PAGE_PLUS as TP } from '../../textes/page-plus.ts';
@@ -113,11 +114,19 @@ export function monterPeaufinerFiche(o: {
     );
     // LE TRAIT : son aperçu (96 pt, à la teinte des libellés), son nom (le prototype : `#dpTraitReg`, lot-PINCEAU)
     const nom = typeof s['trait'] === 'string' && PINCEAUX.some((x) => x.nom === s['trait']) ? s['trait'] : 'Plein';
-    const rt = pf.rang(TXT.trait, nom);
+    const rt = pf.rang(TXT.trait, nom, ' s2-trait');
     const ap = el('div', { class: 'pc-ap' });
     const dessin = PINCEAUX.find((x) => x.nom === nom)?.apercu ?? '';
     ap.innerHTML = `<svg width="96" height="18.7" viewBox="0 0 96 18.7" fill="none" aria-hidden="true">${dessin}</svg>`;
     rt.insertBefore(ap, rt.querySelector('.s2-val'));
+    // au toucher, la rangée déplie le rail des douze pinceaux (lot-PINCEAU-PEAUFINER, C-196 : il glisse ; ceux de Ma Parole ! sont des murs) ;
+    // un toucher choisit : la rangée se replie sur le pinceau choisi, le trait de la fiche se refait sous les yeux (« on essaie d'abord »)
+    pf.deplie(rt, () =>
+      railPinceaux(rt, nom, (n) => {
+        pf.ouverte = null;
+        magasin.peaufiner(p.id, { trait: n }, Date.now());
+      }),
+    );
     liste.appendChild(rt);
     // À QUI / QUI OSE ? — un Promi « je me promets » est à soi par définition : pas de rangée ; un Chiche reçu non plus (C-192)
     const aSoi = !chiche && !s['req'] && (!p.who || /^moi$/i.test(p.who));
@@ -288,4 +297,60 @@ export function monterPeaufinerFiche(o: {
     });
 
   return { ouvrir, fermer, ouvert: () => ouvert, reposer };
+}
+
+/**
+ * le rail de LE TRAIT, déplié (le prototype : `garni()` de lot-PINCEAU-PEAUFINER) — 298 pt qui glissent, douze pastilles de 78 × 44 : leur trait
+ * de 2 pt, plein (libre) ou en pointillés (Ma Parole !), à l'encre du contour de la rangée ; la choisie à la teinte du libellé ; l'échantillon
+ * (60 pt) d'un pinceau libre ou choisi ; un pinceau de Ma Parole ! est un MUR (lot-V163B-PINCEAU : flou 4,8 px, trait plein, sans prise)
+ */
+function railPinceaux(r: HTMLElement, choisi: string, choisit: (nom: string) => void): HTMLElement {
+  const gl = el('div', { class: 'pc-glisse', 'data-glisse': '1' });
+  const rail = el('div', { class: 'pc-rail' });
+  const B: Array<[HTMLElement, HTMLElement, HTMLElement, boolean, boolean]> = [];
+  for (const p of PINCEAUX) {
+    const on = p.nom === choisi;
+    const montre = p.libre || on;
+    const b = el('button', {
+      type: 'button',
+      class: 'pc-t' + (on ? ' on' : '') + (!p.libre && !on ? ' pc-mur' : ''),
+      'data-t': p.nom,
+    });
+    b.style.borderRadius = '22px';
+    b.style.background = 'transparent';
+    if (p.libre) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    const e = el('span', { class: 'pc-e' });
+    if (montre && p.dessin)
+      e.innerHTML = `<svg width="60" height="11.7" viewBox="0 0 60 11.7" fill="none" aria-hidden="true">${p.dessin}</svg>`;
+    const n = el('span', { class: 'pc-n' });
+    n.textContent = p.nom;
+    b.append(e, n);
+    B.push([b, e, n, on, p.libre]);
+    surToucher(b, () => {
+      // un pinceau de Ma Parole ! est un mur : il ne s'applique pas sans elle (C-196 ; sa phrase de mur : lot 8)
+      if (!p.libre || on) return;
+      choisit(p.nom);
+    });
+    rail.appendChild(b);
+  }
+  gl.appendChild(rail);
+  // la teinte (celle du libellé) et l'encre (le contour de la rangée) se LISENT sur la rangée rendue (le prototype : « la teinte se relève à
+  // l'écran, jamais dans une règle ») — rebâtie après un choix, la rangée n'est pas encore dans la page : on les lit à l'image qui suit
+  const colorer = (): boolean => {
+    const teinte = r.isConnected ? getComputedStyle(r.querySelector('.s2-lab')!).color : '';
+    const encre = r.isConnected ? getComputedStyle(r).borderTopColor : '';
+    if (!teinte || !encre) return false;
+    for (const [b, e, n, on, libre] of B) {
+      const fg = on ? teinte : encre;
+      b.style.border = `2px ${libre ? 'solid' : 'dashed'} ${fg}`;
+      e.style.color = fg;
+      n.style.color = fg;
+    }
+    return true;
+  };
+  if (!colorer())
+    horloge().image(() => {
+      colorer();
+    });
+  return gl;
 }

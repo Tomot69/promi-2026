@@ -203,8 +203,13 @@ test('la fiche monte du bas à l’ouverture et y redescend au X, jamais d’un 
     d!.v.slice(1, 4).every((y, i) => y > 1 && y < 843 && y > d!.v[i]!),
     `elle redescend, image après image (${d!.v.join(' → ')})`,
   ).toBe(true);
-  await page.waitForTimeout(600);
-  expect(await page.evaluate(() => document.getElementById('detailPoster')!.hidden), 'cachée à la fin').toBe(true);
+  // cachée une fois la transition finie (hors du Mac de Tom une image dure jusqu'à 0,7 s : on l'attend, 5 s au plus)
+  await expect
+    .poll(() => page.evaluate(() => document.getElementById('detailPoster')!.hidden), {
+      message: 'cachée à la fin',
+      timeout: 5000,
+    })
+    .toBe(true);
 });
 
 test('toucher une dalle de la Toile ouvre SA fiche (le vrai chemin), le X la referme', async ({ page }) => {

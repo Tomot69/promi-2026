@@ -4,7 +4,17 @@
  * La correspondance juge → test → sonde : promi/JUGES-TESTS.md, « Lot 2a ».
  */
 import { test, expect, type Page } from '@playwright/test';
-import { stockage, vraieApp, ouvrirPlus, ouvrirPagePlus, P_, prototype, sonde, xSousLeDoigt } from './aides.ts';
+import {
+  stockage,
+  vraieApp,
+  ouvrirPlus,
+  ouvrirPagePlus,
+  P_,
+  prototype,
+  sonde,
+  xSousLeDoigt,
+  MAC_DE_TOM,
+} from './aides.ts';
 
 type Nat = 'promi' | 'chiche' | 'nuee';
 
@@ -534,7 +544,7 @@ test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; 
     if (!e.prop.includes('transform') || Math.abs(parseFloat(e.duree) - 0.46) > 0.01)
       fautes.push(`${nat} : l'ouverture n'a pas la transition de la fermeture (${e.prop} ${e.duree})`);
     const H = 844;
-    if (process.platform === 'darwin' && !e.ty.some((y) => y > 1 && y < H - 1))
+    if (MAC_DE_TOM && !e.ty.some((y) => y > 1 && y < H - 1))
       fautes.push(`${nat} : aucune image entre le bas et sa place (${JSON.stringify(e.ty.map(Math.round))})`);
     if (Math.abs(e.ty.at(-1)!) > 0.5)
       fautes.push(
@@ -688,7 +698,7 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     const premier = S.findIndex((x) => x.vis);
     expect(premier, 'le trait naît').toBeGreaterThanOrEqual(0);
     expect(S[premier]!.hz, 'le trait naît l’horizon remonté (C-229 : d’abord l’horizon, puis le trait)').toBe(0);
-    if (process.platform === 'darwin')
+    if (MAC_DE_TOM)
       expect(
         S.slice(0, premier).some((x) => x.anim),
         'l’horizon remonte d’un mouvement (360 ms), jamais d’un coup',
@@ -1121,7 +1131,7 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     expect(auToucher.barre, 'au toucher, la barre est encore là : elle descend (§2.11), jamais d’un coup').toBe(true);
     const course = Math.abs(avant - phPosee);
     // les images intermédiaires : sur le Mac seulement (hors du Mac une image dure 0,7 s, le mouvement entier tient dans une)
-    if (process.platform === 'darwin') {
+    if (MAC_DE_TOM) {
       const i0 = ouvert.findIndex((m) => Math.abs(m.ph - avant) > 0.5);
       expect(i0, 'la phrase quitte sa place').toBeGreaterThanOrEqual(0);
       expect(
@@ -1193,7 +1203,7 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       true,
     );
     // les images et la durée : sur le Mac seulement (hors du Mac une image dure 0,7 s)
-    if (process.platform === 'darwin') {
+    if (MAC_DE_TOM) {
       const fin = R.m.at(-1)!;
       const p0 = R.m[0]!.ph;
       const j0 = R.m.findIndex((m) => Math.abs(m.ph - p0) > 0.5);
@@ -1208,8 +1218,7 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
     }
     // image par image : sur le Mac (hors du Mac le mouvement entier tient dans une image de 0,7 s — tout y « part d'un coup »)
-    if (process.platform === 'darwin')
-      expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
+    if (MAC_DE_TOM) expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
     expect(
       await page.evaluate(
         () =>
@@ -1621,7 +1630,7 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
     a.fin + 20,
     0,
   );
-  if (process.platform === 'darwin') expect(a.h, 'sur le Mac, la cote du prototype : 159,8').toBeCloseTo(159.8, 0);
+  if (MAC_DE_TOM) expect(a.h, 'sur le Mac, la cote du prototype : 159,8').toBeCloseTo(159.8, 0);
   await pastilleDe('AVANT', '1 sem.');
   a = await lit('AVANT');
   expect([a.ouv, a.val, (await ph()).due], 'un choix la replie et s’écrit').toEqual([false, '1 sem.', 7]);

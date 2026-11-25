@@ -34,6 +34,7 @@ import { couleurDe, dessinEntier, dessinPose, modeDessinPartage, type Dessin } f
 import { origineGardee } from '../../metier/origine.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
+import { nomPinceau } from '../../animation/trace/pinceau.ts';
 import { haptique } from '../../natif/haptique.ts';
 import {
   aPlusieurs,
@@ -287,6 +288,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
       col: instantF ? palette.menthe82 : tenu ? CRETE : NATTRAIT[n],
       attend: !instantF && !!consigne(p),
       parts: S && !instantF ? { S, initiales: initiales(S.T, moiNom()), encre: palette.creme95 } : undefined,
+      pinceau: nomPinceau(p.suite?.['trait']),
     };
   }
 

@@ -23,6 +23,18 @@ for src, dst in PIECES.items():
     if not os.path.exists(dst) or open(dst, 'rb').read() != b:
         diff.append(dst)
         if '--verifie' not in sys.argv: os.makedirs(os.path.dirname(dst), exist_ok=True); shutil.copyfile(src, dst)
+# ⚑ 3b (25 nov. 2026) — LES TRACÉS DES DOUZE PINCEAUX (lot-PINCEAU-data du prototype : les matières de la planche PLANCHE-DOUZE-TRAITS, posées
+# sur l'onde du §2.1, base 560, amplitude 36) : des DONNÉES, pas du code — relevées telles quelles du prototype dans un JSON engendré, jamais retouché.
+import re
+_S = open('app.html', encoding='utf-8').read()
+_m = re.search(r'<script id="lot-PINCEAU-data">\s*window\._PINCEAU_TRACES=(.*?);\s*window\._PINCEAU_META=(.*?);\s*</script>', _S, re.S)
+_pin = {'traces': json.loads(_m.group(1)), 'meta': json.loads(_m.group(2))}
+_dst = 'promi/src/animation/repris/pinceaux-traces.json'
+_txt = json.dumps(_pin, ensure_ascii=False, separators=(',', ':')) + '\n'
+man['animation/repris/pinceaux-traces.json'] = {'source': 'app.html#lot-PINCEAU-data', 'sha256': hashlib.sha256(_txt.encode('utf-8')).hexdigest(), 'octets': len(_txt.encode('utf-8'))}
+if not os.path.exists(_dst) or open(_dst, encoding='utf-8').read() != _txt:
+    diff.append(_dst)
+    if '--verifie' not in sys.argv: os.makedirs(os.path.dirname(_dst), exist_ok=True); open(_dst, 'w', encoding='utf-8').write(_txt)
 txt = json.dumps(man, ensure_ascii=False, indent=1) + '\n'
 f = 'promi/src/repris.json'
 if not os.path.exists(f) or open(f, encoding='utf-8').read() != txt:

@@ -254,6 +254,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       P.pinceau = p.nom;
       majRail();
       majGarder();
+      // le trait du haut se refait aussitôt, dans la matière choisie (le prototype : `_ppTout` au toucher)
+      repeindre();
     });
     rail.appendChild(b);
   }
@@ -967,6 +969,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       etat: plantee ? 'signe' : doigt != null ? 'cours' : 'plate',
       doigt: doigt ?? 0,
       entier: P.nat === 'nuee',
+      pinceau: P.pinceau,
     });
     cv.setAttribute('data-depart', `${String(Math.round(cx * 10) / 10)},${String(Math.round(y(cx) * 10) / 10)}`);
   }

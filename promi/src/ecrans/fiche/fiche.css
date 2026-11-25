@@ -713,6 +713,77 @@
   flex: none;
   line-height: 0;
 }
+#dpdCorps .pc-ap svg {
+  display: block;
+}
+/* le rail déplié (lot-PINCEAU-PEAUFINER, lot-V163B-PINCEAU) : 298 pt qui glissent au doigt, sans barre ; douze pastilles de 78 × 44 */
+#dpdCorps .pc-glisse {
+  width: 298px;
+  max-width: 100%;
+  height: 44px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: none;
+}
+#dpdCorps .pc-glisse::-webkit-scrollbar {
+  display: none;
+}
+#dpdCorps .pc-rail {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: max-content;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+}
+#dpdCorps .pc-t {
+  flex: 0 0 auto;
+  width: 78px;
+  height: 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  cursor: pointer;
+  appearance: none;
+  overflow: hidden;
+}
+#dpdCorps .pc-t.pc-mur {
+  filter: blur(4.8px);
+  border-style: solid !important;
+}
+/* l'échantillon à 72 % : dans le prototype, une règle de la fiche (`#detailPoster [style*="opacity"]{opacity:.72!important}`) atteint ce que le
+   rail porte en ligne (`opacity:1`) — relevé sur le rendu, repris tel quel */
+#dpdCorps .pc-e {
+  display: block;
+  line-height: 0;
+  height: 11.7px;
+  opacity: 0.72;
+}
+/* déplié, le libellé « LE TRAIT » est à 12 pt : le plancher du prototype (`echelle()`, §6) le pose à 13 puis le replie de 0,5 en 0,5 tant qu'il
+   déborde de sa boîte, jusqu'à 12 — relevé sur le rendu */
+#dpdCorps .s2-trait.s2-ouv .s2-lab {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+#dpdCorps .pc-e svg {
+  display: block;
+}
+/* le nom d'un pinceau : 12 pt dans la règle du prototype, 13 au rendu (le plancher d'`echelle()`, §6) */
+#dpdCorps .pc-n {
+  font: 700 13px/1 var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
 #detailPoster #dpdCorps .v16-danger .s2-lab {
   color: var(--c-creme95);
 }
