@@ -58,7 +58,33 @@ async function ouvrirFiche(pg: Page, id: number): Promise<void> {
   await pg.evaluate((id) => {
     (window as unknown as Promi).__promi.fiche().ouvrir(id);
   }, id);
-  await pg.waitForTimeout(900);
+  // la fiche posée : montée du bas et sa transition finie (sur la CI une image dure 0,7 s : un délai fixe touchait la barre en route)
+  await pg.waitForFunction(
+    () => {
+      const f = document.getElementById('detailPoster');
+      return (
+        !!f && !f.hidden && !f.classList.contains('fi-bas') && f.getAnimations().every((a) => a.playState !== 'running')
+      );
+    },
+    undefined,
+    { timeout: 10000 },
+  );
+  await pg.waitForTimeout(300);
+}
+/** toucher la barre Peaufiner et attendre qu'il soit ouvert (rien, s'il ne s'ouvre pas : le test le juge ensuite) */
+async function ouvrirPeauf(pg: Page): Promise<void> {
+  await toucher(pg, 80, 802);
+  await pg
+    .waitForFunction(
+      () => {
+        const c = document.getElementById('dpdCorps');
+        return !!c && !c.hidden && [...c.querySelectorAll('.s2-reg')].length > 0;
+      },
+      undefined,
+      { timeout: 5000 },
+    )
+    .catch(() => undefined);
+  await pg.waitForTimeout(600);
 }
 const ouvert = (pg: Page): Promise<boolean> =>
   pg.evaluate(() => {
@@ -89,8 +115,7 @@ test('Peaufiner sur la fiche : la barre l’ouvre, un choix le laisse ouvert, 60
   // la sonde : la barre sourde au doigt
   if (sonde('peauf-fiche-sourd')) await page.addStyleTag({ content: '#dpdTog{pointer-events:none!important}' });
   await ouvrirFiche(page, 144);
-  await toucher(page, 80, 802);
-  await page.waitForTimeout(600);
+  await ouvrirPeauf(page);
   expect(await ouvert(page), 'la barre l’ouvre').toBe(true);
   // un choix (AVANT → « 1 sem. ») : il reste ouvert
   await toucherMot(page, '#dpdCorps .s2-reg', 'AVANT');
@@ -118,8 +143,7 @@ test('Peaufiner sur la fiche : la barre l’ouvre, un choix le laisse ouvert, 60
   await glisse(220);
   expect(await ouvert(page), '220 pt : il se referme').toBe(false);
   // le X
-  await toucher(page, 80, 802);
-  await page.waitForTimeout(600);
+  await ouvrirPeauf(page);
   const x = await page.evaluate(() => {
     const D = document.getElementById('device')!.getBoundingClientRect();
     const b = document.querySelector('#dpdCorps .s2-fermer')!.getBoundingClientRect();
@@ -151,8 +175,7 @@ test('Peaufiner sur la fiche, ses choix : AVANT, DANS UN CERCLE, la NOTE s’éc
         undefined;
     });
   await ouvrirFiche(page, 144);
-  await toucher(page, 80, 802);
-  await page.waitForTimeout(600);
+  await ouvrirPeauf(page);
   await toucherMot(page, '#dpdCorps .s2-reg', 'AVANT');
   await page.waitForTimeout(300);
   await toucherMot(page, '#dueChips .chip', '1 sem.');
@@ -200,8 +223,7 @@ test('SUPPRIMER : la feuille ; « Garder » ne fait rien ; « Supprimer » effac
       };
     });
   const supprimer = async (): Promise<void> => {
-    await toucher(page, 80, 802);
-    await page.waitForTimeout(600);
+    await ouvrirPeauf(page);
     await toucherMot(page, '#dpdCorps .s2-reg', 'SUPPRIMER');
     await page.waitForTimeout(600);
   };

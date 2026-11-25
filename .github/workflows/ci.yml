@@ -38,7 +38,7 @@ jobs:
   rendu:
     strategy:
       fail-fast: false
-      matrix: { part: [1, 2, 3, 4, 5, 6] }   # C-326 : les juges devenus tests ; 3a : six parts — à quatre, la deuxième (la page +) dépassait ses 60 min
+      matrix: { part: [1, 2, 3, 4, 5, 6, 7, 8] }   # C-326 : les juges devenus tests ; 3a : six parts — à quatre, la deuxième (la page +) dépassait ses 60 min ; 3b : huit — la quatrième (l'identité de la page + et les juges lourds du socle) touchait 58 à 60 min, coupée
     runs-on: ubuntu-24.04   # pas ubuntu-latest : 26.04 depuis nov. 2026, où Playwright 1.60 n'installe pas WebKit
     timeout-minutes: 60   # l'installation de WebKit et de ses dépendances a pris 21 min (20 nov.) : 30 coupait les tests
     steps:
@@ -68,10 +68,10 @@ jobs:
       - run: npm run construire
         working-directory: promi
       - name: tests de rendu (WebKit) — la vraie app contre le prototype
-        run: npx playwright test --shard=${{ matrix.part }}/6 --grep-invert "banc_rendu porté"
+        run: npx playwright test --shard=${{ matrix.part }}/8 --grep-invert "banc_rendu porté"
         working-directory: promi
         env: { CI: '1' }
-      - if: failure()
+      - if: failure() || cancelled()   # coupée par sa limite de temps aussi : ses images disent la cause
         uses: actions/upload-artifact@v4
         with: { name: 'resultats-rendu-${{ matrix.part }}', path: 'promi/tests/rendu/resultats/', if-no-files-found: ignore }
   banc:
