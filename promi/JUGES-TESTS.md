@@ -462,3 +462,16 @@ prototype est ouvert par son bouton de la barre, puis ses images avancent par tr
 tourne qu'entre deux tâches). **Jetons ajoutés** (vraie app) : les rampes d'Ingénu (`--c-ingenu-*`) et le pointillé sombre d'un gardé de côté
 (`--c-garde-sombre`) ; `redteam_tokens` compte ces jetons propres à la vraie app parmi ses écarts au bloc du prototype (préexistant, 11 avant).
 Les tests de l'accueil qui touchent INDEX referment maintenant l'Index (`fermerIndex`) avant le toucher suivant.
+
+## Lot 4-2 à 4-5 — le menu ⇅, les écrans vides, la fiche ouverte depuis l'Index et son retour, l'ouverture (lot-S2 de l'Index, Q578, C-185, C-191, E4 v178c, C-193, C-250, C-271)
+
+| Juge du prototype                                                            | Test                                                                                                | Sonde                |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------- |
+| redteam_menu_tri (Q578), redteam_tri_menus (C-191), redteam_tri_fond (C-185) | `index.spec` › « le menu ⇅ de l'Index, ses tris et ses filtres » (× 2 thèmes : 5 choix, au pixel)   | `tri-personne-sourd` |
+| redteam_vides (E4, v178c)                                                    | `index.spec` › « les écrans vides de l'Index » (× 2 thèmes) et « l'Index sans aucune parole »       | `vide-ligne-sourde`  |
+| redteam_pile_retour (C-193), redteam_index_fil (C-250, le retour)            | `index.spec` › « une carte de l'Index ouvre sa fiche ; son X ramène l'Index tel qu'il était » (× 2) | `retour-en-haut`     |
+| (C-271 : aucun changement sec)                                               | `index.spec` › « l'Index monte du bas à l'ouverture et y redescend au X »                           | `index-sec`          |
+
+**Protocole** : un masque de matière (M1) ne couvre jamais le panneau du menu ouvert. **Repris du prototype** : la recherche vide écrit ses
+guillemets avec des espaces insécables. **Pas encore porté** : le texte d'exemple de la recherche qui se retrace au focus (C-271, `_retour.champ`) ;
+l'Index à l'échelle 0,79 (A3).

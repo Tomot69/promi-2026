@@ -28,5 +28,10 @@
     "nom": "retour-en-haut",
     "test": "une carte de l'Index ouvre sa fiche ; son X ramène l'Index tel qu'il était (C-193, C-250) : sombre",
     "defaut": "refermée, la fiche ramène l'Index en haut (le défilement perdu)"
+  },
+  {
+    "nom": "index-sec",
+    "test": "l'Index monte du bas à l'ouverture et y redescend au X, jamais d'un coup (C-271 ; le prototype : .sheet, 0,4 s)",
+    "defaut": "l'Index paraît et part d'un coup (sa transition retirée)"
   }
 ]

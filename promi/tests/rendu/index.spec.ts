@@ -13,7 +13,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { deuxPilotes, images, ecart, sonde, stockageFiches, P_, PAROLE_CERCLE, type Zone } from './aides.ts';
+import { deuxPilotes, vraieApp, images, ecart, sonde, stockageFiches, P_, PAROLE_CERCLE, type Zone } from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'index');
 
@@ -438,3 +438,48 @@ for (const theme of ['sombre', 'clair'] as const)
       await Promise.all([P.context().close(), A.context().close()]);
     }
   });
+
+test("l'Index monte du bas à l'ouverture et y redescend au X, jamais d'un coup (C-271 ; le prototype : .sheet, 0,4 s)", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await vraieApp(page, stockageFiches());
+  // la sonde : la transition retirée (l'Index paraît et part d'un coup)
+  if (sonde('index-sec')) await page.addStyleTag({ content: '#indexSheet{transition:none!important}' });
+  // la transition de l'Index (`getAnimations`), lue dans la tâche qui l'ouvre (ou qui touche son X), arrêtée à 0, ¼, ½, ¾ et à la fin
+  const releve = (
+    geste: string,
+  ): string => `(() => { ${geste}; const e = document.getElementById('indexSheet'); e.getBoundingClientRect();
+    const t = e.getAnimations().find((a) => a.transitionProperty === 'transform'); if (!t) return null;
+    const D = t.effect.getComputedTiming().duration; t.pause(); const v = [];
+    for (const f of [0, 0.25, 0.5, 0.75, 1]) { t.currentTime = D * f; v.push(Math.round(e.getBoundingClientRect().top * 10) / 10); }
+    t.finish(); return { D, v }; })()`;
+  type Releve = { D: number; v: number[] } | null;
+  const m = (await page.evaluate(releve(`${P_}.index().ouvrir()`))) as Releve;
+  expect(m, 'une transition de la place à l’ouverture').not.toBeNull();
+  expect(m!.D, 'en 0,4 s (le prototype : .sheet)').toBe(400);
+  expect(m!.v[0], 'il part d’en bas').toBeGreaterThan(800);
+  expect(
+    m!.v.slice(1, 4).every((y, i) => y > 1 && y < 843 && y < m!.v[i]!),
+    `il monte, image après image (${m!.v.join(' → ')})`,
+  ).toBe(true);
+  expect(m!.v[4], 'arrivé en haut').toBeLessThan(1);
+  await page.waitForTimeout(600);
+  const d = (await page.evaluate(
+    releve(`(() => { const x = document.querySelector('#indexSheet .closeb'); const r = x.getBoundingClientRect();
+      const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 1, pointerType: 'touch', isPrimary: true };
+      x.dispatchEvent(new PointerEvent('pointerdown', o)); x.dispatchEvent(new PointerEvent('pointerup', o)); x.dispatchEvent(new MouseEvent('click', o)); })()`),
+  )) as Releve;
+  expect(d, 'une transition de la place au X').not.toBeNull();
+  expect(d!.D).toBe(400);
+  expect(
+    d!.v.slice(1, 4).every((y, i) => y > 1 && y < 843 && y > d!.v[i]!),
+    `il redescend, image après image (${d!.v.join(' → ')})`,
+  ).toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => document.getElementById('indexSheet')!.hidden), {
+      message: 'caché à la fin',
+      timeout: 5000,
+    })
+    .toBe(true);
+});
