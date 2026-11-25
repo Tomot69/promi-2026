@@ -96,3 +96,44 @@
   font: 700 16px var(--f-libelle);
   cursor: pointer;
 }
+
+/* le toast du prototype (`toast()`) : 98 pt du bas, centré, au plus 88 % ; ses choix au bleu de la nature ; dans les deux thèmes */
+.promi-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 98px;
+  transform: translateX(-50%);
+  z-index: 400;
+  box-sizing: border-box;
+  max-width: 88%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--c-blanc100) 12%, transparent);
+  border-radius: 16px;
+  background: var(--c-brun-toast);
+  color: var(--c-creme92);
+  font-family: var(--f-texte);
+  font-size: 13px;
+  line-height: 1.3;
+  box-shadow: 0 10px 34px color-mix(in srgb, var(--c-noir00) 45%, transparent);
+  pointer-events: none;
+}
+.promi-toast span {
+  flex: 1 1 auto;
+}
+.promi-toast button {
+  pointer-events: auto;
+  background: var(--c-bleu45);
+  color: var(--c-blanc100);
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-weight: 500; /* 600 dans le prototype : Atkinson n'a pas de 600, la table de report (§6) le pose en 500 */
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}

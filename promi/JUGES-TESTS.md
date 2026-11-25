@@ -475,3 +475,25 @@ Les tests de l'accueil qui touchent INDEX referment maintenant l'Index (`fermerI
 **Protocole** : un masque de matière (M1) ne couvre jamais le panneau du menu ouvert. **Repris du prototype** : la recherche vide écrit ses
 guillemets avec des espaces insécables. **Pas encore porté** : le texte d'exemple de la recherche qui se retrace au focus (C-271, `_retour.champ`) ;
 l'Index à l'échelle 0,79 (A3).
+
+## Lot 4-6 à 4-9 — le Fil : au repos, son menu, ses écrans vides, le retour d'une fiche, le glissement, l'appui maintenu (lot-S4, `buildFeed`, C-301, C-191, C-245, C-250, C-271, Q75, Q347, C-160)
+
+| Juge du prototype                                                   | Test                                                                                                         | Sonde                 |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------- |
+| releve-S5 (le Fil), redteam_reperage, redteam_recents_fil (C-245)   | `fil.spec` › « le Fil au repos et défilé au bout » (× 2 thèmes : repos, milieu, bout, au pixel, et les mots) | `fil-tenu-sans-terre` |
+| redteam_tri_menus (C-191), redteam_menu_tri (Q578)                  | `fil.spec` › « le menu ⇅ du Fil, ses tris et ses filtres » (× 2 thèmes : 6 choix, au pixel)                  | `fil-filtre-sourd`    |
+| redteam_vides (E4, v178c)                                           | `fil.spec` › « les écrans vides du Fil » (la recherche, un filtre sans rien)                                 | `fil-vide-sourd`      |
+| redteam_index_fil (C-250)                                           | `fil.spec` › « un bandeau du Fil ouvre sa fiche ; son X ramène le Fil tel qu'il était »                      | `fil-retour-en-haut`  |
+| (C-271 : aucun changement sec)                                      | `fil.spec` › « le Fil glisse de la droite à l'ouverture et y repart au X »                                   | `fil-sec`             |
+| redteam_fonctions (Q75, C-189), redteam_echeance (C-160 : REPORTER) | `fil.spec` › « l'appui maintenu sur un bandeau déplie ses gestes ; TRACER, REPORTER » (× 2 thèmes, au pixel) | `fil-appui-ouvre`     |
+| (la règle, sans navigateur)                                         | `unitaires/fil.test.ts` : REPORTER depuis une échéance passée, la ligne reportée, la dernière action d'abord | —                     |
+
+**Exception nommée M1** : la matière de chaque dalle, sa boîte seule (marge 0 : la dalle d'un bandeau est rendue pour y tenir). **Écart nommé T1** :
+le toast « Reporter… » du prototype vit dans la FENÊTRE (`body`, 98 pt de son bas), hors de l'appareil — au banc 430 × 932 il tombe 44 pt plus bas que
+dans l'appareil ; la vraie app le pose à 98 pt du bas de l'appareil. Il est jugé sur ses mots et ses choix, pas au pixel. **Repris du prototype** :
+le panneau du menu bordé de bleu dans les deux thèmes (l'Index, en sombre, le borde de mauve) ; le bandeau « Garder ta Toile » caché sous le Fil
+(`.rap-cache`) ; REPORTER crème dans les deux thèmes. **Trouvé en écrivant le test unitaire, corrigé** : la date d'échéance d'une parole plantée
+n'était posée qu'à la relecture suivante, comptée depuis ce jour-là — une échéance ne passait jamais (C-160) ; elle se pose maintenant à chaque
+écriture du magasin, comme `noteTout` du prototype. **Pas encore porté** : RELEVER et REJOINDRE (aucun événement de ce genre dans l'état des
+fiches) ; la pastille d'un mot neuf d'un CERCLE (son magasin de mots n'est pas encore porté : lot 5) ; le Fil à l'échelle 0,79 (A3). **Repris
+aussi** : la migration `promi_mots_v184` du prototype (C-253 : à l'import, les mots d'avant v184 sont comptés vus, une fois).

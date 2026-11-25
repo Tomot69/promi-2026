@@ -49,3 +49,34 @@
   bottom: auto;
   width: 197px;
 }
+
+/* la rangée des gestes d'un bandeau (`_s4Fil`) : 12 pt sous lui, à 32 du bord ; un geste fort porte le trait de l'état, REPORTER est crème (le
+   prototype, dans les deux thèmes) */
+.ecran-liste .s4-actes {
+  position: absolute;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 3;
+}
+.ecran-liste .s4-acte {
+  height: 50px;
+  border-radius: 25px;
+  padding: 0 19px;
+  box-sizing: border-box;
+  font-family: var(--f-libelle);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: var(--c-creme95);
+  -webkit-text-fill-color: var(--c-creme95);
+}
+.ecran-liste .s4-acte.fort {
+  border: 3px solid var(--acte);
+  color: var(--acte);
+  -webkit-text-fill-color: var(--acte);
+}

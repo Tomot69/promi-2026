@@ -4,7 +4,7 @@
  * `ecran()` de `lot-S1B-geo`), les parts à plusieurs (C-115, Q486 ; `lot-V145-PARTS`), et le mode du trait avec sa base (C-210, Q608).
  * Les formes sont celles du prototype, au caractère près ; les tests les portent en dur (tests/unitaires/fiche.test.ts).
  */
-import type { Parole } from '../donnees/schema.ts';
+import type { Mot, Parole } from '../donnees/schema.ts';
 import { elision } from './elision.ts';
 
 /** la phrase de la célébration (v148, C-144 ; `TEXTES_ENGAGEMENT.tenir`) — exceptions nommées au « ! », espace insécable */
@@ -249,3 +249,11 @@ export function traitFiche(p: Parole): Trait {
       : { mode: 'complet', base: 362, amp: 36, carte: false };
   return { mode: 'moitie', base: 286, amp: 36, carte: false };
 }
+
+/** UN MOT NEUF (C-253, `_motNeuf` de lot-V184B-MOTS) : écrit par un autre — ni « moi », ni mon prénom — et pas encore vu */
+export function motNeuf(m: Mot, moi: string): boolean {
+  const b = String(m.by || 'moi').trim();
+  return !m.vu && !(/^moi$/i.test(b) || (!!moi && b === moi));
+}
+/** le nombre de mots neufs d'une parole (`_motsNeufs`) */
+export const motsNeufs = (p: Parole, moi: string): number => (p.comments ?? []).filter((m) => motNeuf(m, moi)).length;

@@ -55,3 +55,23 @@
   letter-spacing: 0.18em;
   white-space: nowrap;
 }
+
+/* la pastille « pas encore vu » (v89, Q347 ; C-253) : 9 pt, #FB4C0D, un filet crème de 1,4 pt ; elle s'ouvre sur son centre (`v201pop`) */
+.s4-carte > .s4-att {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-orange-depart);
+  box-shadow: 0 0 0 1.4px var(--c-creme95);
+  pointer-events: none;
+  animation: v201pop 0.26s cubic-bezier(0.33, 0, 0.67, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .s4-carte > .s4-att {
+    animation: none;
+  }
+}

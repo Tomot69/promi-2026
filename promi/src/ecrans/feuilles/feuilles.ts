@@ -105,3 +105,56 @@ export function annulable(
   paraitre(t);
   minuteurBandeau = h.minuteur(ferme, o.ms ?? 5000);
 }
+
+/**
+ * LE TOAST (le prototype : `toast(msg, l1, f1, …)`, et v201 — il se découvre en arrivant, se referme en partant, `clip-path`, 220 ms) : un mot et
+ * jusqu'à trois choix ; un choix touché agit puis le toast part ; seul, il part après 3,2 s (7 s s'il porte des choix). Un seul à la fois : un
+ * nouveau remplace l'ancien aussitôt. Seuls ses choix prennent le doigt.
+ */
+let minuteurToast: number | null = null;
+const EZ = 'cubic-bezier(.33,0,.67,1)';
+export function toast(dv: HTMLElement, mot: string, choix: ReadonlyArray<readonly [string, () => void]> = []): void {
+  const h = horloge();
+  dv.querySelector('#_toast')?.remove();
+  if (minuteurToast != null) h.annuleMinuteur(minuteurToast);
+  const t = el('div', { id: '_toast', class: 'promi-toast', role: 'status' });
+  const s = el('span');
+  s.textContent = mot;
+  t.appendChild(s);
+  let fini = false;
+  const part = (): void => {
+    if (fini) return;
+    fini = true;
+    if (minuteurToast != null) h.annuleMinuteur(minuteurToast);
+    minuteurToast = null;
+    if (reduit()) {
+      t.remove();
+      return;
+    }
+    const a = t.animate([{ clipPath: 'inset(0 0 0 0 round 16px)' }, { clipPath: 'inset(50% 0 50% 0 round 16px)' }], {
+      duration: 220,
+      easing: EZ,
+      fill: 'forwards',
+    });
+    a.onfinish = () => {
+      t.remove();
+    };
+  };
+  for (const [mot2, faire] of choix) {
+    const b = el('button', { type: 'button' });
+    b.textContent = mot2;
+    surToucher(b, () => {
+      if (fini) return;
+      faire();
+      part();
+    });
+    t.appendChild(b);
+  }
+  dv.appendChild(t);
+  if (!reduit())
+    t.animate([{ clipPath: 'inset(50% 0 50% 0 round 16px)' }, { clipPath: 'inset(0 0 0 0 round 16px)' }], {
+      duration: 220,
+      easing: EZ,
+    });
+  minuteurToast = h.minuteur(part, choix.length ? 7000 : 3200);
+}

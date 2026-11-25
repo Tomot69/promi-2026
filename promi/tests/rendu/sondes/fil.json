@@ -23,5 +23,15 @@
     "nom": "fil-sec",
     "test": "le Fil glisse de la droite à l'ouverture et y repart au X, jamais d'un coup (C-271 ; le prototype : fil-cote, 0,34 s)",
     "defaut": "le Fil paraît et part d'un coup"
+  },
+  {
+    "nom": "fil-appui-ouvre",
+    "test": "l'appui maintenu sur un bandeau déplie ses gestes ; TRACER, REPORTER, comme le prototype : sombre",
+    "defaut": "l'appui maintenu sur un bandeau ouvre aussi sa fiche"
+  },
+  {
+    "nom": "pastille-eteinte",
+    "test": "la pastille « pas encore vu » : deux mots neufs de Rachel, sur la carte de l'Index et la ligne la plus récente du Fil (C-253) : sombre",
+    "defaut": "la pastille d'un mot neuf ne s'allume plus (Index, Fil)"
   }
 ]

@@ -178,7 +178,24 @@ function remettre(o: { suite?: Record<string, unknown> }): Brut {
 export function importerEtRelire(x: ExportPrototype | StockagePrototype): Etat {
   const e = importer(x);
   const r = reparerPlaces(sansTombes(e.paroles, e.effacees), e.placesCercles);
-  return { ...e, paroles: poserCles(figerDalles(r.paroles)), placesCercles: r.cercles };
+  let paroles = poserCles(figerDalles(r.paroles));
+  // C-253 (v184b, `migre` de lot-V184B-MOTS) : les mots d'avant v184 sont comptés vus — une fois, la marque `promi_mots_v184` posée
+  if (e.autres['promi_mots_v184'] !== '1') {
+    paroles = paroles.map((p) =>
+      p.comments?.some((c) => !c.vu) ? { ...p, comments: p.comments.map((c) => ({ ...c, vu: true })) } : p,
+    );
+    const cm = e.autres['promi_cercle_mots'];
+    if (cm)
+      try {
+        const M = JSON.parse(cm) as Record<string, Array<Record<string, unknown>>>;
+        for (const k of Object.keys(M)) for (const c of M[k] ?? []) c['vu'] = true;
+        e.autres['promi_cercle_mots'] = JSON.stringify(M);
+      } catch {
+        /* un magasin des Cercles illisible reste tel quel */
+      }
+    e.autres['promi_mots_v184'] = '1';
+  }
+  return { ...e, paroles, placesCercles: r.cercles };
 }
 
 /**

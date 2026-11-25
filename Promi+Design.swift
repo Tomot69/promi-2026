@@ -226,6 +226,7 @@ extension Color {
         static let bleu80 = Color(red: 0.7255, green: 0.8549, blue: 1.0000)   // #B9DAFF
         static let bleu83 = Color(red: 0.7529, green: 0.8667, blue: 0.9961)   // #C0DDFE
         static let bleu85 = Color(red: 0.8039, green: 0.8627, blue: 1.0000)   // #CDDCFF
+        static let brunToast = Color(red: 0.1569, green: 0.1216, blue: 0.0627)   // #281F10 — lot 4 (vraie app) : le fond du toast du prototype (`toast()`, « Reporter… » du Fil, « Design débloqué ✓ ») — dans les deux thèmes
         static let brun03 = Color(red: 0.0627, green: 0.0510, blue: 0.0431)   // #100D0B
         static let brun05 = Color(red: 0.0902, green: 0.0627, blue: 0.0000)   // #171000
         static let brun052 = Color(red: 0.0706, green: 0.0549, blue: 0.0196)   // #120E05

@@ -9,8 +9,9 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Etat, Parole } from '../../donnees/schema.ts';
 import { surToucher } from '../commun.ts';
+import { motsNeufs } from '../../metier/fiche.ts';
 import { entreesIndex, motEtat, motQui, type Entree, type Filtre, type Tri } from '../../metier/index.ts';
-import { ajusterEtat, ajusterTitre, carte, DEUX, etatCercle, etatParole } from './carte.ts';
+import { ajusterEtat, ajusterTitre, carte, DEUX, etatCercle, etatParole, poserPastille } from './carte.ts';
 import { ecranVide, monterEcranListe } from '../liste/ecran-liste.ts';
 
 const TXT = {
@@ -84,6 +85,7 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
   function batir(force = false): void {
     const e = magasin.etat();
     const ent = entreesIndex(e, E.q(), E.filtre(), E.tri(), e.utilisateur.prenom ?? 'Moi');
+    const moi = e.utilisateur.prenom ?? '';
     const ingenu = facade.mondeCourant().p === 'signal';
     const clair = dv.classList.contains('light');
     const s = JSON.stringify([
@@ -91,6 +93,7 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
       ingenu,
       clair,
       facade.mondeCourant(),
+      e.fil.filter((f) => f.unread).map((f) => f.pid),
     ]);
     if (!force && s === sig) return;
     sig = s;
@@ -141,6 +144,8 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
           },
         );
         d.dataset['pid'] = String(p.id);
+        // Q347, C-253 : pas encore vu — une ligne du Fil de cette parole non lue, ou un mot neuf
+        if (e.fil.some((f) => f.unread && f.pid === p.id) || motsNeufs(p, moi) > 0) poserPastille(d);
         d.dataset['etat'] = p.draft ? 'garde' : p.status === 'tenu' ? 'tenue' : p.chiche ? 'lance' : 'encours';
         surToucher(d, () => {
           nav.ouvrir(p.draft ? 'pagePlus' : 'fiche', p.id);

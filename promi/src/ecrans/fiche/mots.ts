@@ -10,6 +10,7 @@ import { el, esc } from '../commun.ts';
 import { cleMot } from '../../etat/magasin.ts';
 import { palette } from '../../design/jetons.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
+import { motNeuf } from '../../metier/fiche.ts';
 
 /** les quatre tons de la palette d'identité (`_BPAL`, 20 sept.) */
 const BPAL = [palette.bleu45, palette.framboise54, palette.mauve77, palette.creme922] as const;
@@ -113,7 +114,7 @@ export function monterMots(h: HoteMots): Mots {
     const estMoi = deMoi || qui === me.nom;
     const fond = fondVisage(deMoi ? 'u' + String(me.graine) : String(m.by));
     // un mot NEUF (C-253) : écrit par un autre, pas encore vu — la pastille « pas encore vu » (`.s4-att`) au bout de sa rangée
-    const neuf = !m.vu && !estMoi;
+    const neuf = motNeuf(m, me.nom);
     return (
       '<div class="cm5-un"' +
       (neuf ? ' data-neuf="1"><i class="cm5-att" aria-hidden="true"></i>' : '>') +

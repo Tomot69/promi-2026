@@ -12,8 +12,8 @@
 import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { deuxPilotes, vraieApp, sonde, stockageFiches, P_ } from './aides.ts';
-import { juger as jugerL, poser, toucherDeux, type Liste } from './listes.ts';
+import { deuxPilotes, images, vraieApp, sonde, stockageFiches, P_ } from './aides.ts';
+import { juger as jugerL, centre, poser, toucherDeux, type Liste } from './listes.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'fil');
 const L: Liste = { liste: '#feedList', menu: '#fdMenu', res: RES, marge: 0 };
@@ -244,3 +244,164 @@ test("le Fil glisse de la droite à l'ouverture et y repart au X, jamais d'un co
     })
     .toBe(true);
 });
+
+/** un appui maintenu (700 ms, le doigt immobile) au même point des deux côtés */
+async function appuyerDeux(P: Page, A: Page, sel: string): Promise<void> {
+  const [x, y] = await centre(A, sel);
+  for (const pg of [P, A]) {
+    const r = await pg.evaluate(() => {
+      const b = document.getElementById('device')!.getBoundingClientRect();
+      return { x: b.left, y: b.top, k: b.width / 390 };
+    });
+    await pg.mouse.move(r.x + x * r.k, r.y + y * r.k);
+    await pg.mouse.down();
+  }
+  await Promise.all([images(P, 42), images(A, 42)]);
+  await Promise.all([P.mouse.up(), A.mouse.up()]);
+  await poser(P, A, 3);
+}
+/** le toast : son mot et ses choix */
+const leToast = (pg: Page): Promise<string> =>
+  pg.evaluate(() => {
+    const t = document.getElementById('_toast');
+    return t ? [...t.children].map((c) => c.textContent).join(' / ') : '';
+  });
+
+for (const theme of ['sombre', 'clair'] as const)
+  test(`l'appui maintenu sur un bandeau déplie ses gestes ; TRACER, REPORTER, comme le prototype : ${theme}`, async ({
+    browser,
+  }) => {
+    const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+    const { P, A, erreurs } = await deuxPilotes(browser, ls);
+    try {
+      mkdirSync(RES, { recursive: true });
+      // la sonde (sur « … sombre ») : l'appui maintenu ouvre aussi la fiche
+      if (sonde('fil-appui-ouvre'))
+        await A.evaluate(() => {
+          document.addEventListener(
+            'pointerdown',
+            (ev) => {
+              const c = (ev.target as Element | null)?.closest<HTMLElement>('#feedList .s4-carte');
+              if (c)
+                setTimeout(
+                  () => c.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: ev.pointerId })),
+                  0,
+                );
+            },
+            true,
+          );
+        });
+      await ouvrirFil(P, A);
+      // « finir la maquette » (149), le seul bandeau qui attend un geste : sa date est passée (TRACER, REPORTER)
+      for (const pg of [P, A])
+        await pg.evaluate(() => {
+          document.getElementById('feedList')!.scrollTop = 2900;
+        });
+      await poser(P, A, 2);
+      const sel = '#feedList .s4-carte[data-pid="149"]';
+      await appuyerDeux(P, A, sel);
+      const ouverte = (pg: Page): Promise<boolean> =>
+        pg.evaluate(() => {
+          const f = document.getElementById('detailPoster');
+          return !!f && !f.hidden && getComputedStyle(f).display !== 'none' && f.getBoundingClientRect().top < 100;
+        });
+      expect(await ouverte(A), "l'appui maintenu n'ouvre pas la fiche").toBe(false);
+      expect(
+        await A.evaluate(() => [...document.querySelectorAll('#feedList .s4-acte')].map((b) => b.textContent)),
+      ).toEqual(['TRACER', 'REPORTER']);
+      await juger(P, A, `${theme}-gestes`);
+      // TRACER ouvre la fiche, par-dessus le Fil
+      await toucherDeux(P, A, '#feedList .s4-acte.fort');
+      await poser(P, A, 4);
+      expect(await ouverte(A), 'TRACER ouvre la fiche').toBe(true);
+      expect(await ouverte(P)).toBe(true);
+      await toucherDeux(P, A, '#detailPoster .closeb');
+      await poser(P, A, 4);
+      expect(await A.evaluate(() => document.querySelectorAll('#feedList .s4-actes').length), 'la rangée repliée').toBe(
+        0,
+      );
+      // REPORTER : le toast « Reporter… », puis « 1 sem. »
+      await appuyerDeux(P, A, sel);
+      await toucherDeux(P, A, '#feedList .s4-acte:not(.fort)');
+      await poser(P, A, 2);
+      expect(await leToast(A)).toBe('Reporter… / demain / 1 sem. / 1 mois');
+      expect(await leToast(P)).toBe('Reporter… / demain / 1 sem. / 1 mois');
+      // le toast du prototype vit dans la fenêtre, pas dans l'appareil : on le touche par son choix, des deux côtés
+      for (const pg of [P, A]) await pg.locator('#_toast button').nth(1).click();
+      await poser(P, A, 6);
+      expect(await leToast(A), 'le toast part').toBe('');
+      expect(await bandeaux(A), 'la ligne reportée').toEqual(await bandeaux(P));
+      await juger(P, A, `${theme}-reporte`);
+      expect(erreurs).toEqual([]);
+    } finally {
+      await Promise.all([P.context().close(), A.context().close()]);
+    }
+  });
+
+for (const theme of ['sombre', 'clair'] as const)
+  test(`la pastille « pas encore vu » : deux mots neufs de Rachel, sur la carte de l'Index et la ligne la plus récente du Fil (C-253) : ${theme}`, async ({
+    browser,
+  }) => {
+    // `promi_mots_v184` : la migration de v184 déjà passée (sans elle le prototype compte vus tous les mots d'avant)
+    const ls: Record<string, string> = {
+      ...stockageFiches(),
+      promi_prenom: 'Tom',
+      promi_theme: theme === 'clair' ? 'light' : 'dark',
+      promi_mots_v184: '1',
+    };
+    const st = JSON.parse(ls['promi_state']!) as { promises: { id: number; comments?: unknown[] }[] };
+    const j = (h: number): string => new Date(Date.UTC(2026, 10, 20, h)).toISOString();
+    st.promises.find((p) => p.id === 144)!.comments = [
+      { t: 'Tu l’as fini ?', d: j(8), by: 'Rachel', vu: true },
+      { t: 'Je passe demain', d: j(10), by: 'Rachel', vu: false },
+      { t: 'Ou samedi, plutôt', d: j(11), by: 'Tom', vu: false },
+    ];
+    ls['promi_state'] = JSON.stringify(st);
+    const { P, A, erreurs } = await deuxPilotes(browser, ls);
+    try {
+      mkdirSync(RES, { recursive: true });
+      // la sonde (sur « … sombre ») : la pastille d'un mot neuf ne s'allume plus
+      if (sonde('pastille-eteinte')) await A.addStyleTag({ content: '.s4-carte > .s4-att{display:none!important}' });
+      const pastilles = (pg: Page, liste: string): Promise<string[]> =>
+        pg.evaluate(
+          (liste) =>
+            [...document.querySelectorAll(`${liste} .s4-carte`)]
+              .filter((c) => c.querySelector(':scope > .s4-att'))
+              .map((c) => c.getAttribute('data-pid') ?? ''),
+          liste,
+        );
+      // l'Index : la carte de la parole 144, amenée sous l'encart
+      await P.evaluate(() => (document.getElementById('indexBtn') as HTMLElement).click());
+      await A.evaluate(`${P_}.index().ouvrir()`);
+      for (let k = 0; k < 6; k++) await Promise.all([images(P, 30), images(A, 30)]);
+      for (const pg of [P, A])
+        await pg.evaluate(() => {
+          const l = document.getElementById('indexList')!;
+          const c = l.querySelector<HTMLElement>('.s4-carte[data-pid="144"]')!;
+          l.scrollTop = Math.max(0, c.offsetTop - 40);
+        });
+      await poser(P, A, 3);
+      expect(await pastilles(A, '#indexList'), "l'Index").toEqual(['144']);
+      expect(await pastilles(P, '#indexList')).toEqual(['144']);
+      const LI: Liste = { liste: '#indexList', menu: '#ixMenu', res: RES, marge: 8 };
+      await jugerL(P, A, LI, `${theme}-pastille-index`);
+      await P.evaluate(() => (document.querySelector('#indexSheet .closeb') as HTMLElement).click());
+      await A.evaluate(`${P_}.index().fermer()`);
+      await poser(P, A, 3);
+      // le Fil : la ligne la plus récente de la parole 144, seule
+      await ouvrirFil(P, A);
+      for (const pg of [P, A])
+        await pg.evaluate(() => {
+          const l = document.getElementById('feedList')!;
+          const c = l.querySelector<HTMLElement>('.s4-carte[data-pid="144"]')!;
+          l.scrollTop = Math.max(0, c.offsetTop - 40);
+        });
+      await poser(P, A, 3);
+      expect(await pastilles(A, '#feedList'), 'le Fil').toEqual(['144']);
+      expect(await pastilles(P, '#feedList')).toEqual(['144']);
+      await juger(P, A, `${theme}-pastille-fil`);
+      expect(erreurs).toEqual([]);
+    } finally {
+      await Promise.all([P.context().close(), A.context().close()]);
+    }
+  });

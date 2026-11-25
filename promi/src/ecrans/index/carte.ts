@@ -13,6 +13,7 @@
 import type { Facade } from '../../moteur/facade.ts';
 import type { Parole } from '../../donnees/schema.ts';
 import { palette } from '../../design/jetons.ts';
+import { el } from '../commun.ts';
 import { cheminOnde, onde } from '../page-plus/onde.ts';
 import { chevron, NATTRAIT, ruban } from '../page-plus/trait.ts';
 import { CRETE } from '../fiche/ligne.ts';
@@ -549,4 +550,13 @@ export function ajusterTitre(d: HTMLElement, depart: number): void {
     t.style.setProperty('-webkit-line-clamp', String(N));
     t.style.overflow = 'hidden';
   }
+}
+
+/**
+ * LA PASTILLE « PAS ENCORE VU » d'une carte (v89, Q347 ; C-253 : un mot neuf l'allume aussi) : un disque de 9 pt, #FB4C0D, cerné d'un filet
+ * crème de 1,4 pt, à 10 pt du coin haut droit ; elle s'ouvre sur son centre (`v201pop`, 0,26 s).
+ */
+export function poserPastille(d: HTMLElement): void {
+  if (d.querySelector(':scope > .s4-att')) return;
+  d.appendChild(el('i', { class: 's4-att', 'aria-hidden': 'true' }));
 }

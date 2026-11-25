@@ -101,6 +101,14 @@ export interface Actions {
    * « neuf » pour moi) ; une ligne du Fil (« Tu as commenté « … » · à qui »). Écrit tout de suite (C-226).
    */
   ajouterMot(id: number, texte: string, moi: string, maintenant: number): void;
+  /**
+   * REPORTER depuis le Fil (le prototype : `_fpost`, enveloppé par lot-V151-ECHEANCE, C-160) : l'échéance recomptée contre aujourd'hui ; passée, on
+   * compte depuis aujourd'hui ; plus 1, 7 ou 30 jours ; la parole n'attend plus de réponse ; la LIGNE du Fil devient « Tu as reporté : « … » (+1 j) »
+   * (elle garde son heure).
+   */
+  reporter(fid: number, jours: number, maintenant: number): void;
+  /** une ligne du Fil touchée est vue (`_filVu`, Q347) — rien d'autre ne change */
+  filVu(fid: number): void;
   /** C-253 : les mots que la fiche a montrés (clés `date|auteur|texte`) sont vus — rien d'autre ne change (voir n'est pas agir : ni `derAct`, ni le Fil) */
   motsVus(id: number, cles: readonly string[]): void;
   /**
@@ -159,8 +167,10 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
     return migrer(JSON.parse(t));
   }
   function valider(action: string, suivant: Etat): void {
-    // Q621 : chaque parole plantée porte sa clé de plantation, posée à chaque écriture (le prototype : `saveState` enveloppé par lot-V203-CLE)
-    e = { ...suivant, paroles: poserCles(suivant.paroles) };
+    // Q621 : chaque parole plantée porte sa clé de plantation, posée à chaque écriture (le prototype : `saveState` enveloppé par lot-V203-CLE) ;
+    // C-160 : et sa DATE d'échéance, posée le jour où ses jours sont choisis (le prototype : `saveState` enveloppé par `noteTout`, lot-V151-ECHEANCE)
+    // — sans elle, la date n'était posée qu'à la relecture suivante, comptée depuis ce jour-là : une échéance ne passait jamais
+    e = { ...suivant, paroles: poserCles(recompterEcheances(suivant.paroles, aujourdhui())) };
     stockage.ecrire(JSON.stringify(e));
     for (const f of abonnes) f(e, action);
   }
@@ -396,6 +406,26 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       const paroles = [...e.paroles];
       paroles.splice(Math.min(x.rang, paroles.length), 0, x.parole);
       valider('deterrer', { ...e, paroles, effacees: e.effacees.filter((t) => t !== k) });
+    },
+    reporter(fid, jours, maintenant) {
+      const f = e.fil.find((x) => x.id === fid);
+      if (!f) return;
+      const p0 = f.pid != null ? e.paroles.find((x) => x.id === f.pid) : undefined;
+      let paroles = e.paroles;
+      if (p0) {
+        const r = recompterEcheances([p0], aujourdhui())[0]!;
+        const due = (r.due != null && +r.due < 0 ? 0 : (r.due ?? 0)) + jours;
+        const suite: Record<string, unknown> = { ...(r.suite ?? {}), pending: false, accepted: true };
+        const p = recompterEcheances([{ ...r, due, suite, derAct: maintenant }], aujourdhui())[0]!;
+        paroles = e.paroles.map((x) => (x.id === p.id ? p : x));
+      }
+      const lab = jours === 1 ? '+1 j' : jours === 7 ? '+1 sem' : `+${String(jours)} j`;
+      const ligne = { ...f, type: 'added', text: `Tu as reporté : « ${p0 ? p0.title : 'un Promi'} » (${lab})` };
+      valider('reporter', { ...e, paroles, fil: e.fil.map((x) => (x.id === fid ? ligne : x)) });
+    },
+    filVu(fid) {
+      if (!e.fil.some((f) => f.id === fid && f.unread)) return;
+      valider('filVu', { ...e, fil: e.fil.map((f) => (f.id === fid ? { ...f, unread: false } : f)) });
     },
     ajouterMot(id, texte, moi, maintenant) {
       const p = e.paroles.find((q) => q.id === id);

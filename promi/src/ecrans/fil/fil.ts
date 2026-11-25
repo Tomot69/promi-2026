@@ -10,7 +10,9 @@ import type { Facade } from '../../moteur/facade.ts';
 import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Etat } from '../../donnees/schema.ts';
-import { surToucher } from '../commun.ts';
+import { el, surToucher } from '../commun.ts';
+import { horloge } from '../../animation/horloge.ts';
+import { toast } from '../feuilles/feuilles.ts';
 import { NATTRAIT } from '../page-plus/trait.ts';
 import { motEtat, motQui } from '../../metier/index.ts';
 import {
@@ -18,10 +20,13 @@ import {
   evenementSansTitre,
   filAttente,
   type EntreeFil,
+  motGeste,
   type FiltreFil,
+  type Geste,
   type TriFil,
 } from '../../metier/fil.ts';
-import { ajusterEtat, etatCercle, etatParole, type EtatCarte } from '../index/carte.ts';
+import { ajusterEtat, etatCercle, etatParole, poserPastille, type EtatCarte } from '../index/carte.ts';
+import { motsNeufs } from '../../metier/fiche.ts';
 import { ecranVide, monterEcranListe } from '../liste/ecran-liste.ts';
 import { BANDEAU, bandeau, poserTitre, type TextesBandeau } from './bandeau.ts';
 
@@ -31,7 +36,16 @@ const TXT = {
   rienTri: 'Rien sous ce tri.',
   rienNeBouge: 'Rien ne bouge encore.',
   anime: 'Une parole donnée à quelqu’un, et le Fil s’anime.',
+  reporter: 'Reporter\u2026',
+  demain: 'demain',
+  semaine: '1 sem.',
+  mois: '1 mois',
 } as const;
+/** l'appui maintenu qui déplie la rangée des gestes (`_s4Fil`) ; la rangée et ce qu'elle ajoute sous son bandeau */
+const APPUI = 480;
+const RANGEE = { H: 50, PAS: 62, GAP: 12 } as const;
+/** un geste « fort » porte le trait de l'état (v89 : RELEVER, REJOINDRE, TRACER) ; REPORTER, non */
+const FORT: Record<Geste, boolean> = { tracer: true, releve: true, rejoindre: true, post: false };
 const TRIS: ReadonlyArray<[TriFil, string]> = [
   ['recent', 'Récents'],
   ['personne', 'Par personne'],
@@ -77,6 +91,9 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
   });
   const grille = E.grille;
   let sig = '';
+  /** le bandeau dont la rangée des gestes est dépliée (`_filGeste`) : sa clé, `p<id>`, `n<cercle>` ou `i<rang>` */
+  let ouvert: string | null = null;
+  const cle = (x: EntreeFil, i: number): string => (x.p ? `p${String(x.p.id)}` : x.nk ? `n${x.nk}` : `i${String(i)}`);
 
   /** l'état, les mots et le visage d'un bandeau (`_s4Fil`) */
   function lire(e: Readonly<Etat>, x: EntreeFil): { etat: EtatCarte; t: TextesBandeau } {
@@ -142,7 +159,18 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
       grille.appendChild(vide());
       return;
     }
-    grille.style.height = `${String(L.length * BANDEAU.PAS + 40)}px`;
+    // Q347, C-253 : pas encore vu — la ligne elle-même, ou un mot neuf de sa parole (sur sa ligne la plus récente seulement)
+    const moi = e.utilisateur.prenom ?? '';
+    const premiere = new Set<number>();
+    const vues = new Set<number>();
+    for (const x of L)
+      if (x.p && !vues.has(x.p.id)) {
+        vues.add(x.p.id);
+        premiere.add(x.f.id);
+      }
+    const deplie = (x: EntreeFil, i: number): boolean => x.gestes.length > 0 && cle(x, i) === ouvert;
+    grille.style.height = `${String(L.reduce((a, x, i) => a + BANDEAU.PAS + (deplie(x, i) ? RANGEE.PAS : 0), 0) + 40)}px`;
+    let y = 0;
     const repeindre = (): void => {
       batir(true);
     };
@@ -150,24 +178,105 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
       const { etat, t } = lire(e, x);
       const d = bandeau(etat, t, { facade, p: x.p ?? null, ingenu, repeindre });
       d.style.left = `${String(BANDEAU.X)}px`;
-      d.style.top = `${String(i * BANDEAU.PAS)}px`;
+      d.style.top = `${String(y)}px`;
+      y += BANDEAU.PAS;
       d.setAttribute('role', 'button');
       d.dataset['fid'] = String(x.f.id);
       if (x.p) d.dataset['pid'] = String(x.p.id);
       if (x.nk) d.dataset['nuee'] = x.nk;
+      d.dataset['nonvu'] = x.f.unread ? '1' : '0';
+      if (x.f.unread || (x.p && premiere.has(x.f.id) && motsNeufs(x.p, moi) > 0)) poserPastille(d);
       const p = x.p;
       const nk = x.nk;
+      // un toucher bref ouvre sa fiche ; un appui maintenu (480 ms) déplie — ou replie — la rangée de ses gestes, et n'ouvre rien
+      let longue = false;
+      const fid = x.f.id;
       if (p && !p.draft)
         surToucher(d, () => {
+          if (longue) return;
+          magasin.filVu(fid);
           nav.ouvrir('fiche', p.id);
         });
       else if (nk)
         surToucher(d, () => {
-          nav.ouvrir('cercle', nk);
+          if (!longue) nav.ouvrir('cercle', nk);
         });
+      if (x.gestes.length) {
+        const k = cle(x, i);
+        let m: number | null = null;
+        const desarme = (): void => {
+          if (m != null) horloge().annuleMinuteur(m);
+          m = null;
+        };
+        d.addEventListener('pointerdown', (ev) => {
+          longue = false;
+          if (ev.button) return;
+          desarme();
+          m = horloge().minuteur(() => {
+            m = null;
+            longue = true;
+            ouvert = ouvert === k ? null : k;
+            batir(true);
+          }, APPUI);
+        });
+        for (const t of ['pointerup', 'pointerleave', 'pointercancel'] as const) d.addEventListener(t, desarme);
+        d.addEventListener('pointermove', (ev) => {
+          if (m != null && (Math.abs(ev.movementX) > 3 || Math.abs(ev.movementY) > 3)) desarme();
+        });
+      }
       grille.appendChild(d);
+      if (deplie(x, i)) {
+        grille.appendChild(rangee(x, etat, y - 12));
+        y += RANGEE.PAS;
+      }
     });
     ajuster();
+  }
+
+  /** la rangée des gestes d'un bandeau (`_s4Fil`, Q75 : un ajout validé, hors inventaire — elle n'existe qu'au besoin) */
+  function rangee(x: EntreeFil, etat: EtatCarte, top: number): HTMLElement {
+    const r = el('div', { class: 's4-actes' });
+    r.style.left = `${String(BANDEAU.X + 16)}px`;
+    r.style.top = `${String(top)}px`;
+    for (const g of x.gestes) {
+      const b = el('button', { type: 'button', class: `s4-acte${FORT[g] ? ' fort' : ''}`, 'data-geste': g });
+      b.textContent = motGeste(g);
+      if (FORT[g]) b.style.setProperty('--acte', etat.col);
+      surToucher(b, () => {
+        ouvert = null; // l'ajout se referme dès qu'il a servi
+        geste(g, x);
+        batir(true);
+      });
+      r.appendChild(b);
+    }
+    return r;
+  }
+
+  /** ce que fait un geste (`feedPostpone`, `filTracer` ; RELEVER et REJOINDRE : les deux états neufs de v89, sans événement de ce genre ici) */
+  function geste(g: Geste, x: EntreeFil): void {
+    const fid = x.f.id;
+    if (g === 'tracer' && x.p) nav.ouvrir('fiche', x.p.id);
+    else if (g === 'post')
+      toast(facade.appareil(), TXT.reporter, [
+        [
+          TXT.demain,
+          () => {
+            magasin.reporter(fid, 1, Date.now());
+          },
+        ],
+        [
+          TXT.semaine,
+          () => {
+            magasin.reporter(fid, 7, Date.now());
+          },
+        ],
+        [
+          TXT.mois,
+          () => {
+            magasin.reporter(fid, 30, Date.now());
+          },
+        ],
+      ]);
   }
 
   /** E4 (v178c, C-078) — le Fil vide, mot pour mot (`_e4Fil`) */
