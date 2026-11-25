@@ -41,7 +41,7 @@ export interface Phrase {
   txt: string;
 }
 
-const champ = (p: Parole, k: string): unknown => (p as unknown as Record<string, unknown>)[k] ?? p.suite?.[k];
+export const champ = (p: Parole, k: string): unknown => (p as unknown as Record<string, unknown>)[k] ?? p.suite?.[k];
 
 /** reçue : `from` n'est pas moi */
 export function recue(p: Parole): boolean {

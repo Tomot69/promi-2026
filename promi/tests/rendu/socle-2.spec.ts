@@ -35,6 +35,7 @@ import {
   type EcranPorte,
   ecartAdmis,
   MAC_DE_TOM,
+  fermerIndex,
 } from './aides.ts';
 import { AMORCE, GRAINE, T_FIGE } from './banc.ts';
 
@@ -1293,6 +1294,8 @@ test("l'inventaire des fonctions de l'accueil : chaque geste a son résultat dan
       fautes.push(`${f.geste} : la navigation a reçu ${JSON.stringify(j)} au lieu de ${JSON.stringify(voulu)}`);
     // lot 2a : une pilule OUVRE la page + (elle couvre l'accueil) — son X la referme avant le geste suivant
     if (f.vers === 'pagePlus') await refermerPagePlus(pg);
+    // lot 4 : INDEX ouvre l'Index (il couvre l'accueil) — refermé avant le geste suivant
+    if (f.vers === 'index') await fermerIndex(pg);
     if (f.vers === 'compte') {
       const a1 = (await pg.evaluate(`${P_}.magasin.etat().autres`)) as Record<string, string>;
       if (a1['promi_rappel_n'] !== String((+(JSON.parse(a0) as Record<string, string>)['promi_rappel_n']! || 0) + 1))

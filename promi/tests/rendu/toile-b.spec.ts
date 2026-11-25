@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import { loadavg } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ETAT, RACINE, refermerPagePlus, sonde, stockage, fermerFiche, MAC_DE_TOM } from './aides.ts';
+import { ETAT, RACINE, refermerPagePlus, sonde, stockage, fermerFiche, fermerIndex, MAC_DE_TOM } from './aides.ts';
 
 type Ls = Record<string, string>;
 
@@ -871,6 +871,7 @@ async function toucherEtLire(page: Page, x: number, y: number, attendre?: string
   await page.waitForTimeout(450); // ni un second toucher (moins de 320 ms : le double toucher), ni une demande en retard
   const d = ((await demandes(page)) as Dem[]).slice(n0);
   await fermerFiche(page);
+  await fermerIndex(page);
   return d;
 }
 

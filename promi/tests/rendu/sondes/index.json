@@ -1,0 +1,17 @@
+[
+  {
+    "nom": "ordre-plantation",
+    "test": "l'Index au repos et défilé au bout, comme le prototype : sombre",
+    "defaut": "la vraie app range les cartes par ordre de plantation, la plus ancienne d'abord (« Récents » oublié)"
+  },
+  {
+    "nom": "carte-creme-clair",
+    "test": "l'Index au repos et défilé au bout, comme le prototype : clair",
+    "defaut": "en clair, le corps des cartes reprend la crème (avant C-147 : construites comme la fiche, dans les deux thèmes)"
+  },
+  {
+    "nom": "garde-sans-pointille",
+    "test": "l'Index avec un Cercle de deux paroles et un gardé de côté, comme le prototype : sombre",
+    "defaut": "le gardé de côté perd son pointillé de 3 pt (C-149 suite, v163)"
+  }
+]

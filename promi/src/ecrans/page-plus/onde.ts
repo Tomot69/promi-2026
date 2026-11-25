@@ -15,8 +15,16 @@ export function onde(base: number, amp: number, largeur = 390, periode = 1.5): O
 }
 
 /** le tracé de l'onde de x0 à x1 (moveTo puis cubiques), dans le contexte donné */
-export function cheminOnde(g: CanvasRenderingContext2D, y: Onde, x0: number, x1: number, largeur = 390): void {
-  const seg = largeur / 6;
+export function cheminOnde(
+  g: CanvasRenderingContext2D,
+  y: Onde,
+  x0: number,
+  x1: number,
+  largeur = 390,
+  periode = 1.5,
+): void {
+  // un segment par quart de période (une carte d'Index : UNE période sur sa largeur, §3.9)
+  const seg = largeur / (4 * periode);
   const d = (x: number): number => y(x + 0.5) - y(x - 0.5);
   const xs = [x0];
   let k = Math.ceil(x0 / seg) * seg;

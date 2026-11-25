@@ -489,6 +489,13 @@ export async function fermerFiche(page: Page): Promise<void> {
   if (ouverte) await page.waitForTimeout(450);
 }
 
+/** LOT 4 — l'Index ouvert par une porte de la barre couvre l'accueil : un test qui touche ensuite l'accueil le referme (il redescend, 0,4 s) */
+export async function fermerIndex(page: Page): Promise<void> {
+  const ouvert = (await page.evaluate(`(() => { const f = document.getElementById('indexSheet');
+    if (!f || f.hidden || f.classList.contains('ix-bas')) return false; ${P_}.index().fermer(); return true; })()`)) as boolean;
+  if (ouvert) await page.waitForTimeout(450);
+}
+
 // ── la fiche (lots 3a) : les zones exceptées de l'identité au pixel (fiche.spec.ts M1, M2, M3), partagées par les tests de « tenir » ──
 export type Zone = [number, number, number, number];
 
@@ -638,6 +645,25 @@ export async function fichesPilotees(
   id: number,
   o: { echelle?: number; n?: number; avantA?: () => void } = {},
 ): Promise<{ P: Page; A: Page; erreurs: string[] }> {
+  const { P, A, erreurs } = await deuxPilotes(browser, ls, o);
+  await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
+  await A.evaluate(`${P_}.fiche().ouvrir(${String(id)})`);
+  await Promise.all([images(P, o.n ?? 180), images(A, o.n ?? 180)]);
+  // ⚑ 3b (le X de la fiche sous Linux) — PROTOCOLE NOMMÉ : la croix du prototype garde une place calculée plus tôt (pendant l'ouverture de la
+  // fiche) tant que la place juste en diffère de moins de 0,3 pt (`lot-V157-CROIX` : il ne réécrit pas une cote à moins de 0,3 de la sienne) ;
+  // sous Linux, d'un test à l'autre, 6,18 puis 6,45 pt pour la même fiche (la vraie app : 6,11, relevé de la CI du 24 nov.) — un pixel de
+  // l'écran, une fois sur deux. Une fois la fiche posée, le banc lui fait reposer sa croix (sa propre passe, `_croix.passe`), puis
+  // vérifie qu'elle l'a reposée. Rien d'autre n'est touché.
+  await reposerCroix(P);
+  return { P, A, erreurs };
+}
+
+/** les deux pages démarrées, l'horloge pilotée des deux côtés, les animations CSS gelées — rien n'est encore ouvert (lot 4 : l'Index) */
+export async function deuxPilotes(
+  browser: import('@playwright/test').Browser,
+  ls: Record<string, string>,
+  o: { echelle?: number; avantA?: () => void } = {},
+): Promise<{ P: Page; A: Page; erreurs: string[] }> {
   const P = await (
     await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: o.echelle ?? 3 })
   ).newPage();
@@ -652,15 +678,6 @@ export async function fichesPilotees(
   await Promise.all([prototype(P, ls), vraieApp(A, ls, T_FIGE)]);
   await P.evaluate(`(${PILOTE})()`);
   for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
-  await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
-  await A.evaluate(`${P_}.fiche().ouvrir(${String(id)})`);
-  await Promise.all([images(P, o.n ?? 180), images(A, o.n ?? 180)]);
-  // ⚑ 3b (le X de la fiche sous Linux) — PROTOCOLE NOMMÉ : la croix du prototype garde une place calculée plus tôt (pendant l'ouverture de la
-  // fiche) tant que la place juste en diffère de moins de 0,3 pt (`lot-V157-CROIX` : il ne réécrit pas une cote à moins de 0,3 de la sienne) ;
-  // sous Linux, d'un test à l'autre, 6,18 puis 6,45 pt pour la même fiche (la vraie app : 6,11, relevé de la CI du 24 nov.) — un pixel de
-  // l'écran, une fois sur deux. Une fois la fiche posée, le banc lui fait reposer sa croix (sa propre passe, `_croix.passe`), puis
-  // vérifie qu'elle l'a reposée. Rien d'autre n'est touché.
-  await reposerCroix(P);
   return { P, A, erreurs };
 }
 

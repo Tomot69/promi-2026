@@ -221,6 +221,17 @@
     "--c-rampe-chiche-1": "#F2977A",
     "--c-rampe-chiche-2": "#FFC0A8",
     "--c-rampe-chiche-3": "#FFE2D2",
+    "--c-ingenu-promi-1": "#022140",
+    "--c-ingenu-promi-2": "#82AEF8",
+    "--c-ingenu-promi-3": "#DDE9FD",
+    "--c-ingenu-chiche-1": "#3A0F33",
+    "--c-ingenu-chiche-2": "#A8457E",
+    "--c-ingenu-chiche-3": "#FFB8D2",
+    "--c-ingenu-chiche-4": "#FFE6EF",
+    "--c-ingenu-cercle-1": "#291547",
+    "--c-ingenu-cercle-2": "#C9A8F5",
+    "--c-ingenu-cercle-3": "#F0E6FD",
+    "--c-garde-sombre": "#A77CF7",
     "--c-noir01-2": "#030307",
     "--c-bleu14": "#04375D",
     "--c-noir01": "#050505",
@@ -478,7 +489,9 @@
     "--c-mauve02": "lot 2a (vraie app) : le trait d'un Cercle posé sur son champ (`NATTRAIT.nuee` du prototype, v147 C-140) — l'aperçu du pinceau choisi sur la page +",
     "--c-rampe-cercle-1": "lot 2a (vraie app) : Q30 — la rampe de la nature Cercle (`DALPAL.nuee` du prototype, trois teintes, 1 à 3) : la dalle du haut de la page + d'un Cercle, peinte par le moteur (`opts.rampe`)",
     "--c-rampe-promi-1": "lot 3a (vraie app) : Q30 — la rampe de la nature Promi (`DALPAL.promi` du prototype, 1 à 3) : la dalle de la bande haute d'une fiche, peinte par le moteur (`opts.rampe`)",
-    "--c-rampe-chiche-1": "lot 3a (vraie app) : Q30 — la rampe de la nature Chiche (`DALPAL.chiche` du prototype, 1 à 3)"
+    "--c-rampe-chiche-1": "lot 3a (vraie app) : Q30 — la rampe de la nature Chiche (`DALPAL.chiche` du prototype, 1 à 3)",
+    "--c-ingenu-promi-1": "lot 4 (vraie app) : Q297 — sous Ingénu, la rampe de la nature (`RAMPE` de `_ingenuRampe` du prototype, v18–v19) : une dalle d'une carte d'Index, peinte par le moteur (`opts.rampe`, haut 0,9) ; promi 1 à 3, chiche 1 à 4 (le rose froid de v19), cercle 1 à 3",
+    "--c-garde-sombre": "lot 4 (vraie app) : C-149 suite (v163) — le pointillé d'une carte gardée de côté en sombre (le clair de « en cours », `_gardeC` de lot-S4) ; en clair : --c-mauve12"
   },
   "noms_swift": {
     "--c-orange-maparole": "orangeMaParole"

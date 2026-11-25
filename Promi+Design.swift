@@ -299,6 +299,17 @@ extension Color {
         static let framboise91 = Color(red: 1.0000, green: 0.9373, blue: 0.9804)   // #FFEFFA
         static let framboise94 = Color(red: 1.0000, green: 0.9569, blue: 0.9882)   // #FFF4FC
         static let framboise97 = Color(red: 1.0000, green: 0.9765, blue: 0.9882)   // #FFF9FC
+        static let gardeSombre = Color(red: 0.6549, green: 0.4863, blue: 0.9686)   // #A77CF7 — lot 4 (vraie app) : C-149 suite (v163) — le pointillé d'une carte gardée de côté en sombre (le clair de « en cours », `_gardeC` de lot-S4) ; en clair : --c-mauve12
+        static let ingenuCercle1 = Color(red: 0.1608, green: 0.0824, blue: 0.2784)   // #291547
+        static let ingenuCercle2 = Color(red: 0.7882, green: 0.6588, blue: 0.9608)   // #C9A8F5
+        static let ingenuCercle3 = Color(red: 0.9412, green: 0.9020, blue: 0.9922)   // #F0E6FD
+        static let ingenuChiche1 = Color(red: 0.2275, green: 0.0588, blue: 0.2000)   // #3A0F33
+        static let ingenuChiche2 = Color(red: 0.6588, green: 0.2706, blue: 0.4941)   // #A8457E
+        static let ingenuChiche3 = Color(red: 1.0000, green: 0.7216, blue: 0.8235)   // #FFB8D2
+        static let ingenuChiche4 = Color(red: 1.0000, green: 0.9020, blue: 0.9373)   // #FFE6EF
+        static let ingenuPromi1 = Color(red: 0.0078, green: 0.1294, blue: 0.2510)   // #022140 — lot 4 (vraie app) : Q297 — sous Ingénu, la rampe de la nature (`RAMPE` de `_ingenuRampe` du prototype, v18–v19) : une dalle d'une carte d'Index, peinte par le moteur (`opts.rampe`, haut 0,9) ; promi 1 à 3, chiche 1 à 4 (le rose froid de v19), cercle 1 à 3
+        static let ingenuPromi2 = Color(red: 0.5098, green: 0.6824, blue: 0.9725)   // #82AEF8
+        static let ingenuPromi3 = Color(red: 0.8667, green: 0.9137, blue: 0.9922)   // #DDE9FD
         static let lilas85 = Color(red: 0.9569, green: 0.9333, blue: 1.0000)   // #F4EEFF
         static let mauve02 = Color(red: 0.0392, green: 0.0157, blue: 0.0824)   // #0A0415 — lot 2a (vraie app) : le trait d'un Cercle posé sur son champ (`NATTRAIT.nuee` du prototype, v147 C-140) — l'aperçu du pinceau choisi sur la page +
         static let mauve04 = Color(red: 0.0824, green: 0.0314, blue: 0.1569)   // #150828

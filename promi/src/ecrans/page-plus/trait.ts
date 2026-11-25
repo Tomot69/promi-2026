@@ -36,8 +36,14 @@ export function ruban(g: CanvasRenderingContext2D, y: Onde, x0: number, x1: numb
   g.closePath();
 }
 
-/** le chevron du départ, orange, couché sur la pente de l'onde en cx */
-export function chevron(g: CanvasRenderingContext2D, y: Onde, cx: number, ep: number): void {
+/** le chevron du départ, orange, couché sur la pente de l'onde en cx — `col` : la couleur du trait (une carte d'Index : on n'y trace rien, v146) */
+export function chevron(
+  g: CanvasRenderingContext2D,
+  y: Onde,
+  cx: number,
+  ep: number,
+  col: string = ORANGE_DEPART,
+): void {
   const ang = Math.atan2(y(cx + 8) - y(cx - 8), 16);
   const k = ep / 10;
   g.save();
@@ -50,7 +56,7 @@ export function chevron(g: CanvasRenderingContext2D, y: Onde, cx: number, ep: nu
   g.lineWidth = 6 * k;
   g.lineCap = 'round';
   g.lineJoin = 'round';
-  g.strokeStyle = ORANGE_DEPART;
+  g.strokeStyle = col;
   g.stroke();
   g.restore();
 }

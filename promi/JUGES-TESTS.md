@@ -442,3 +442,23 @@ le libellé de toute rangée est à 12 pt (le plancher d'`echelle()`).
 **La CI sur macOS — trois jugements de machine, rendus au Mac de Tom** : les sauts image par image de la page + (`page-plus-2c`, une cadence) ;
 hors du Mac de Tom, un pixel isolé de 8 niveaux au plus (la couture de la tuile du grain de l'appareil) — exception nommée d'`ecart` ; la photo en
 entier attendue (5 s au plus) plutôt qu'un délai fixe.
+
+## Lot 4-1 — l'Index au repos : l'encart, la recherche, le ⇅, la grille des cartes (lot-S4, lot-V210-ENCART C-301, C-147, C-149, C-151, Q93, Q158, Q213, Q297)
+
+Porté : l'écran de l'Index (`src/ecrans/index/index.ts`), monté par la porte INDEX de la barre ; la carte (`src/ecrans/index/carte.ts`, réutilisable
+par la fiche d'une personne) — sa géométrie (`geo`), son champ qui cède à la dalle (Q93), sa dalle (la rampe de sa nature sous Ingénu, Q297), la
+petite Toile d'un Cercle (Q213), son trait d'une période, son corps de fiche (C-147), son pointillé de gardé de côté (C-149), son titre ajusté
+(C-151, v203) et son état resserré (Q158) ; ce que l'Index liste et dans quel ordre (`src/metier/index.ts` : « Récents », C-245). Une carte touchée
+ouvre sa fiche (un Cercle : sa fiche, lot 5 ; un gardé de côté : sa reprise dans la page +).
+
+| Juge du prototype                                                                               | Test                                                                                                    | Sonde                                   |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| releve-S4 (l'Index), redteam_titres_cartes (C-151), redteam_recents (C-245)                     | `index.spec` › « l'Index au repos et défilé au bout » (25 paroles ; × 2 thèmes) — au pixel, et les mots | `ordre-plantation`, `carte-creme-clair` |
+| redteam_garde_index (C-149), redteam_reperage (Q213 : la nature et la petite Toile d'un Cercle) | `index.spec` › « l'Index avec un Cercle de deux paroles et un gardé de côté » (× 2 thèmes)              | `garde-sans-pointille`                  |
+| (la règle, sans navigateur)                                                                     | `unitaires/index.test.ts` : l'ordre, la recherche, les filtres, les mots                                | —                                       |
+
+**Exception nommée M1** : la matière de chaque dalle (sa boîte déclarée `data-matiere`, 8 pt autour) — elle respire (§8 bis). **Protocole** : le
+prototype est ouvert par son bouton de la barre, puis ses images avancent par tranches (ses passes des titres partent d'un observateur, qui ne
+tourne qu'entre deux tâches). **Jetons ajoutés** (vraie app) : les rampes d'Ingénu (`--c-ingenu-*`) et le pointillé sombre d'un gardé de côté
+(`--c-garde-sombre`) ; `redteam_tokens` compte ces jetons propres à la vraie app parmi ses écarts au bloc du prototype (préexistant, 11 avant).
+Les tests de l'accueil qui touchent INDEX referment maintenant l'Index (`fermerIndex`) avant le toucher suivant.

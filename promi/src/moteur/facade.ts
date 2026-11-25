@@ -108,12 +108,27 @@ export interface Facade {
     w: number,
     h: number,
     o: { rampe?: { cols: number[][]; haut: number }; courant?: number; monde?: MondeDalle },
+    /** le thème de l'appareil (une carte d'Index : le prototype ne force pas le sombre) — sinon la dalle d'une fiche, toujours sombre (C-132) */
+    themeAppareil?: boolean,
   ): { x: number; y: number; w: number; h: number } | null;
   /**
    * le Lab MOYEN de la dalle `id` rendue dans le monde `monde`, tel que le moteur le DÉCLARE (`__dalleInfo.lab`, jamais relu en pixels :
    * redteam_decoupe) — « La dalle d'origine » le compare au champ (Q365, lot-V118-ORIGINE)
    */
   labDalle(id: number, monde: MondeDalle): [number, number, number] | null;
+  /**
+   * la CLARTÉ moyenne (luminance 0–255) de la dalle `id` rendue pour tenir dans `tw × th` px (`_rendDalle`, le cache du moteur), telle que le
+   * moteur la DÉCLARE (`__dalleInfo.lum`, jamais relue en pixels : redteam_decoupe) — le champ d'une carte d'Index lui cède (Q93, `champCede`)
+   */
+  /** la dalle `id` rendue pour tenir dans `tw × th` px (`_rendDalle`, le cache du moteur), dans le thème de l'appareil — la petite Toile d'un Cercle */
+  rendreDalle(id: number, tw: number, th: number): HTMLCanvasElement | null;
+  clarteDalle(
+    id: number,
+    tw: number,
+    th: number,
+    o: { rampe?: { cols: number[][]; haut: number } },
+    themeAppareil?: boolean,
+  ): number | null;
   /** la cellule de la dalle `id` ne touche pas le bord de la Toile (sa dalle est entière) — `Toile.dalleAbs`, `Toile.taille` */
   dalleEntiere(id: number): boolean;
   /** pose un canevas 1:1, centré sur (cx, cy) des coordonnées courantes du contexte (`_poseUn` du moteur) */
@@ -408,11 +423,23 @@ export function creerFacade(magasin: Magasin): Facade {
         return null;
       }
     },
-    poserDalle(g, id, x, y, l, h, o) {
+    poserDalle(g, id, x, y, l, h, o, themeAppareil) {
       const f = w['_poseDalle'] as
         ((...a: unknown[]) => { x: number; y: number; w: number; h: number } | null) | undefined;
-      const r = f ? enSombre(() => f(g, id, x, y, l, h, o)) : null;
+      const r = f ? (themeAppareil ? f(g, id, x, y, l, h, o) : enSombre(() => f(g, id, x, y, l, h, o))) : null;
       return r ? { x: r.x, y: r.y, w: r.w, h: r.h } : null;
+    },
+    rendreDalle(id, tw, th) {
+      const f = w['_rendDalle'] as ((...a: unknown[]) => HTMLCanvasElement | null) | undefined;
+      const cv = f ? f(id, tw, th) : null;
+      return cv && cv.width ? cv : null;
+    },
+    clarteDalle(id, tw, th, o, themeAppareil) {
+      const f = w['_rendDalle'] as
+        ((...a: unknown[]) => (HTMLCanvasElement & { __dalleInfo?: { lum?: number } }) | null) | undefined;
+      const cv = f ? (themeAppareil ? f(id, tw, th, o) : enSombre(() => f(id, tw, th, o))) : null;
+      const L = cv?.__dalleInfo?.lum;
+      return typeof L === 'number' ? L : null;
     },
     labDalle(id, monde) {
       try {

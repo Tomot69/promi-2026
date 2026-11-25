@@ -1,0 +1,246 @@
+/* L'INDEX (lot 4) — les cotes sont celles du prototype RENDU (relevé du 25 nov. 2026, WebKit, 390 × 844, ×3, clair et sombre ; lot-S4-css, l'encart
+   de lot-V210-ENCART, C-301 ; le corps d'écran de C-247, C-314). Les cartes : construites comme la fiche, dans les deux thèmes (C-147). */
+
+#indexSheet {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+  background: var(--c-seiche10);
+  color: var(--c-creme92);
+  font: 16px var(--f-texte);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+}
+#indexSheet[hidden] {
+  display: none !important;
+}
+#indexSheet.ix-bas {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.device.light #indexSheet {
+  background: var(--c-creme90-2);
+  color: var(--c-brun09);
+}
+
+/* ── l'encart du haut (24 / 40, 342 × 60) : le titre et le X ── */
+#indexSheet .enh {
+  position: absolute;
+  top: var(--ancre-haut);
+  left: var(--marge-g);
+  right: var(--marge-d);
+  height: 60px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 26px;
+  border: 2px solid var(--c-creme95);
+  border-radius: 30px;
+  background: var(--c-seiche10);
+  z-index: 9;
+}
+#indexSheet .enh-t {
+  display: block;
+  margin: 0;
+  padding: 0 0 1px;
+  font: 29.5px/1.06em var(--f-marque);
+  font-synthesis: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-creme95);
+}
+#indexSheet .closeb {
+  position: absolute;
+  top: 6px;
+  right: 19.95px;
+  width: 44px;
+  height: 44px;
+  font: 29.5px/29.5px var(--f-marque);
+  color: var(--c-creme95);
+  white-space: nowrap;
+  z-index: 40;
+  cursor: pointer;
+}
+#indexSheet .cb-mot {
+  position: absolute;
+  left: 0;
+  top: 5.88px;
+  width: 44px;
+  display: block;
+  line-height: 1.06em;
+  text-align: center;
+}
+.device.light #indexSheet .enh {
+  border-color: var(--c-brun09);
+  background: var(--c-creme95);
+}
+.device.light #indexSheet .enh-t,
+.device.light #indexSheet .closeb {
+  color: var(--c-brun09);
+}
+
+/* ── la recherche (24 / 116, 278 × 52) et le bouton ⇅ (314 / 116, 52 × 52) ── */
+#indexSheet .ix-bar {
+  position: absolute;
+  left: var(--marge-g);
+  top: calc(var(--ancre-haut) + 76px);
+  width: 342px;
+  height: 52px;
+}
+#indexSheet .ix-srch {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 278px;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid var(--c-creme95);
+  border-radius: 26px;
+  background: var(--c-seiche10);
+  overflow: hidden;
+}
+#indexSheet .ix-srch::before {
+  content: '⌕';
+  display: block;
+  flex: 0 0 auto;
+  font: 17px/17px var(--f-texte);
+  color: var(--c-creme95);
+  opacity: 0.6;
+}
+#indexSheet .ix-search {
+  flex: 1 1 auto;
+  display: block;
+  min-width: 0;
+  height: 24px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: 600 16px/16px var(--f-libelle);
+  color: var(--c-creme95);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#indexSheet .ix-search::placeholder {
+  color: var(--c-creme95);
+  opacity: 1;
+}
+#indexSheet .ix-tri {
+  position: absolute;
+  left: 290px;
+  top: 0;
+  width: 52px;
+  height: 52px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--c-creme95);
+  border-radius: 26px;
+  background: var(--c-seiche10);
+  font: 700 20px/20px system-ui;
+  -webkit-text-stroke-width: 1px;
+  color: var(--c-creme95);
+  cursor: pointer;
+}
+.device.light #indexSheet .ix-srch,
+.device.light #indexSheet .ix-tri {
+  border-color: var(--c-brun09);
+  background: var(--c-creme95);
+}
+.device.light #indexSheet .ix-srch::before,
+.device.light #indexSheet .ix-search,
+.device.light #indexSheet .ix-search::placeholder,
+.device.light #indexSheet .ix-tri {
+  color: var(--c-brun09);
+}
+
+/* ── la grille (dès 204, jusqu'au bas de l'écran) ── */
+#indexList {
+  position: absolute;
+  left: 0;
+  top: calc(var(--ancre-haut) + 164px);
+  width: 390px;
+  height: 648px;
+  overflow: hidden auto;
+  scrollbar-width: none;
+  z-index: 1;
+}
+#indexList::-webkit-scrollbar {
+  display: none;
+}
+#indexSheet .s4-grille {
+  position: relative;
+  width: 390px;
+}
+
+/* ── la carte (carte.ts) ── */
+.s4-carte {
+  position: absolute;
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.s4-carte > canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  z-index: 1;
+}
+.s4-carte > .s4-natlab {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 3;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 11px;
+  background: var(--c-creme95);
+  font: 13px/22px var(--f-marque);
+  font-synthesis: none;
+}
+.s4-carte > .s4-eb,
+.s4-carte > .s4-ti,
+.s4-carte > .s4-et {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  color: var(--c-creme95);
+}
+.s4-carte > .s4-eb {
+  height: 16px;
+  font: 700 16px/16px var(--f-libelle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.s4-carte > .s4-ti {
+  font: 700 24px/1 var(--f-libelle);
+  letter-spacing: -0.025em;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.s4-carte > .s4-et {
+  bottom: 6px;
+  overflow: visible;
+  font: 500 13px/1 var(--f-texte);
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}

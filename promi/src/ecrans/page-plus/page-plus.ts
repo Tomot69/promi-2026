@@ -2488,6 +2488,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     fermer();
   });
   nav.poser('pagePlus', (arg) => {
+    // lot 4 : la carte d'un gardé de côté (l'Index) demande sa reprise (son id) — la page + rouvre dans sa nature et son état (C-149)
+    if (typeof arg === 'number') {
+      reprendre(arg);
+      return;
+    }
     const n = NATURES.includes(arg as Nature) ? (arg as Nature) : 'promi';
     ouvrir(n);
   });
