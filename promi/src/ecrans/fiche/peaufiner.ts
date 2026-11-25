@@ -18,6 +18,7 @@ import { creerPeauf } from '../peaufiner/briques.ts';
 import { PINCEAUX } from '../page-plus/pinceaux.ts';
 import { el, surToucher } from '../commun.ts';
 import { horloge } from '../../animation/horloge.ts';
+import { connus as connusDe, monterAjout, rendreListe } from '../personnes/gens.ts';
 import { motAvant, dateQuand } from '../../metier/echeance.ts';
 import { recue } from '../../metier/fiche.ts';
 import { TEXTES_PAGE_PLUS as TP } from '../../textes/page-plus.ts';
@@ -29,6 +30,7 @@ const TXT = {
   avec: 'AVEC',
   personne: 'personne',
   moi: 'moi',
+  moiTete: 'Moi',
   enLair: 'en l’air',
   supprimerPromi: 'SUPPRIMER CE PROMI',
   supprimerChiche: 'SUPPRIMER CE CHICHE',
@@ -45,6 +47,11 @@ export interface PeaufinerFiche {
   ouvert(): boolean;
   /** la parole a changé (le magasin) : la page se rebâtit si elle est ouverte (jamais calendrier ouvert) */
   reposer(): void;
+  /**
+   * le « + » des membres (C-254 ; le prototype : `ouvreGens` de lot-V181A-CERCLE) : Peaufiner s'ouvre sur les personnes de la parole, leur rangée
+   * dépliée, et le panneau glisse jusqu'à elles (420 ms) ; sur un Promi à soi, la rangée À QUI paraît pour l'occasion (`_v184Qui`)
+   */
+  ouvrirPersonnes(): void;
 }
 
 export function monterPeaufinerFiche(o: {
@@ -65,6 +72,75 @@ export function monterPeaufinerFiche(o: {
   fi.appendChild(corps);
   const pf = creerPeauf(corps);
   let ouvert = false;
+
+  // ── LES PERSONNES (le prototype : `_gensFiche`) — « à qui » (la tête « Moi », choisie tant que personne d'autre, avec sa croix ; la toucher
+  //    retire tout le monde) et « avec » (sans tête) ; une personne touchée s'ajoute, sa croix la retire. Écrit tout de suite ; Peaufiner se
+  //    rebâtit, la rangée reste ouverte. ──
+  type Cle = 'who' | 'avec';
+  let gensOuvert: Cle | null = null;
+  /** Peaufiner ouvert par le « + » des membres : la rangée À QUI est là, même sur un Promi à soi (le prototype : `_v184Qui`) */
+  let parLePlus = false;
+  const lire = (p: Parole, k: Cle): string[] =>
+    (k === 'avec' ? (typeof p.suite?.['avec'] === 'string' ? p.suite['avec'] : '') : (p.who ?? ''))
+      .replace(/\s+et\s+moi\s*$/i, '')
+      .split(/\s*[,·]\s*/)
+      .map((n) => n.trim())
+      .filter((n) => n && !/^(moi|le groupe|qui \?|personne)$/i.test(n));
+  const ecrire = (p: Parole, k: Cle, l: string[]): void => {
+    magasin.peaufiner(p.id, k === 'avec' ? { avec: l } : { qui: l }, Date.now());
+  };
+  const connus = (): string[] => connusDe(magasin.etat());
+  let defile0 = 0;
+  const ajout = monterAjout({
+    parent: fi,
+    zone: () => corps.querySelector<HTMLElement>('.s2-reg.s2-ouv .ph-add'),
+    surface: fi,
+    connus,
+    valider: (n) => {
+      const p = o.parole();
+      if (!p || !gensOuvert) return;
+      const l = lire(p, gensOuvert);
+      if (!l.includes(n)) ecrire(p, gensOuvert, [...l, n]);
+    },
+    // rien ne passe sous le clavier : la liste de Peaufiner défile (le prototype : `saSuis`, le conteneur qui défile)
+    deplacer: (y) => {
+      if (y < 0.01) {
+        defile0 = corps.scrollTop;
+        return;
+      }
+      corps.scrollTop = defile0 + y;
+    },
+  });
+  function gens(p: Parole, k: Cle): HTMLElement {
+    gensOuvert = k;
+    const { gn, zone } = rendreListe(
+      {
+        nat: p.chiche ? 'chiche' : 'promi',
+        choisis: () => lire(p, k),
+        tete: k === 'who' ? TXT.moiTete : null,
+        teteOn: () => !lire(p, k).length,
+        teteCroix: true,
+        connus,
+        touche: (nom, croix) => {
+          const l = lire(p, k);
+          if (nom === null) ecrire(p, k, []);
+          else if (croix)
+            ecrire(
+              p,
+              k,
+              l.filter((x) => x !== nom),
+            );
+          else if (!l.includes(nom)) ecrire(p, k, [...l, nom]);
+        },
+      },
+      ajout.touche,
+    );
+    ajout.rendre(zone);
+    horloge().image(() => {
+      ajout.poser();
+    });
+    return gn;
+  }
   const passages = new Map<HTMLElement, ControlePassage>();
 
   const reduit = (): boolean => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -129,11 +205,20 @@ export function monterPeaufinerFiche(o: {
     );
     liste.appendChild(rt);
     // À QUI / QUI OSE ? — un Promi « je me promets » est à soi par définition : pas de rangée ; un Chiche reçu non plus (C-192)
+    // Ailleurs, « à qui » et « avec » déplient le choix des personnes (lot-GENS, la brique de la page + : on ajoute, on retire)
     const aSoi = !chiche && !s['req'] && (!p.who || /^moi$/i.test(p.who));
-    if (!aSoi && !(chiche && recue(p))) liste.appendChild(pf.rang(chiche ? TXT.quiOse : TXT.aQui, p.who || TXT.moi));
+    if ((!aSoi || parLePlus) && !(chiche && recue(p))) {
+      const r = pf.rang(chiche ? TXT.quiOse : TXT.aQui, p.who || TXT.moi);
+      pf.deplie(r, () => gens(p, 'who'));
+      liste.appendChild(r);
+    }
     // AVEC : le compagnon d'un Chiche — vide, en pointillés (§3.3)
     const avec = typeof s['avec'] === 'string' ? s['avec'] : '';
-    if (chiche) liste.appendChild(pf.rang(TXT.avec, avec || TXT.personne, avec ? '' : ' s2-vide'));
+    if (chiche) {
+      const r = pf.rang(TXT.avec, avec || TXT.personne, avec ? '' : ' s2-vide');
+      pf.deplie(r, () => gens(p, 'avec'));
+      liste.appendChild(r);
+    }
     // AVANT : le même choix que la page + (C-197)
     const ra = pf.rang(L.avant, motAvant(p, magasin.aujourdhui()));
     const choisie = s['dueChoisi'] === true;
@@ -243,6 +328,9 @@ export function monterPeaufinerFiche(o: {
   function fermer(anime = true): void {
     if (!ouvert) return;
     ouvert = false;
+    ajout.remettre();
+    gensOuvert = null;
+    parLePlus = false;
     barre.setAttribute('aria-expanded', 'false');
     const fin = (): void => {
       if (ouvert) return;
@@ -296,7 +384,43 @@ export function monterPeaufinerFiche(o: {
       glisseDe = null;
     });
 
-  return { ouvrir, fermer, ouvert: () => ouvert, reposer };
+  function ouvrirPersonnes(): void {
+    const p = o.parole();
+    if (!p) return;
+    const lab = p.chiche ? TXT.quiOse : TXT.aQui;
+    if (ouvert) fermer(false);
+    parLePlus = true;
+    ouvrir();
+    // la rangée des personnes, dépliée (Peaufiner se rebâtit sur elle)
+    pf.ouverte = lab;
+    batir(p);
+    const r = [...corps.querySelectorAll<HTMLElement>('.s2-reg')].find(
+      (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
+    );
+    if (!r) return;
+    // le panneau glisse jusqu'à elle (420 ms, aller-retour quadratique ; l'avancée bornée à 34 ms par image : une image longue ne le fait pas sauter)
+    const cible = Math.max(0, Math.min(r.offsetTop - 110, corps.scrollHeight - corps.clientHeight));
+    if (reduit()) {
+      corps.scrollTop = cible;
+      return;
+    }
+    const h = horloge();
+    const y0 = corps.scrollTop;
+    let tl = 0;
+    let tp = h.maintenant();
+    const pas = (): void => {
+      const n = h.maintenant();
+      tl += Math.min(34, n - tp);
+      tp = n;
+      const u = Math.min(1, tl / 420);
+      const e = u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2;
+      corps.scrollTop = y0 + (cible - y0) * e;
+      if (u < 1 && ouvert) h.image(pas);
+    };
+    h.image(pas);
+  }
+
+  return { ouvrir, fermer, ouvert: () => ouvert, reposer, ouvrirPersonnes };
 }
 
 /**

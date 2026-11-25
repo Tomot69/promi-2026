@@ -137,7 +137,13 @@ for (const theme of ['sombre', 'clair'] as const)
       // un toucher sur la bande (le cœur de la photo) : en entier
       await Promise.all([toucher(P, 195, 180), toucher(A, 195, 180)]);
       await Promise.all([images(P, 30), images(A, 30)]);
-      expect(await A.evaluate(() => !!document.querySelector('#entierVue.ouv')), 'la photo en entier').toBe(true);
+      // (hors du Mac de Tom, la vue s'ouvre quelques images plus tard : on l'attend, 5 s au plus)
+      await expect
+        .poll(() => A.evaluate(() => !!document.querySelector('#entierVue.ouv')), {
+          message: 'la photo en entier',
+          timeout: 5000,
+        })
+        .toBe(true);
       await juge('entier');
       // un nouveau toucher : refermée
       await Promise.all([toucher(P, 195, 420), toucher(A, 195, 420)]);

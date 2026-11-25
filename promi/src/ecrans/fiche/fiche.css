@@ -769,9 +769,9 @@
   height: 11.7px;
   opacity: 0.72;
 }
-/* déplié, le libellé « LE TRAIT » est à 12 pt : le plancher du prototype (`echelle()`, §6) le pose à 13 puis le replie de 0,5 en 0,5 tant qu'il
-   déborde de sa boîte, jusqu'à 12 — relevé sur le rendu */
-#dpdCorps .s2-trait.s2-ouv .s2-lab {
+/* déplié, le libellé d'une rangée (« LE TRAIT », « À QUI », « AVEC »…) est à 12 pt : le plancher du prototype (`echelle()`, §6) le pose à 13 puis
+   le replie de 0,5 en 0,5 tant qu'il déborde de sa boîte, jusqu'à 12 — relevé sur le rendu */
+#dpdCorps .s2-reg.s2-ouv .s2-lab {
   font-size: 12px;
   letter-spacing: 0.18em;
 }
@@ -932,4 +932,59 @@
   width: 17px;
   height: 17px;
   display: block;
+}
+
+/* ── LES PERSONNES DANS PEAUFINER (le prototype : `_gensFiche`, la liste de lot-GENS dans la rangée dépliée) — relevé sur son rendu : deux
+   colonnes de 142 (10 d'écart, 8 entre deux rangées), dans le flux de la rangée, 14 sous sa valeur ; une pastille plus serrée que sur la page +
+   (6 entre le visage et le nom, 10 à gauche, 8 à droite) ; « + ajouter quelqu'un » 14 plus bas, en pointillés, à la teinte des libellés ── */
+#detailPoster #dpdCorps .gn {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 142px));
+  gap: 8px 10px;
+  margin-top: 14px;
+}
+#detailPoster #dpdCorps .gn-liste {
+  grid-template-columns: repeat(2, minmax(0, 142px));
+  gap: 8px 10px;
+}
+#detailPoster #dpdCorps .ph-o {
+  max-width: 100%;
+  gap: 6px;
+  padding: 0 8px 0 10px;
+}
+#detailPoster #dpdCorps .ppo-x {
+  width: 16px;
+}
+#detailPoster #dpdCorps .ph-add {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 14px;
+  justify-content: center;
+  border-style: dashed;
+}
+#detailPoster.fi-promi #dpdCorps .ph-add {
+  border-color: var(--c-lilas85);
+  color: var(--c-lilas85);
+}
+#detailPoster.fi-chiche #dpdCorps .ph-add {
+  border-color: var(--c-orange77);
+  color: var(--c-orange77);
+}
+#detailPoster.fi-promi #dpdCorps .ph-o.on,
+#detailPoster.fi-promi #dpdCorps .ph-o .ppo-ini {
+  border-color: var(--c-bleu45);
+  background: var(--c-bleu45);
+}
+#detailPoster.fi-promi #dpdCorps .ph-o.on .ppo-ini {
+  background: var(--c-creme95);
+  color: var(--c-bleu45);
+}
+#detailPoster.fi-chiche #dpdCorps .ph-o.on,
+#detailPoster.fi-chiche #dpdCorps .ph-o .ppo-ini {
+  border-color: var(--c-framboise54);
+  background: var(--c-framboise54);
+}
+#detailPoster.fi-chiche #dpdCorps .ph-o.on .ppo-ini {
+  background: var(--c-creme95);
+  color: var(--c-framboise54);
 }

@@ -172,6 +172,24 @@ export function ecart(a: Buffer, b: Buffer): { n: number; boite: number[] | null
       }
     return hi - lo > 24;
   };
+  const ecartDe = (x: number, y: number): number => {
+    const i = (y * W + x) * 4;
+    return Math.max(
+      Math.abs(A.data[i]! - B.data[i]!),
+      Math.abs(A.data[i + 1]! - B.data[i + 1]!),
+      Math.abs(A.data[i + 2]! - B.data[i + 2]!),
+    );
+  };
+  const isole = (x: number, y: number): boolean => {
+    for (let dy = -1; dy <= 1; dy++)
+      for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        const xx = x + dx;
+        const yy = y + dy;
+        if (xx >= 0 && yy >= 0 && xx < W && yy < H && ecartDe(xx, yy) > 2) return false;
+      }
+    return true;
+  };
   let n = 0;
   let bords = 0;
   let x0 = 1e9,
@@ -190,6 +208,12 @@ export function ecart(a: Buffer, b: Buffer): { n: number; boite: number[] | null
       );
       if (d <= 2) continue;
       if (!strict && d <= 12 && surBord(x, y)) {
+        bords++;
+        continue;
+      }
+      // EXCEPTION NOMMÉE hors du Mac de Tom : un pixel ISOLÉ (aucun de ses huit voisins n'est écarté) de 8 niveaux au plus — la couture de la
+      // tuile du grain de l'appareil (140 pt), lissée autrement par la machine (relevé sur la machine macOS de la CI : six pixels, 6 niveaux)
+      if (!strict && d <= 8 && isole(x, y)) {
         bords++;
         continue;
       }

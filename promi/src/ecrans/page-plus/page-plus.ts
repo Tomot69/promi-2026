@@ -23,7 +23,7 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
-import { chargerTrace, copieA, detracerCopie, remplacer, type ControleTrace } from '../../animation/trace/trace.ts';
+import { chargerTrace, type ControleTrace } from '../../animation/trace/trace.ts';
 import { masqueFlaques, passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
@@ -37,6 +37,7 @@ import { variante } from '../../metier/exemples.ts';
 import { elision } from '../../metier/elision.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
+import { connus as connusDe, monterAjout, rendreListe } from '../personnes/gens.ts';
 import { avecAlpha, el, esc, poserCroix, surToucher, SVG_PHOTO } from '../commun.ts';
 import { creerPeauf } from '../peaufiner/briques.ts';
 import { dateQuand } from '../../metier/echeance.ts';
@@ -149,10 +150,6 @@ const SEUIL_GLISSE = 120;
 
 const SVG_BASCULE =
   '<svg viewBox="0 0 22 22" width="17" height="17" aria-hidden="true"><path d="M3 8h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M15.4 4.6 L19 8 L15.4 11.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 15H3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M6.6 11.6 L3 15 L6.6 18.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const SVG_PLUS =
-  '<svg viewBox="0 0 10 10" aria-hidden="true"><path class="h" d="M0 5 H10"/><path class="v" d="M5 0 V10"/></svg>';
-const SVG_X =
-  '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2 L10 10 M10 2 L2 10" fill="none" stroke-width="2" stroke-linecap="round"/></svg>';
 
 export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation): PagePlus {
   const h = horloge();
@@ -214,21 +211,6 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     ev.preventDefault();
   });
   phrase.appendChild(deja);
-  // C-122 : le champ (invisible) du prénom qu'on écrit dans la zone en pointillés
-  const gnIn = el('input', {
-    type: 'text',
-    id: 'gnSaisie',
-    class: 'gn-saisie',
-    autocomplete: 'off',
-    autocorrect: 'off',
-    autocapitalize: 'words',
-    spellcheck: 'false',
-    enterkeyhint: 'done',
-    maxlength: '24',
-    'aria-label': T.prenom,
-  });
-  // il n'existe pour la page que pendant qu'on écrit un prénom (hors de là, aucun champ sans porte : redteam_champs)
-  gnIn.hidden = true;
   // le panneau Peaufiner (lot-S2 : la page de réglages de la page +, le MÊME bloc que la fiche)
   const peauf = el('div', { id: 'csPeauf', class: 'dpd-corps', role: 'region', 'aria-label': T.peaufiner });
   peauf.hidden = true;
@@ -236,10 +218,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   const departCv = el('canvas', { id: 'ppDepart', 'aria-hidden': 'true' });
   const lib = el('div', { class: 'pp-trace' });
   lib.hidden = true;
-  cs.append(cv, departCv, photoCv, phrase, pinceau, garder, peauf, barre, plateau, nid, saisie, gnIn, photoIn, lib);
+  cs.append(cv, departCv, photoCv, phrase, pinceau, garder, peauf, barre, plateau, nid, saisie, photoIn, lib);
   // C-129 : aucun emoji n'entre (le titre, le nom, un prénom ; la note de Peaufiner aussi, plus bas)
   champSansEmoji(saisie);
-  champSansEmoji(gnIn);
   for (const p of PINCEAUX) {
     const b = el('button', { type: 'button', class: 'pc-t' + (p.libre ? '' : ' pc-mur'), 'data-t': p.nom });
     const e = el('span', { class: 'pc-e' });
@@ -273,8 +254,6 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   let mise = { base: 312, amp: 36, hz: 0, nl: 2, taille: 36 };
   /** ce qui part en flaques (un mouvement l'a pris) : `composer` ne le cache pas d'un coup sous lui */
   const sortants = new Set<HTMLElement>();
-  /** C-122 : la zone « un prénom… » est active (on y écrit) */
-  let ajoutActif = false;
   let peaufOuvert = false;
   let menu: HTMLElement | null = null;
   /** le mouvement en cours (Q598, C-234) : son image, la place VUE (l'onde, la phrase, le bouton photo, la barre) */
@@ -1804,20 +1783,28 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   });
 
   // ── LE CHOIX DES PERSONNES (lot-GENS) : « Moi » ou « tout le monde » en tête, les connus, « + ajouter quelqu'un » ──
-  function connus(): string[] {
-    const e = magasin.etat();
-    const out: string[] = [];
-    const vu = (n: string): void => {
-      const m = n.trim();
-      if (m && !/^(moi|le groupe|tout le monde)$/i.test(m) && !out.includes(m)) out.push(m);
-    };
-    for (const p of [...e.paroles].reverse())
-      for (const w of [p.who, p.from, (p.suite?.['avec'] as string | undefined) ?? ''])
-        for (const n of String(w ?? '').split(/\s*[,·]\s*/)) vu(n);
-    for (const v of e.personnes) if (typeof v === 'string') for (const n of v.split(/\s*[,·]\s*/)) vu(n);
-    for (const l of Object.values(e.membres)) for (const n of l) vu(n);
-    return out;
-  }
+  const connus = (): string[] => connusDe(magasin.etat());
+  // C-122 : écrire un prénom dans la zone en pointillés (la brique des personnes : l'entrée invisible, le « + », le clavier suivi)
+  const ajout = monterAjout({
+    parent: cs,
+    zone: () => choixHote.querySelector<HTMLElement>('.ph-add'),
+    surface: cs,
+    connus,
+    valider: (n) => {
+      if (!choix) return;
+      changerPersonnes((L) => {
+        if (!L.includes(n)) ajouterA(L, n);
+      });
+    },
+    // la page glisse au-dessus du clavier (jamais d'un coup) ; à sa place, rien n'est posé
+    deplacer: (y) => {
+      if (Math.abs(y) < 0.01) cs.style.removeProperty('translate');
+      else cs.style.setProperty('translate', `0 ${String(-Math.round(y * 100) / 100)}px`);
+    },
+  });
+  // l'entrée invisible a sa place parmi les nœuds de la page (après la saisie) ; aucun emoji n'y entre (C-129)
+  saisie.after(ajout.champ);
+  champSansEmoji(ajout.champ);
   const liste = (): string[] => (choix === 'qui' ? P.qui : choix === 'avec' ? P.avec : P.membres);
   /** C-332 : une personne ajoutée à côté de « Moi » seul (la liste vide) ne le retire pas — sauf « promets-moi » (on demande à d'autres)
    *  et « avec qui en est ? » d'un Chiche (pas de « Moi » dans ce choix) */
@@ -1852,62 +1839,38 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     choixHote.innerHTML = '';
     choixHote.classList.toggle('ouvert', choix !== null);
     if (!choix) {
-      if (ajoutActif) {
-        ajoutActif = false;
-        gnIn.value = '';
-        if (document.activeElement === gnIn) gnIn.blur();
-        gnIn.hidden = true;
-        suisClavier();
-      }
+      if (ajout.actif()) ajout.fermer();
       return;
     }
     const pris = liste();
-    const noms = autres(pris);
-    for (const n of connus()) if (!noms.includes(n) && noms.length < autres(pris).length + 6) noms.push(n);
-    const gn = el('div', { class: 'ph-opts gn', 'data-nat': P.nat });
-    const gl = el('div', { class: 'gn-liste' });
-    // « Moi » en tête, choisi tant que personne d'autre (C-269, v199) — dans un Cercle aussi (le prototype : la place « avec » passe à « moi »)
-    const teteOn = !pris.length || pris.includes(MOI);
-    const bouton = (nom: string, on: boolean, tetee: boolean): HTMLElement => {
-      const b = el('button', { type: 'button', class: 'ph-o' + (on ? ' on' : '') });
-      if (tetee) b.dataset['gnTete'] = '1';
-      else b.dataset['v'] = nom;
-      const ini = el('span', { class: 'ppo-ini' });
-      ini.textContent = nom.charAt(0).toUpperCase();
-      b.appendChild(ini);
-      const nm = el('span', { class: 'ppo-nom' });
-      nm.textContent = nom;
-      b.appendChild(nm);
-      if (on) {
-        const x = el('span', { class: 'ppo-x', role: 'button', 'aria-label': `${T.retirer} ${nom.toLowerCase()}` });
-        x.innerHTML = SVG_X;
-        b.appendChild(x);
-      }
-      surToucher(b, (ev) => {
-        changerPersonnes((L) => {
-          if (tetee) {
-            // C-332 : « Moi » se décoche (s'il reste seul, la liste vide le remet : jamais vide) ou se remet, à côté des autres
-            if (L.includes(MOI)) L.splice(L.indexOf(MOI), 1);
-            else if (L.length) L.unshift(MOI);
-          } else if ((ev.target as Element).closest('.ppo-x') || L.includes(nom)) L.splice(L.indexOf(nom), 1);
-          else ajouterA(L, nom);
-        });
-      });
-      return b;
-    };
+    // « Moi » en tête, choisi tant que personne d'autre (C-269, v199) — dans un Cercle aussi (le prototype : la place « avec » passe à « moi ») ;
     // « avec qui en est ? » d'un Chiche n'a pas de « Moi » en tête (le prototype : `tete: (champ === 'qui') ? 'Moi' : null`)
-    if (choix !== 'avec') gl.appendChild(bouton(T.moi, teteOn, true));
-    for (const n of noms) gl.appendChild(bouton(n, pris.includes(n), false));
-    const ajout = el('div', { class: 'ph-o ph-add', role: 'button', tabindex: '0', 'data-add': '1' });
-    rendreAjout(ajout);
-    surToucher(ajout, (ev) => {
-      if ((ev.target as Element).closest('.gn-plus')) {
-        validerAjout();
-        return;
-      }
-      ouvrirAjout();
-    });
-    gn.append(gl, ajout);
+    const {
+      gn,
+      liste: gl,
+      zone,
+    } = rendreListe(
+      {
+        nat: P.nat,
+        choisis: () => autres(pris),
+        tete: choix !== 'avec' ? T.moi : null,
+        teteOn: () => !pris.length || pris.includes(MOI),
+        teteCroix: true,
+        connus,
+        touche: (nom, croix) => {
+          changerPersonnes((L) => {
+            if (nom === null) {
+              // C-332 : « Moi » se décoche (s'il reste seul, la liste vide le remet : jamais vide) ou se remet, à côté des autres
+              if (L.includes(MOI)) L.splice(L.indexOf(MOI), 1);
+              else if (L.length) L.unshift(MOI);
+            } else if (croix || L.includes(nom)) L.splice(L.indexOf(nom), 1);
+            else ajouterA(L, nom);
+          });
+        },
+      },
+      ajout.touche,
+    );
+    ajout.rendre(zone);
     choixHote.appendChild(gn);
     // sous la phrase (28 pt d'air ; 25 sous celle d'un Cercle, `#nueeChoix .gn{margin-top:25px}`) ; la liste montre autant de RANGÉES
     // entières que la place en laisse pour que « + ajouter quelqu'un » reste au-dessus de la barre Peaufiner, 16 pt d'air (v116,
@@ -1920,231 +1883,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     let n = 1;
     while (debut + 52 * (n + 1) + 8 * n + 8 + 14 + 52 <= finBarre) n++;
     gl.style.maxHeight = `${String(52 * n + 8 * (n - 1))}px`;
-    posePrenom();
+    ajout.poser();
   }
-
-  // ── C-122 (v146) — AJOUTER UNE PERSONNE : on écrit DANS la zone en pointillés (aucun second encart) ; le nom à l'encre du mode, le mot
-  //    d'attente « un prénom… » dans la teinte de la zone ; dès la première lettre, un « + » orange (`--c-orange-depart`), tracé, à la hauteur
-  //    des capitales du nom, valide (Retour aussi) ; le nom validé est posé, la zone se propose pour le suivant ; le clavier reste. ──
-  function rendreAjout(z: HTMLElement): void {
-    // C-271 (v203 clôture §2) : « + ajouter quelqu’un » ↔ la ligne de saisie, l'ancien se détrace et le neuf se trace ; « un prénom… » part et
-    // revient par le tracé — rien ne change d'un coup
-    const etaitEdit = z.classList.contains('gn-edit');
-    const phAvant = z.querySelector<HTMLElement>('.gn-ph');
-    if (!ajoutActif) {
-      const bouton = (): void => {
-        delete z.dataset['v'];
-        z.className = 'ph-o ph-add';
-        z.setAttribute('role', 'button');
-        z.removeAttribute('aria-label');
-        z.textContent = T.ajouter;
-      };
-      if (etaitEdit) remplacer(z, bouton);
-      else bouton();
-      return;
-    }
-    const v = gnIn.value;
-    const nom = v.replace(/\s+/g, ' ').trim();
-    // rien n'a changé (un focus, le clavier qui bouge) : la ligne reste — rebâtie, elle perdrait son tracé en cours (il paraîtrait d'un coup)
-    if (etaitEdit && z.dataset['v'] === v) {
-      z.classList.toggle('gn-repos', document.activeElement !== gnIn);
-      return;
-    }
-    z.dataset['v'] = v;
-    if (etaitEdit && phAvant && v) detracerCopie(phAvant);
-    const devientEdit = !etaitEdit && !!(z.textContent ?? '').trim();
-    const copie = devientEdit && !reduit() && z.getClientRects().length ? copieA(z) : null;
-    z.className = 'ph-o ph-add gn-edit' + (document.activeElement === gnIn ? '' : ' gn-repos');
-    z.setAttribute('role', 'group');
-    z.setAttribute('aria-label', T.ajouterQuelquun);
-    const ligne = el('span', { class: 'gn-ligne' });
-    const t = el('span', { class: 'gn-txt' });
-    t.textContent = v;
-    const car = el('i', { class: 'ph-caret', 'aria-hidden': 'true' });
-    ligne.append(t, car);
-    if (!v) {
-      const ph = el('span', { class: 'gn-ph' });
-      ph.textContent = T.unPrenom;
-      ligne.appendChild(ph);
-    }
-    if (nom) {
-      const pl = el('span', { class: 'gn-plus', role: 'button', 'aria-label': `${T.ajouterNom} ${nom}` });
-      pl.innerHTML = SVG_PLUS;
-      // un toucher sur le « + » ne prend pas le focus au champ (sinon le clavier clignote, des lettres se perdent : v146)
-      pl.addEventListener('mousedown', (ev) => {
-        ev.preventDefault();
-      });
-      ligne.appendChild(pl);
-    }
-    z.replaceChildren(ligne);
-    if (copie) {
-      const fin = (): void => {
-        copie.remove();
-      };
-      const tl = chargerTrace();
-      tl.trace(ligne, null);
-      tl.trace(copie, null, { inverse: true, surFin: fin });
-      h.minuteur(fin, 2500);
-    } else if (etaitEdit && !phAvant && !v && !reduit()) {
-      const ph = ligne.querySelector<HTMLElement>('.gn-ph');
-      if (ph) chargerTrace().trace(ph, null);
-    }
-    // (le « + » se mesure sur la police du nom RENDUE : une fois la ligne posée)
-    const pl = ligne.querySelector<HTMLElement>('.gn-plus');
-    if (pl) {
-      dessinePlus(pl, t, !plusVu);
-      plusVu = true;
-    } else plusVu = false;
-  }
-  let plusVu = false;
-  /** le « + » : la hauteur des capitales du nom, l'épaisseur de son fût (lues sur sa police) ; il se TRACE (deux traits nets, sans fondu) */
-  function dessinePlus(pl: HTMLElement, t: HTMLElement, anime: boolean): void {
-    const s = getComputedStyle(t);
-    const f = `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
-    const fs = parseFloat(s.fontSize) || 16;
-    let cap = fs * 0.78;
-    let fut = fs * 0.2;
-    const g = document.createElement('canvas').getContext('2d');
-    if (g) {
-      g.font = f;
-      const H = g.measureText('H');
-      const L = g.measureText('l');
-      const a = Math.max(H.actualBoundingBoxAscent || 0, L.actualBoundingBoxAscent || 0);
-      if (a > 4) cap = a;
-      const w = (L.actualBoundingBoxLeft || 0) + (L.actualBoundingBoxRight || 0);
-      if (w > 1 && w < cap * 0.5) fut = w;
-    }
-    const sv = pl.querySelector('svg');
-    if (!sv) return;
-    sv.setAttribute('width', cap.toFixed(2));
-    sv.setAttribute('height', cap.toFixed(2));
-    const ep = Math.max(1.6, Math.min(3.4, (fut / cap) * 10));
-    const [hb, vb] = [sv.querySelector<SVGPathElement>('.h'), sv.querySelector<SVGPathElement>('.v')];
-    for (const q of [hb, vb]) {
-      q?.setAttribute('stroke-width', ep.toFixed(2));
-      q?.setAttribute('stroke-dasharray', '10');
-      q?.setAttribute('stroke-dashoffset', anime && !reduit() ? '10' : '0');
-    }
-    if (!anime || reduit()) return;
-    const t0 = h.maintenant();
-    const D = 120;
-    const pas = (): void => {
-      const tt = h.maintenant() - t0;
-      const a = Math.min(1, tt / D);
-      const b = Math.min(1, Math.max(0, (tt - D * 0.7) / D));
-      hb?.setAttribute('stroke-dashoffset', (10 * (1 - a)).toFixed(2));
-      vb?.setAttribute('stroke-dashoffset', (10 * (1 - b)).toFixed(2));
-      if (b < 1 && pl.isConnected) h.image(pas);
-    };
-    h.image(pas);
-  }
-  const zoneAjout = (): HTMLElement | null => choixHote.querySelector<HTMLElement>('.ph-add');
-  function ouvrirAjout(): void {
-    if (!ajoutActif) {
-      ajoutActif = true;
-      gnIn.value = '';
-      plusVu = false;
-    }
-    gnIn.hidden = false;
-    // le focus DANS le geste : iOS n'ouvre le clavier qu'ainsi (v115)
-    gnIn.focus({ preventScroll: true });
-    const z = zoneAjout();
-    if (z) rendreAjout(z);
-    posePrenom();
-    suisClavier();
-  }
-  function validerAjout(): void {
-    let n = gnIn.value.replace(/\s+/g, ' ').trim();
-    if (!n || !choix) return;
-    // un nom déjà connu garde SON écriture (« rachel » → « Rachel »)
-    for (const c of connus()) if (c.toLowerCase() === n.toLowerCase()) n = c;
-    gnIn.value = '';
-    plusVu = false;
-    changerPersonnes((L) => {
-      if (!L.includes(n)) ajouterA(L, n);
-    });
-    // le nom est posé ; la zone se propose pour le suivant, le clavier reste
-    gnIn.focus({ preventScroll: true });
-    const z = zoneAjout();
-    if (z) rendreAjout(z);
-    suisClavier();
-  }
-  function fermerAjout(): void {
-    if (!ajoutActif) return;
-    ajoutActif = false;
-    gnIn.value = '';
-    if (document.activeElement === gnIn) gnIn.blur();
-    gnIn.hidden = true;
-    const z = zoneAjout();
-    if (z) rendreAjout(z);
-    suisClavier();
-  }
-  /** l'entrée invisible se tient SUR la zone : si le navigateur cherche le curseur, il le trouve là */
-  function posePrenom(): void {
-    const z = zoneAjout();
-    if (!z) return;
-    const C = cs.getBoundingClientRect();
-    const k = C.width / (cs.offsetWidth || 1) || 1;
-    const r = z.getBoundingClientRect();
-    gnIn.style.left = `${String(Math.round((r.left - C.left) / k + r.width / k / 2))}px`;
-    gnIn.style.top = `${String(Math.round((r.top - C.top) / k + r.height / k / 2 - 10))}px`;
-  }
-  /** rien ne passe sous le clavier (v146) : la page monte pour garder la zone 14 pt au-dessus de lui (le haut du clavier se LIT) */
-  let clavierDec = 0;
-  function suisClavier(): void {
-    const vv = window.visualViewport;
-    const z = ajoutActif ? zoneAjout() : null;
-    let besoin = 0;
-    if (vv && z && document.activeElement === gnIn && window.innerHeight - vv.height >= 100) {
-      const k = cs.getBoundingClientRect().width / (cs.offsetWidth || 1) || 1;
-      besoin = Math.max(
-        0,
-        (z.getBoundingClientRect().bottom + clavierDec * k + 14 * k - (vv.offsetTop + vv.height)) / k,
-      );
-    }
-    besoin = Math.round(besoin);
-    if (besoin === clavierDec) return;
-    const de = clavierDec;
-    clavierDec = besoin;
-    // la page glisse (jamais d'un coup) : le mouvement du clavier, 300 ms
-    const t0 = h.maintenant();
-    const pas = (): void => {
-      const p = reduit() ? 1 : Math.min(1, (h.maintenant() - t0) / 300);
-      const y = de + (besoin - de) * doux(p);
-      if (Math.abs(y) < 0.01) cs.style.removeProperty('translate');
-      else cs.style.setProperty('translate', `0 ${String(-Math.round(y * 100) / 100)}px`);
-      if (p < 1 && clavierDec === besoin) h.image(pas);
-    };
-    pas();
-  }
-  gnIn.addEventListener('input', () => {
-    const z = zoneAjout();
-    if (z) rendreAjout(z);
-  });
-  gnIn.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Enter') {
-      ev.preventDefault();
-      validerAjout();
-    } else if (ev.key === 'Escape') fermerAjout();
-  });
-  gnIn.addEventListener('focus', () => {
-    const z = zoneAjout();
-    if (z) rendreAjout(z);
-    suisClavier();
-  });
-  // le clavier se retire sur une zone VIDE : elle reprend son mot ; sur un nom écrit, il reste, avec son « + »
-  gnIn.addEventListener('blur', () => {
-    h.minuteur(() => {
-      if (!ajoutActif || document.activeElement === gnIn) return;
-      if (!gnIn.value.trim()) fermerAjout();
-      else {
-        const z = zoneAjout();
-        if (z) rendreAjout(z);
-        suisClavier();
-      }
-    }, 0);
-  });
-  window.visualViewport?.addEventListener('resize', suisClavier);
 
   // ── LES GESTES DE LA PHRASE ──
   surToucher(txt, (ev) => {
@@ -2618,12 +2358,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     fermerMenu(false);
     fermerPeauf(false);
     if (modeDessin.ouvert()) modeDessin.sortir(false);
-    ajoutActif = false;
-    gnIn.value = '';
-    gnIn.hidden = true;
+    ajout.remettre();
     for (const x of [phrase, photo, pinceau, garder, barre]) x.style.removeProperty('translate');
     cs.style.removeProperty('translate');
-    clavierDec = 0;
     for (const c of cs.querySelectorAll('.ppo-copie')) c.remove();
   }
   /**
@@ -2733,7 +2470,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     cs.classList.remove('pp-entre');
     saisieDe = null;
     saisie.blur();
-    if (document.activeElement === gnIn) gnIn.blur();
+    if (document.activeElement === ajout.champ) ajout.champ.blur();
     fermerMenu();
     // l'accueil reparaît dessous, la page glisse par-dessus lui
     dv.classList.remove('couvert');
@@ -2779,7 +2516,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       saisie: saisieDe,
       peauf: peaufOuvert,
       menu: !!menu,
-      ajout: ajoutActif,
+      ajout: ajout.actif(),
       mouvement: !!mv || douceur.actif() || continu.actif(),
       mouvementDe: [mv ? 'clavier' : '', douceur.actif() ? 'douceur' : '', continu.actif() ? 'continu' : ''].filter(
         Boolean,

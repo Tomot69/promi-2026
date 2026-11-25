@@ -420,3 +420,25 @@ plateaux (`_plateauPartout`, le plancher des textes) passée une fois après le 
 **La CI (Tom, 25 nov.)** : les tranches de rendu tournent sur macOS (macos-15, gratuites : le dépôt est public) — le WebKit de l'iPhone ; hors
 macOS, le X d'une croix jugé à 1 pt de son encre (exception nommée). Les jugements fins (durées image par image, bords lissés, dettes relevées)
 restent ceux du **Mac de Tom** (`MAC_DE_TOM` : macOS hors CI) — la machine macOS de la CI est plus lente et lisse autrement les coins de l'appareil.
+
+## Lot 3b-8 — les personnes choisies depuis Peaufiner (le prototype : `_gensFiche`, `rend` et la saisie `SA` de lot-GENS ; C-122, C-269)
+
+Porté : la brique des personnes, UNE pour la page + et Peaufiner (`src/ecrans/personnes/gens.ts` : la liste — « Moi » en tête, les choisies, les
+connues, « + ajouter quelqu'un » ; l'ajout — l'entrée invisible, le « + » orange tracé, le clavier suivi). La page + y a été ramenée sans changer
+un pixel (`page-plus.spec` : le choix ouvert, le prénom, la personne ; ses juges du choix, de l'ajout, du Cercle). Dans Peaufiner, À QUI / QUI
+OSE ? et AVEC déplient la liste dans la rangée ; une personne touchée s'ajoute, sa croix la retire, « Moi » retire tout le monde ; écrit sur la
+parole (`magasin.peaufiner` : `qui`, `avec`) ; la rangée reste ouverte.
+
+| Juge du prototype                                                                            | Test                                                                                                          | Sonde                                      |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| la liste dans Peaufiner, l'ajout au toucher et au clavier, la fiche (lot-GENS, `_gensFiche`) | `fiche-gens.spec` (Promi à Marion — À QUI ; Chiche lancé à Adrien — AVEC ; × 2 thèmes)                        | `gens-fiche-sourd`, `gens-fiche-page-plus` |
+| le « + » des membres près du petit disque (C-254, `ouvreGens` de lot-V181A-CERCLE)           | `fiche-gens.spec` › « le + des membres ouvre Peaufiner sur les personnes » (Promi à soi, Chiche ; × 2 thèmes) | `plus-membres-sans-glisse`                 |
+
+**Écart nommé V1** : après un ajout, la valeur de la rangée suit le choix (« Marion, Lou ») ; le prototype la laisse à l'ancienne tant que
+Peaufiner n'est pas rebâti — vérifiée en texte, masquée au pixel. **Protocole** : le prototype du banc garde des membres de Cercles de
+démonstration (`NUEEMEM` : « famille », « projet ») que l'état du banc n'a pas : ils sont retirés avant de juger. **Repris du prototype** : déplié,
+le libellé de toute rangée est à 12 pt (le plancher d'`echelle()`).
+
+**La CI sur macOS — trois jugements de machine, rendus au Mac de Tom** : les sauts image par image de la page + (`page-plus-2c`, une cadence) ;
+hors du Mac de Tom, un pixel isolé de 8 niveaux au plus (la couture de la tuile du grain de l'appareil) — exception nommée d'`ecart` ; la photo en
+entier attendue (5 s au plus) plutôt qu'un délai fixe.

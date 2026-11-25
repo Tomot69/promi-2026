@@ -442,7 +442,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px 12px;
 }
-#createSheet .gn-liste {
+:is(#createSheet, #dpdCorps) .gn-liste {
   grid-column: 1 / -1;
   display: grid;
   /* A3 : deux colonnes de 162 à la taille de référence ; plus étroit (330 pt de large), elles se partagent la place */
@@ -451,10 +451,10 @@
   overflow: hidden auto;
   scrollbar-width: none;
 }
-#createSheet .gn-liste::-webkit-scrollbar {
+:is(#createSheet, #dpdCorps) .gn-liste::-webkit-scrollbar {
   display: none;
 }
-#createSheet .ph-o {
+:is(#createSheet, #dpdCorps) .ph-o {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -494,7 +494,7 @@
   border-color: var(--c-mauve77);
   color: var(--c-mauve77);
 }
-#createSheet .ppo-ini {
+:is(#createSheet, #dpdCorps) .ppo-ini {
   flex: none;
   display: flex;
   justify-content: center;
@@ -505,7 +505,7 @@
   font: 700 13px/13px var(--f-libelle);
   color: var(--c-creme95);
 }
-#createSheet .ppo-nom {
+:is(#createSheet, #dpdCorps) .ppo-nom {
   flex: 1 1 auto;
   min-width: 0;
   display: block;
@@ -514,7 +514,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#createSheet .ppo-x {
+:is(#createSheet, #dpdCorps) .ppo-x {
   flex: none;
   display: flex;
   justify-content: center;
@@ -523,7 +523,7 @@
   height: 24px;
   border-radius: 999px;
 }
-#createSheet .ppo-x svg {
+:is(#createSheet, #dpdCorps) .ppo-x svg {
   display: block;
   width: 12px;
   height: 12px;
@@ -562,7 +562,7 @@
 #createSheet.pp-nuee .ph-o .ppo-ini {
   background: var(--c-mauve12);
 }
-#createSheet .ph-o.on .ppo-ini {
+:is(#createSheet, #dpdCorps) .ph-o.on .ppo-ini {
   background: var(--c-creme95);
 }
 #createSheet.pp-promi .ph-o.on .ppo-ini {
@@ -669,7 +669,7 @@
 }
 
 /* ── C-122 : la zone en pointillés EST le champ — son entrée invisible, le nom à l'encre, « un prénom… », le « + » orange ── */
-#createSheet .gn-saisie {
+:is(#createSheet, #detailPoster) .gn-saisie {
   position: absolute;
   width: 2px;
   height: 20px;
@@ -686,26 +686,26 @@
   pointer-events: none;
   z-index: 1;
 }
-#createSheet .ph-add.gn-edit {
+:is(#createSheet, #dpdCorps) .ph-add.gn-edit {
   gap: 0;
   padding: 0 16px;
   justify-content: center;
   cursor: text;
 }
-#createSheet .gn-ligne {
+:is(#createSheet, #dpdCorps) .gn-ligne {
   display: inline-block;
   max-width: 100%;
   white-space: pre;
   line-height: 1;
 }
-#createSheet .gn-txt,
-#createSheet .gn-edit .ph-caret {
+:is(#createSheet, #dpdCorps) .gn-txt,
+:is(#createSheet, #dpdCorps) .gn-edit .ph-caret {
   color: var(--c-creme95);
 }
-#createSheet .gn-edit.gn-repos .ph-caret {
+:is(#createSheet, #dpdCorps) .gn-edit.gn-repos .ph-caret {
   display: none;
 }
-#createSheet .gn-plus {
+:is(#createSheet, #dpdCorps) .gn-plus {
   display: inline-block;
   position: relative;
   margin: 0 0 0 0.62em;
@@ -713,7 +713,7 @@
   vertical-align: baseline;
   cursor: pointer;
 }
-#createSheet .gn-plus::before {
+:is(#createSheet, #dpdCorps) .gn-plus::before {
   content: '';
   position: absolute;
   left: -14px;
@@ -721,11 +721,11 @@
   top: -20px;
   bottom: -20px;
 }
-#createSheet .gn-plus svg {
+:is(#createSheet, #dpdCorps) .gn-plus svg {
   display: block;
   overflow: visible;
 }
-#createSheet .gn-plus svg path {
+:is(#createSheet, #dpdCorps) .gn-plus svg path {
   fill: none;
   stroke: var(--c-orange-depart);
   stroke-linecap: butt;

@@ -141,9 +141,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const partage = el('span', { class: 'dpd-part', role: 'button', 'aria-label': TXT.partager });
   partage.innerHTML = SVG_PARTAGE;
   barreTog.append(barreLab, barreChev, partage);
-  // pas encore portées (lot 3b : les membres ; lot 8 : Partager) : elles se déclarent inactives (`aria-disabled`), et le retirent quand leur
-  // lot les branche
-  for (const c of [plusM, partage]) c.setAttribute('aria-disabled', 'true');
+  // pas encore porté (lot 8 : Partager) : il se déclare inactif (`aria-disabled`), et le retire quand son lot le branche
+  partage.setAttribute('aria-disabled', 'true');
   defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, espace);
   // le dessin posé, dans la bande (dessin-fiche.ts, lot 3b-5) : sa couche juste après le champ, sous le trait
   const bandeDessin = monterBandeDessin(defile, champ);
@@ -839,6 +838,11 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
         },
       });
     },
+  });
+  // le « + » des membres (C-254) : Peaufiner s'ouvre sur les personnes de la parole (sa rangée dépliée, le panneau glissé jusqu'à elle)
+  surToucher(plusM, () => {
+    if (!courant || plusM.hidden) return;
+    peauf.ouvrirPersonnes();
   });
 
   function ouvrir(id: number): void {

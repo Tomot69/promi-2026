@@ -1,0 +1,17 @@
+[
+  {
+    "nom": "gens-fiche-sourd",
+    "test": "les personnes choisies depuis Peaufiner, comme le prototype : Promi en cours, à Marion, À QUI, sombre",
+    "defaut": "une personne touchée dans Peaufiner ne s'écrit pas sur la parole"
+  },
+  {
+    "nom": "gens-fiche-page-plus",
+    "test": "les personnes choisies depuis Peaufiner, comme le prototype : Chiche lancé à Adrien, AVEC, clair",
+    "defaut": "les pastilles des personnes au dessin de la page + (162 de large, 12 d'écart) dans Peaufiner"
+  },
+  {
+    "nom": "plus-membres-sans-glisse",
+    "test": "le + des membres ouvre Peaufiner sur les personnes, comme le prototype : Promi en cours, à soi, sombre",
+    "defaut": "le + ouvre Peaufiner sans glisser jusqu'aux personnes"
+  }
+]

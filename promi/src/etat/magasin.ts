@@ -124,6 +124,10 @@ export interface ChampsPeaufiner {
   note?: string;
   fichiers?: string[];
   trait?: string;
+  /** À QUI / QUI OSE ? (lot 3b ; le prototype : `_gensFiche('who')`) : les personnes, « moi » si personne */
+  qui?: string[];
+  /** AVEC (un Chiche : `_gensFiche('avec')`) : ses compagnons, aucun si vide */
+  avec?: string[];
 }
 
 export interface Magasin extends Actions {
@@ -488,6 +492,8 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (champs.note !== undefined) pose('note', champs.note);
       if (champs.fichiers) pose('files', champs.fichiers.slice());
       if (champs.trait) suite['trait'] = champs.trait;
+      if (champs.qui) neuve.who = champs.qui.length ? champs.qui.join(', ') : 'moi';
+      if (champs.avec) pose('avec', champs.avec.join(', '));
       valider('peaufiner', { ...e, paroles: e.paroles.map((q) => (q.id === id ? neuve : q)) });
     },
     tenir(id, trace, maintenant) {
