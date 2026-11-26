@@ -76,7 +76,7 @@ export interface HoteMots {
 
 export interface Mots {
   /** pose la liste de la parole ; rend le bas de ce qu'elle occupe (pt de la fiche), ou null sans mot */
-  poser(mots: readonly Mot[], dy: number): number | null;
+  poser(mots: readonly Mot[], dy: number, dans?: HTMLElement): number | null;
   retirer(): void;
   /** C-253 : les clés des mots passés à l'écran entre l'en-tête (112) et la barre (760) depuis l'ouverture — et on oublie (une fiche neuve) */
   vus(): string[];
@@ -178,7 +178,11 @@ export function monterMots(h: HoteMots): Mots {
     return v;
   }
 
-  function poser(mots: readonly Mot[], dy: number): number | null {
+  /**
+   * `dans` (la fiche d'un Cercle, lot 5) : le titre et la liste vivent DANS la liste de son fil, à la suite de ses lignes (l'arbre du prototype :
+   * `.nf-liste` › `#cm5Titre`, `#cm5Liste`), en flux — rien n'est rendu (le fil porte la hauteur)
+   */
+  function poser(mots: readonly Mot[], dy: number, dans?: HTMLElement): number | null {
     const L = [...mots].sort((a, b) => String(a.d).localeCompare(String(b.d))).reverse();
     if (!L.length) {
       retirer();
@@ -186,9 +190,14 @@ export function monterMots(h: HoteMots): Mots {
     }
     const C = COTES_MOTS;
     const yT = C.LIGNE_Y + C.LIGNE_H + C.HAUT;
-    titre.style.top = `${String(yT)}px`;
-    liste.style.top = `${String(yT + C.TITRE_H + C.SOUS)}px`;
-    for (const e of [titre, liste]) e.style.translate = dy ? `0 ${String(dy)}px` : '';
+    const hote = dans ?? h.dans;
+    for (const e of [titre, liste]) {
+      e.classList.toggle('cm5-flux', !!dans);
+      if (e.parentElement !== hote) e.remove();
+    }
+    titre.style.top = dans ? '' : `${String(yT)}px`;
+    liste.style.top = dans ? '' : `${String(yT + C.TITRE_H + C.SOUS)}px`;
+    for (const e of [titre, liste]) e.style.translate = dy && !dans ? `0 ${String(dy)}px` : '';
     const s = L.map((m) => [m.d, m.by, m.t, m.vu ? 1 : 0].join('|')).join('§');
     if (s !== sig) {
       sig = s;
@@ -197,14 +206,14 @@ export function monterMots(h: HoteMots): Mots {
     }
     liste.hidden = false;
     titre.hidden = false;
-    if (!liste.isConnected) h.dans.appendChild(liste);
+    if (!liste.isConnected) hote.appendChild(liste);
     if (!titre.isConnected) {
       // le titre paraît en se traçant, à sa création (`titre()` de lot-V145-COMM ; réduire les animations : posé d'emblée)
       titre.textContent = TXT.titre;
-      h.dans.insertBefore(titre, liste);
+      hote.insertBefore(titre, liste);
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) chargerTrace().trace(titre, null);
     }
-    return yT + C.TITRE_H + C.SOUS + liste.offsetHeight + dy;
+    return dans ? null : yT + C.TITRE_H + C.SOUS + liste.offsetHeight + dy;
   }
 
   return { poser, retirer, vus };

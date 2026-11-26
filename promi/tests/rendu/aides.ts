@@ -242,6 +242,20 @@ export type EcranPorte = {
    * fait dans `#device` ne le voit pas ; les juges qui comparent nœud à nœud au prototype le passent, il est jugé au pixel par son test.
    */
   horsAppareil?: true;
+  /**
+   * EXCEPTION NOMMÉE (lot 5, la fiche d'un Cercle) : en temps réel, le prototype n'atteint pas toujours le repos de cet écran — sa passe
+   * `_v16Passe` (une ligne du fil portée à 79 pt, v102 ; la couleur de « TENU ») tourne ou non selon le moment : mesuré, la même ligne à 74 pt
+   * dans une passe, à 79 dans une autre, avec le même état. Les juges qui comparent nœud à nœud au prototype (couleurs, aspects A et B, contrat
+   * visuel) le passent ; il est jugé AU PIXEL contre le prototype par cercle.spec et cercle-gestes.spec, sur le banc piloté (`deuxPilotes`),
+   * où le prototype atteint son repos. Les juges de la seule vraie app (écrans, vide, enchaîner, red team, joignable, au doigt) le gardent.
+   */
+  reposAuPixel?: true;
+  /**
+   * la donnée que l'écran demande, posée dans la vraie app (lot 5 : le Cercle « Marseille », que l'état de Tom n'a pas) — idempotente. Les juges qui
+   * ENCHAÎNENT les écrans sans recharger (redteam_vide, redteam_enchaine) la posent sur toutes leurs pages, références comprises : sans cela le
+   * Cercle créé en passant paraît dans l'Index et le Fil suivants, et leur référence ne l'a pas.
+   */
+  donnee?(page: Page): Promise<void>;
 };
 /** le + puis la pilule d'une nature : la page + (lot 2a), composée (dans la vraie app : la page porte sa phrase ; le prototype : 3,5 s) */
 export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee', proto = false): Promise<void> {
@@ -422,11 +436,45 @@ const LISTE = (nom: string, feuille: string, app: string, proto: string, horsApp
     await p.waitForTimeout(2500);
   },
 });
+/**
+ * LOT 5 — la fiche d'un Cercle. Ni l'état du banc ni celui de Tom n'en portent : le Cercle « Marseille » (Rachel, Marion) est créé des deux côtés,
+ * ses deux premières paroles (à soi, hors d'un Cercle) y sont rattachées — la vraie app par son magasin (`creerCercle`, `peaufiner`), le prototype
+ * par ses tables (`NUE`, `NUEEMEM`, `p.nuee`) — puis sa fiche s'ouvre (`fiche().ouvrirCercle`, `openNueeDetail`).
+ */
+export const CERCLE: EcranPorte = {
+  nom: 'fiche d’un Cercle',
+  reposAuPixel: true,
+  // une seule fois par page : rouvert (les juges qui enchaînent les écrans), le Cercle « Marseille » est repris tel quel — sinon chaque passage en
+  // créerait un autre et y rangerait deux paroles de plus, jusqu'à ne plus laisser de parole à la fiche ; deux paroles au plus, et toujours une
+  // laissée libre (l'état de Tom n'en a que deux : la fiche, après le Cercle, en garde une à ouvrir)
+  donnee: async (p) => {
+    await p.evaluate(`(() => { const P = window.__promi; const e = P.magasin.etat();
+      if (Object.keys(e.cercles).some((c) => e.cercles[c] === 'Marseille')) return;
+      const L0 = e.paroles.filter((x) => !x.draft && !x.nuee && !x.chiche); const L = L0.slice(0, Math.min(2, L0.length - 1));
+      const k = P.magasin.creerCercle('Marseille', ['Rachel', 'Marion'], 1795483464391);
+      for (const q of L) P.magasin.peaufiner(q.id, { cercle: k }, 1795483464391); })()`);
+  },
+  ouvrir: async (p) => {
+    await CERCLE.donnee!(p);
+    await p.evaluate(`(() => { const P = window.__promi; const e = P.magasin.etat();
+      P.fiche().ouvrirCercle(Object.keys(e.cercles).find((c) => e.cercles[c] === 'Marseille')); })()`);
+    await p.waitForFunction(() => !!document.querySelector('#detailPoster.couvre.fi-cercle'), null, { timeout: 10000 });
+    await p.waitForTimeout(500);
+  },
+  prototype: async (p) => {
+    await p.evaluate(`(() => { NUE.n1 = 'Marseille'; NUEEMEM.n1 = ['Rachel', 'Marion'];
+      const L0 = promises.filter((x) => !x.draft && !x.nuee && !x.chiche);
+      for (const q of L0.slice(0, Math.min(2, L0.length - 1))) q.nuee = 'n1';
+      if (window.Toile && Toile.sync) Toile.sync(promises); openNueeDetail('n1'); })()`);
+    await p.waitForTimeout(3500);
+  },
+};
 export const ECRANS_PORTES: EcranPorte[] = [
   { nom: 'accueil', ouvrir: async () => {}, prototype: async () => {} },
   { nom: 'accueil, menu du + ouvert', ouvrir: ouvrirPlus, prototype: ouvrirPlus },
   ...PAGES_PLUS,
   FICHE,
+  CERCLE,
   LISTE('Index', 'indexSheet', `${P_}.index().ouvrir()`, `document.getElementById('indexBtn').click()`),
   LISTE('Fil', 'feedView', `${P_}.fil().ouvrir()`, `document.getElementById('filBtn').click()`),
   LISTE('fiche de Rachel', 'personSheet', `${P_}.personne().ouvrir('Rachel')`, `openPerson('Rachel')`, true),

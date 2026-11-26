@@ -15,7 +15,13 @@ import type { Noyau } from './noyaux.ts';
 
 const W = 390;
 /** les tons des graines d'un Cercle vide (§10.6, `GLIGHT`) : sur le champ lilas, dans les deux thèmes */
-const GRAINES = ['#FDEBCD', '#FAF3E5', '#F8E2C2', '#FEEED4', '#FAE6C7'];
+const GRAINES = [
+  palette.graineCercle1,
+  palette.graineCercle2,
+  palette.graineCercle3,
+  palette.graineCercle4,
+  palette.graineCercle5,
+];
 
 /** le plus bas de l'onde (`fondChamp`) */
 function fondChamp(y: (x: number) => number): number {
@@ -252,12 +258,22 @@ function traitDuFil(tenu: boolean): string {
 }
 
 /**
- * LE FIL : une ligne par parole (342 × 79, 12 pt entre deux), sa mini-dalle (70 × 56), son mot (`motDuFil`) et son titre ; la première ligne
- * 31 pt sous la ligne d'état. Rend le bas de la dernière ligne (en pt de la couche qui défile), ou null.
+ * LE FIL, l'arbre du prototype (`#dpNueeFil` › `.nf-tete` puis `.nf-liste`) : la liste — une ligne par parole (342 × 79, 12 pt entre deux), sa
+ * mini-dalle (70 × 56), son mot (`motDuFil`) et son titre, puis les mots du Cercle (posés par la fiche), 48 pt de pied ; la tête (« Un mot… »,
+ * « Planter dans le Cercle ») passe après elle et se COLLE au bas (`sticky`, 96 pt du bas de l'écran : le bandeau et 12 pt) — le fil défile
+ * dessous. La première ligne 31 pt sous la ligne d'état. Rend la liste (null : un Cercle vide n'en a pas).
  */
-export function batirFil(facade: Facade, fil: HTMLElement, liste: readonly Parole[], haut: number): number | null {
+export function batirFil(
+  facade: Facade,
+  fil: HTMLElement,
+  tete: HTMLElement,
+  liste: readonly Parole[],
+  haut: number,
+): HTMLElement | null {
   fil.style.top = `${String(haut)}px`;
-  fil.innerHTML = liste
+  const L = el('div', { class: 'nf-liste' });
+  fil.replaceChildren(tete, ...(liste.length ? [L] : []));
+  L.innerHTML = liste
     .map(
       (p) =>
         '<div class="nf-item' +
@@ -274,7 +290,7 @@ export function batirFil(facade: Facade, fil: HTMLElement, liste: readonly Parol
     )
     .join('');
   const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
-  const cvs = fil.querySelectorAll<HTMLCanvasElement>('.nf-d');
+  const cvs = L.querySelectorAll<HTMLCanvasElement>('.nf-d');
   liste.forEach((p, i) => {
     const cv = cvs[i]!;
     cv.width = Math.round(70 * dpr);
@@ -285,7 +301,7 @@ export function batirFil(facade: Facade, fil: HTMLElement, liste: readonly Parol
     const r = facade.poserDalle(g, p.id, 0, 0, 70, 56, {}, true);
     cv.setAttribute('data-matiere', r ? [r.x, r.y, r.w, r.h].map((v) => Math.round(v)).join(',') : '');
   });
-  return liste.length ? haut + 91 * liste.length - 12 : null;
+  return liste.length ? L : null;
 }
 
 /** la tête collée au bas du fil : « Un mot… » (s'il y a des paroles) puis « Planter dans le Cercle » (`#nfAdd`), son bas à 748 */

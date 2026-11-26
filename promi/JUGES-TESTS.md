@@ -579,3 +579,27 @@ Les mots d'un Cercle passent de la clé de l'appareil du prototype (`promi_cercl
 la migration 2 → 3 et l'import d'un export du prototype les rangent de même. **Trouvé en portant** : le glissement qui montre le mot neuf ne
 connaissait ni le bloc collé d'un Cercle, ni le retour vers le haut (un mot au-dessus de 120), ni les places sûres de la jonction (C-267) — porté
 tel que le prototype (`envoie`), pour la fiche d'une parole aussi.
+
+## Lot 5-4 — la fiche d'un Cercle dans le socle (ECRANS_PORTES)
+
+La fiche d'un Cercle entre dans `ECRANS_PORTES` (`CERCLE`, aides.ts) : tous les juges du socle la parcourent (écrans, débordement, vide,
+enchaîner, red team, joignable, au doigt, superposition, flash, filets, lexique, volume, kaki…). Trouvés en l'y faisant passer, corrigés :
+
+- **le fil, comme le prototype** : `#dpNueeFil` › `.nf-tete` (collée au bas, `order: 9`) et `.nf-liste` (les lignes, puis « LES MOTS » et leur liste,
+  dans le flux ; une colonne flex — les marges ne fusionnent pas : « LES MOTS » 32 pt sous la dernière ligne) ;
+- **la flèche d'envoi** d'« Un mot… » posée en bloc sur un Cercle (8 pt à gauche) : la règle des traits ne vise plus que les lignes ;
+- **la couche qui défile se déclare** (`data-glisse`, comme l'Index) et une ligne du fil amenée à l'écran se pose au-dessus de la tête collée (`scroll-margin-bottom`) ;
+- **la barre Peaufiner d'un Cercle** porte sa police et « Peaufiner » nu, comme le prototype ; les graines d'un Cercle vide sont des jetons
+  (`--c-graine-cercle-1` à `-5`, `redteam_tokens`) ;
+- **le bouton photo d'un Cercle** se déclare inactif (`aria-disabled`, comme le rond Partager) : le dessin d'un Cercle n'est pas porté.
+- **le banc** : ouvrir la fiche d'un Cercle reprend le Cercle « Marseille » s'il existe (les juges qui enchaînent les écrans en créaient un par
+  passage, qui emportait deux paroles : la fiche finissait sans parole à ouvrir) ; il y range deux paroles au plus et en laisse toujours une libre
+  (l'état de Tom n'en a que deux). Cette donnée est l'`EcranPorte.donnee` du Cercle : les juges qui enchaînent les écrans (redteam_vide,
+  redteam_enchaine) la posent sur toutes leurs pages, références comprises — sinon le Cercle créé en passant paraissait dans l'Index et le Fil
+  suivants, et leur référence ne l'avait pas.
+
+**Coupe nommée** (`COUPES_DU_PROTOTYPE`, redteam_app C) : le titre d'une ligne du fil (Gilbert 19, interligne 1,05) — sa boîte de police dépasse
+de sa boîte qui rogne, son encre est entière, comme le prototype. **Exception nommée** (`EcranPorte.reposAuPixel`) : en temps réel, le prototype
+n'atteint pas toujours le repos de la fiche d'un Cercle — sa passe `_v16Passe` (la hauteur v102 d'une ligne du fil, la couleur de « TENU ») tourne ou
+non selon le moment ; mesuré : 74 pt dans une passe, 79 dans une autre, même état. Les juges nœud à nœud (couleurs, aspects A et B, contrat
+visuel) la passent ; elle est jugée au pixel par `cercle.spec` et `cercle-gestes.spec`, sur le banc piloté où le prototype atteint son repos.

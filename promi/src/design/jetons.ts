@@ -277,7 +277,12 @@ export const palette = {
   "mauve35": "#5D4978",
   "seiche10": "#050302",
   "seiche21": "#1F1611",
-  "brunToast": "#281F10"
+  "brunToast": "#281F10",
+  "graineCercle1": "#FDEBCD",
+  "graineCercle2": "#FAF3E5",
+  "graineCercle3": "#F8E2C2",
+  "graineCercle4": "#FEEED4",
+  "graineCercle5": "#FAE6C7"
 } as const;
 export type CouleurFixe = keyof typeof palette;
 export const familles = {

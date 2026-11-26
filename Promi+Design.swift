@@ -301,6 +301,11 @@ extension Color {
         static let framboise94 = Color(red: 1.0000, green: 0.9569, blue: 0.9882)   // #FFF4FC
         static let framboise97 = Color(red: 1.0000, green: 0.9765, blue: 0.9882)   // #FFF9FC
         static let gardeSombre = Color(red: 0.6549, green: 0.4863, blue: 0.9686)   // #A77CF7 — lot 4 (vraie app) : C-149 suite (v163) — le pointillé d'une carte gardée de côté en sombre (le clair de « en cours », `_gardeC` de lot-S4) ; en clair : --c-mauve12
+        static let graineCercle1 = Color(red: 0.9922, green: 0.9216, blue: 0.8039)   // #FDEBCD — lot 5 (vraie app) : les graines d'un Cercle vide (`GRAINES` de lot-V179B-CERCLE-DALLES du prototype, 1 à 5) : la bande d'un Cercle sans parole
+        static let graineCercle2 = Color(red: 0.9804, green: 0.9529, blue: 0.8980)   // #FAF3E5
+        static let graineCercle3 = Color(red: 0.9725, green: 0.8863, blue: 0.7608)   // #F8E2C2
+        static let graineCercle4 = Color(red: 0.9961, green: 0.9333, blue: 0.8314)   // #FEEED4
+        static let graineCercle5 = Color(red: 0.9804, green: 0.9020, blue: 0.7804)   // #FAE6C7
         static let ingenuCercle1 = Color(red: 0.1608, green: 0.0824, blue: 0.2784)   // #291547
         static let ingenuCercle2 = Color(red: 0.7882, green: 0.6588, blue: 0.9608)   // #C9A8F5
         static let ingenuCercle3 = Color(red: 0.9412, green: 0.9020, blue: 0.9922)   // #F0E6FD

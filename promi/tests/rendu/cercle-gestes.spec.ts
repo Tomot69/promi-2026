@@ -10,7 +10,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { deuxPilotes, images, ecart, sonde, stockageCercles, masquerFiche, type Zone, P_ } from './aides.ts';
+import { deuxPilotes, images, ecart, sonde, stockageCercles, masquerFiche, vraieApp, type Zone, P_ } from './aides.ts';
 import { toucherDeux, poser } from './listes.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'cercle');
@@ -278,4 +278,37 @@ test('« Un mot… » d’un Cercle : écrit, envoyé — la liste et le Fil com
   } finally {
     await Promise.all([P.context().close(), A.context().close()]);
   }
+});
+
+test('la fiche d’un Cercle à l’échelle 0,79 (330 × 714) : chaque cote en pt est celle de 390 × 844, et Peaufiner aussi (A3)', async ({
+  browser,
+}) => {
+  const COTES = `(() => [...['dAura', 'dptQui', 'dptTitre', 'dptQuand', 'dpNueeFil', 'cm5Ligne', 'nfAdd'].map((id) => document.getElementById(id)),
+      ...document.querySelectorAll('#dpNueeFil .nf-item'), ...document.querySelectorAll('#dpdCorps .np-carte, #dpdCorps .np-murs')]
+      .map((e) => (e ? (e.id || e.className) + ':' + e.offsetTop.toFixed(1) + ',' + e.offsetHeight.toFixed(1) : '—')).join(' '))()`;
+  const lire = async (vue: { width: number; height: number }): Promise<string[]> => {
+    const pg = await (await browser.newContext({ viewport: vue, deviceScaleFactor: 3 })).newPage();
+    try {
+      await vraieApp(pg, { ...stockageCercles(), promi_prenom: 'Tom' });
+      // la sonde : à l'échelle réduite, le fil posé 4 pt plus bas
+      if (sonde('cercle-echelle') && vue.width < 390)
+        await pg.addStyleTag({ content: '#detailPoster .fi-fil{top:calc(var(--x,0px) + 492px)!important}' });
+      await pg.evaluate(`${P_}.fiche().ouvrirCercle('n1')`);
+      await pg.waitForTimeout(900);
+      const a = (await pg.evaluate(COTES)) as string;
+      await pg.evaluate(() =>
+        document.getElementById('dpdTog')!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true })),
+      );
+      await pg.evaluate(() =>
+        document.getElementById('dpdTog')!.dispatchEvent(new PointerEvent('pointerup', { bubbles: true })),
+      );
+      await pg.waitForTimeout(900);
+      return [a, (await pg.evaluate(COTES)) as string];
+    } finally {
+      await pg.context().close();
+    }
+  };
+  const [a, b] = await Promise.all([lire({ width: 390, height: 844 }), lire({ width: 330, height: 714 })]);
+  expect(a[1], 'Peaufiner ouvert').toContain('npMemb');
+  expect(b, 'à 0,79, les mêmes cotes en pt').toEqual(a);
 });

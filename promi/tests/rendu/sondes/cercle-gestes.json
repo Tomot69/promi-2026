@@ -23,5 +23,10 @@
     "nom": "mot-cercle-perdu",
     "test": "« Un mot… » d’un Cercle : écrit, envoyé — la liste et le Fil comme le prototype (lot-V146-CERCLE-MOT, C-260)",
     "defaut": "le mot écrit sur un Cercle n'est pas gardé"
+  },
+  {
+    "nom": "cercle-echelle",
+    "test": "la fiche d’un Cercle à l’échelle 0,79 (330 × 714) : chaque cote en pt est celle de 390 × 844, et Peaufiner aussi (A3)",
+    "defaut": "à 0,79, le fil du Cercle posé ailleurs qu'à 390"
   }
 ]

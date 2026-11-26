@@ -480,7 +480,12 @@
     "--c-mauve35": "#5D4978",
     "--c-seiche10": "#050302",
     "--c-seiche21": "#1F1611",
-    "--c-brun-toast": "#281F10"
+    "--c-brun-toast": "#281F10",
+    "--c-graine-cercle-1": "#FDEBCD",
+    "--c-graine-cercle-2": "#FAF3E5",
+    "--c-graine-cercle-3": "#F8E2C2",
+    "--c-graine-cercle-4": "#FEEED4",
+    "--c-graine-cercle-5": "#FAE6C7"
   },
   "notes_palette": {
     "--c-cobalt50": "définitif, v134",
@@ -493,7 +498,8 @@
     "--c-rampe-chiche-1": "lot 3a (vraie app) : Q30 — la rampe de la nature Chiche (`DALPAL.chiche` du prototype, 1 à 3)",
     "--c-ingenu-promi-1": "lot 4 (vraie app) : Q297 — sous Ingénu, la rampe de la nature (`RAMPE` de `_ingenuRampe` du prototype, v18–v19) : une dalle d'une carte d'Index, peinte par le moteur (`opts.rampe`, haut 0,9) ; promi 1 à 3, chiche 1 à 4 (le rose froid de v19), cercle 1 à 3",
     "--c-garde-sombre": "lot 4 (vraie app) : C-149 suite (v163) — le pointillé d'une carte gardée de côté en sombre (le clair de « en cours », `_gardeC` de lot-S4) ; en clair : --c-mauve12",
-    "--c-brun-toast": "lot 4 (vraie app) : le fond du toast du prototype (`toast()`, « Reporter… » du Fil, « Design débloqué ✓ ») — dans les deux thèmes"
+    "--c-brun-toast": "lot 4 (vraie app) : le fond du toast du prototype (`toast()`, « Reporter… » du Fil, « Design débloqué ✓ ») — dans les deux thèmes",
+    "--c-graine-cercle-1": "lot 5 (vraie app) : les graines d'un Cercle vide (`GRAINES` de lot-V179B-CERCLE-DALLES du prototype, 1 à 5) : la bande d'un Cercle sans parole"
   },
   "noms_swift": {
     "--c-orange-maparole": "orangeMaParole"

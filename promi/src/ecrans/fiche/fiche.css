@@ -1008,6 +1008,18 @@
 }
 #detailPoster.fi-cercle #dpdTog {
   background: var(--c-mauve77);
+  /* la barre d'un Cercle porte elle-même la police de son mot (le prototype y écrit « Peaufiner » sans enveloppe) */
+  font: 700 21px/31.5px var(--f-libelle);
+  letter-spacing: -0.21px;
+  color: var(--c-mauve12);
+}
+/* une ligne du fil amenée à l'écran (un doigt, VoiceOver) se pose au-dessus de la tête collée (610 pt) : jamais dessous — sur la ligne, pas sur
+   la couche qui défile (le champ d'« Un mot… », ramené à l'écran par son focus, n'en est pas touché) */
+#detailPoster.fi-cercle .fi-fil .nf-item {
+  scroll-margin-bottom: 234px;
+}
+#detailPoster.fi-cercle #dpDetails {
+  background: var(--c-mauve35);
 }
 #detailPoster.fi-cercle #dpdTog :is(.dpd-mot, i, .dpd-part) {
   color: var(--c-mauve12);
@@ -1017,12 +1029,33 @@
   left: 0;
   width: 390px;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+}
+#detailPoster .fi-fil .nf-liste {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 48px;
+}
+/* les mots d'un Cercle, à la suite de ses lignes (« Les Mots » 32 pt sous la dernière, la liste 36 pt sous lui) */
+#detailPoster .fi-fil .cm5-flux {
+  position: relative;
+  top: auto;
+  left: auto;
+  margin: 0 var(--marge-d) 0 var(--marge-g);
+}
+#detailPoster .fi-fil #cm5Titre.cm5-flux {
+  margin-top: 20px;
+}
+#detailPoster .fi-fil #cm5Liste.cm5-flux {
+  margin-top: 36px;
 }
 #detailPoster .fi-fil .nf-item {
   position: relative;
   margin: 0 var(--marge-d) 12px var(--marge-g);
   width: 342px;
   height: 79px;
+  gap: 14px;
   border-radius: 20px;
   overflow: hidden;
   background: var(--c-mauve35);
@@ -1034,7 +1067,8 @@
   top: 0;
   z-index: 0;
 }
-#detailPoster .fi-fil svg {
+/* les traits des lignes (la tête du fil, « Un mot… » et « Planter », garde les siens) */
+#detailPoster .fi-fil .nf-item svg {
   display: block;
 }
 #detailPoster .fi-fil .nf-dw {
@@ -1059,7 +1093,7 @@
 }
 #detailPoster .fi-fil .nf-tx em {
   display: block;
-  margin-bottom: 11px;
+  margin: 0;
   font: 500 13px/13px var(--f-texte);
   font-style: normal;
   letter-spacing: 0.18em;
@@ -1071,15 +1105,18 @@
 }
 #detailPoster .fi-fil .nf-tx b {
   display: block;
+  margin-top: 11px;
   font: 700 19px/1.05 var(--f-libelle);
   letter-spacing: -0.02em;
   color: var(--c-creme95);
   overflow: hidden;
 }
+/* la tête passe après la liste et se COLLE au bas : 96 pt du bas de l'écran (le bandeau et 12 pt) — le prototype : `order:9`, `sticky` */
 #detailPoster .nf-tete {
-  position: absolute;
-  left: var(--marge-g);
+  order: 9;
+  position: sticky;
   bottom: 96px;
+  margin: 0 var(--marge-d) 0 var(--marge-g);
   width: 342px;
   z-index: 6;
   isolation: isolate;
@@ -1127,7 +1164,7 @@
   border: 2px solid var(--c-creme95);
   border-radius: 31px;
   background: var(--c-mauve12);
-  font: 700 18px/1 var(--f-libelle);
+  font: 700 18px var(--f-libelle);
   letter-spacing: -0.01em;
   color: var(--c-creme95);
   cursor: pointer;

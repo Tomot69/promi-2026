@@ -180,6 +180,21 @@ l'a trouvé : la seconde colonne et le ⇅ sortaient de l'écran). Ils entrent d
 - « + Planter dans le Cercle » → Chiche puis Promi : les membres pré-choisis, la parole plantée dans le Cercle.
 - Le + des membres à côté du petit disque (Cercle, Promi, Chiche) ouvre les personnes.
 
+**(d) État au 26 nov. 2026, soir — LE LOT 5 EST FAIT (au banc ; à voir sur l'iPhone de Tom).** Porté, en quatre étapes commitées (L5-1 à L5-4) :
+la fiche d'un Cercle, un mode de la fiche (`dp-mode-nuee`) — la bande (la grille C-231, les graines d'un Cercle vide), la vague qui est le trait de
+jonction, les Noyaux et le + des membres, « Avec … », le nom, la ligne d'état, le fil et ses lignes (C-238, C-259 : il défile sous la tête collée),
+« Un mot… » et « Planter dans le Cercle » collés au bas, son menu (C-230 : la page + rattachée au Cercle, ses membres choisis) ; Peaufiner d'un Cercle
+par sa barre (§13 : LE TRAIT, DESCRIPTION, MEMBRES, PIÈCES JOINTES, « Planter », le bloc de Ma Parole ! et LA COULEUR, DISSOUDRE et son annulation,
+C-192, C-242) ; les mots d'un Cercle (« LES MOTS » au bout du fil, l'envoi, la ligne du Fil). Le schéma passe en v3 (`infosCercles` : la description,
+les pièces, le trait, les mots d'un Cercle — le prototype perdait les trois premiers au rechargement), avec sa migration et l'import. **Identique au
+pixel** : `cercle.spec` (au repos, vide et plein, deux thèmes), `cercle-gestes.spec` (le défilement, le menu, Peaufiner en haut et défilé, les mots,
+l'envoi, A3 à 0,79), `cercle-peaufiner.spec` (dissoudre, membres, description). **Le socle parcourt la fiche d'un Cercle** (`ECRANS_PORTES`) ;
+**exception nommée** : le prototype n'y atteint pas toujours son repos en temps réel (sa passe `_v16Passe` : une ligne du fil à 74 ou 79 pt d'une passe
+à l'autre, même état) — les juges nœud à nœud la passent (`reposAuPixel`), elle est jugée au pixel par ses tests sur le banc piloté. **Pas encore** :
+le dessin d'un Cercle (son bouton photo se déclare inactif) ; les murs de Ma Parole ! de Peaufiner (lot 8) ; ce que LE TRAIT d'un Cercle change
+ailleurs ; les mots neufs d'un Cercle venus d'un autre (synchro, 1.1). Juges : `promi/JUGES-TESTS.md`, lots 5-1 à 5-4 ; à vérifier :
+`promi/A-VERIFIER-LOT-5.md`.
+
 ---
 
 ## Lot 6 · L'Aura et la Pelote

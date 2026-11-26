@@ -89,7 +89,14 @@ function lstar(h: string): number {
 async function ouvrirEcran(
   browser: Browser,
   ecran: EcranPorte,
-  o: { theme?: Theme; vue?: { width: number; height: number }; dsf?: number; ls?: Record<string, string> } = {},
+  o: {
+    theme?: Theme;
+    vue?: { width: number; height: number };
+    dsf?: number;
+    ls?: Record<string, string>;
+    /** la donnée de chaque écran porté (EcranPorte.donnee), posée avant d'ouvrir : les juges qui enchaînent */
+    donnees?: boolean;
+  } = {},
 ): Promise<{ page: Page; erreurs: string[]; fermer(): Promise<void> }> {
   const ctx = await browser.newContext({ viewport: o.vue ?? REF, deviceScaleFactor: o.dsf ?? 2 });
   const page = await ctx.newPage();
@@ -99,6 +106,7 @@ async function ouvrirEcran(
     if (m.type() === 'error') erreurs.push('console : ' + m.text());
   });
   await vraieApp(page, { ...(o.ls ?? stockage()), promi_theme: (o.theme ?? 'sombre') === 'clair' ? 'light' : 'dark' });
+  if (o.donnees) for (const e of ECRANS_PORTES) await e.donnee?.(page);
   await ecran.ouvrir(page);
   await page.waitForTimeout(400);
   return { page, erreurs, fermer: () => ctx.close() };
@@ -761,6 +769,8 @@ test('le contrat visuel : les 25 propriétés de chaque élément porté égales
   let compares = 0;
   for (const theme of THEMES)
     for (const ecran of ECRANS_PORTES) {
+      // EcranPorte.reposAuPixel (lot 5) : le prototype n'atteint pas toujours son repos en temps réel ; jugé au pixel par son test
+      if (ecran.reposAuPixel) continue;
       const ls = { ...stockage(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
       const cp = await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 1 });
       const P = await cp.newPage();
@@ -1035,7 +1045,7 @@ async function references(browser: Browser, themes: Theme[]): Promise<Record<str
   const ref: Record<string, Empreinte> = {};
   for (const theme of themes)
     for (const ecran of ECRANS_PORTES) {
-      const E = await ouvrirEcran(browser, ecran, { theme });
+      const E = await ouvrirEcran(browser, ecran, { theme, donnees: true });
       await E.page.waitForTimeout(600);
       ref[`${theme} · ${ecran.nom}`] = (await E.page.evaluate(EMPREINTE)) as Empreinte;
       await E.fermer();
@@ -1054,7 +1064,7 @@ test("un écran n'est jamais vide : les écrans portés enchaînés sans recharg
   browser,
 }) => {
   const ref = await references(browser, THEMES);
-  const E = await ouvrirEcran(browser, ECRANS_PORTES[0]!, { theme: 'sombre' });
+  const E = await ouvrirEcran(browser, ECRANS_PORTES[0]!, { theme: 'sombre', donnees: true });
   const pg = E.page;
   if (sonde('vide-reste'))
     await pg.evaluate(() => {
@@ -1100,7 +1110,7 @@ test('enchaîner deux écrans : le second est lui-même — mêmes classes, rien
   const fautes: string[] = [];
   for (const a of ECRANS_PORTES)
     for (const b of ECRANS_PORTES) {
-      const E = await ouvrirEcran(browser, a, { theme: 'sombre' });
+      const E = await ouvrirEcran(browser, a, { theme: 'sombre', donnees: true });
       if (sonde('enchaine-classe'))
         await E.page.evaluate(() => {
           const ch = document.getElementById('accChoix')!;
@@ -1148,6 +1158,9 @@ const COUPES_DU_PROTOTYPE: Array<[RegExp, RegExp]> = [
   [/^(indexList|feedList|psCartes) › div\.s4-ti$/, /› div\.s4-ti$/],
   // lot 4 — le nom de la fiche d'une personne rogne ce qui dépasse de sa boîte (l'accent d'un « é » final), comme le prototype (`h2#psName`)
   [/^h2#psName$/, /^h2#psName$/],
+  // lot 5 — le titre d'une ligne du fil d'un Cercle (Gilbert 19, interligne 1,05, deux lignes au plus : `v16-2l` du prototype) : sa boîte de
+  // police dépasse de sa boîte qui rogne ; son encre est entière (le prototype, au pixel : cercle.spec, cercle-gestes.spec)
+  [/^dpNueeFil › b$/, /^dpNueeFil › b$/],
 ];
 const RELEVE_APP = `(() => { const W = innerWidth, H = innerHeight, out = { D: [], C: [], R: [] };
   const vis = (e) => { for (let x = e; x && x.nodeType === 1; x = x.parentElement) { const s = getComputedStyle(x); if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.05) return false; } return true; };

@@ -752,6 +752,8 @@ async function parcours(
     for (const e of ECRANS_PORTES) {
       // un écran que le prototype pose hors de `#device` (EcranPorte.horsAppareil) ne se compare pas nœud à nœud : son test le juge au pixel
       if (avecProto && e.horsAppareil) continue;
+      // un écran dont le prototype n'atteint pas toujours le repos en temps réel (EcranPorte.reposAuPixel) : jugé au pixel par son test
+      if (avecProto && e.reposAuPixel) continue;
       const [app, proto] = await Promise.all([
         releve(browser, 'app', theme, e),
         avecProto ? releve(browser, 'proto', theme, e) : Promise.resolve(null),

@@ -109,7 +109,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const fi = el('div', { id: 'detailPoster', class: 'fiche', role: 'dialog' });
   fi.hidden = true;
   // la couche qui défile (le plateau et la barre Peaufiner restent posés au-dessus d'elle, dans la fiche : ils ne défilent pas — lot-V184A)
-  const defile = el('div', { id: 'dpDefile', class: 'fi-defile' });
+  // la couche qui défile, et le déclare : le fil d'un Cercle plus long que l'écran s'atteint en glissant (`data-glisse`, comme l'Index, lot 4)
+  const defile = el('div', { id: 'dpDefile', class: 'fi-defile', 'data-glisse': '' });
   // la hauteur du contenu : celle de l'écran, ou le bas des mots + 96 (`espace` de lot-V181B-TEXTES)
   const espace = el('div', { class: 'fi-espace', 'aria-hidden': 'true' });
   const champ = el('canvas', { id: 'dpTrameCv', class: 'fi-champ', 'aria-hidden': 'true' });
@@ -146,6 +147,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const partage = el('span', { class: 'dpd-part', role: 'button', 'aria-label': TXT.partager });
   partage.innerHTML = SVG_PARTAGE;
   barreTog.append(barreLab, barreChev, partage);
+  // sur un Cercle, le prototype écrit « Peaufiner » à même la barre (`_nueePeaufiner`), sans enveloppe : le même texte, nu (lot 5)
+  const barreLabCercle = document.createTextNode(TXT.peaufiner);
   // pas encore porté (lot 8 : Partager) : il se déclare inactif (`aria-disabled`), et le retire quand son lot le branche
   partage.setAttribute('aria-disabled', 'true');
   // le fil d'un Cercle (lot 5), dans la couche qui défile ; sa tête (« Un mot… », « Planter dans le Cercle ») collée au bas, hors d'elle
@@ -167,7 +170,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const bandeDessin = monterBandeDessin(defile, champ);
   const dessinDe = (p: Parole): Dessin | null => (p.suite?.['dessin'] as Dessin | undefined) ?? null;
   // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
-  fi.append(plateau, defile, tete, barre);
+  fi.append(plateau, defile, barre);
   dv.appendChild(fi);
 
   let courant: Parole | null = null;
@@ -378,6 +381,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     T = { mode: 'complet', base: baseCercle(liste.length), amp: AMP_CERCLE, carte: false };
     fi.classList.remove('fi-promi', 'fi-chiche', 'fi-tenue');
     fi.classList.add('fi-cercle');
+    // le dessin d'un Cercle (son bouton photo) n'est pas encore porté : le bouton se déclare inactif, comme le rond Partager
+    photo.setAttribute('aria-disabled', 'true');
+    if (barreLab.isConnected) barreLab.replaceWith(barreLabCercle);
     mot.textContent = 'Cercle';
     poserCroix(croix, croixG, mot);
     poserPhoto();
@@ -405,7 +411,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     etatL.classList.remove('fi-tenu');
     etatL.style.top = `${String(yEtat)}px`;
     fil.hidden = false;
-    const basFil = batirFil(facade, fil, liste, yEtat + 31);
+    const listeFil = batirFil(facade, fil, tete, liste, yEtat + 31);
     // la tête : « Un mot… » seulement si le Cercle porte des paroles (un Cercle vide : 16 pt seulement entre l'état et « Planter », la ligne y
     // recouvrirait l'état — lot-V145-COMM, Q511)
     tete.hidden = false;
@@ -414,28 +420,28 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     unMot.style.translate = '';
     partage.style.borderColor = palette.creme95;
     poserPlus(false);
-    basFilCercle = basFil;
+    listeCercle = listeFil;
     poserMotsCercle(k);
   }
 
-  /** le bas de la dernière ligne du fil du Cercle ouvert (null : un Cercle vide) */
-  let basFilCercle: number | null = null;
+  /** la liste du fil du Cercle ouvert (null : un Cercle vide) — ses mots y vivent, à la suite de ses lignes */
+  let listeCercle: HTMLElement | null = null;
   /**
    * LES MOTS D'UN CERCLE (lot-V146-CERCLE-MOT, C-248, C-261) — le nombre sur « Un mot… » (« +N » orange s'il en est de neufs), « Les Mots » 32 pt
-   * sous la dernière ligne du fil puis la liste ; un Cercle vide n'a ni la ligne ni les mots. La hauteur du contenu : le bas de ce qui finit le fil,
-   * plus 48, plus le bloc collé (126), 12 et la barre (84).
+   * sous la dernière ligne du fil puis la liste ; un Cercle vide n'a ni la ligne ni les mots. La hauteur du contenu : le bas du fil (sa liste, son
+   * pied de 48, sa tête), plus 12 et la barre (84).
    */
   function poserMotsCercle(k: string): void {
-    const ms = basFilCercle != null ? (magasin.etat().infosCercles[k]?.mots ?? []) : [];
+    const ms = listeCercle ? (magasin.etat().infosCercles[k]?.mots ?? []) : [];
     const moi = moiNom();
     const neufs = ms.filter((m) => !m.vu && !/^moi$/i.test(String(m.by)) && m.by !== moi).length;
     nbMots.hidden = !ms.length;
     nbMots.textContent = neufs ? '+' + String(neufs) : String(ms.length);
     nbMots.classList.toggle('cm5-neufs', !!neufs);
-    let bas: number | null = null;
-    if (basFilCercle != null) bas = mots.poser(ms, basFilCercle - 748) ?? basFilCercle + 12;
+    if (listeCercle) mots.poser(ms, 0, listeCercle);
     else mots.retirer();
-    const hauteur = bas != null && bas + 270 > 844 ? Math.ceil(bas + 270) : defile.clientHeight || 844;
+    const bas = fil.offsetTop + fil.offsetHeight + 12 + 84;
+    const hauteur = bas > 844 ? Math.ceil(bas) : defile.clientHeight || 844;
     espace.style.height = `${String(hauteur)}px`;
     jonction.poser({ base: T.base, amp: T.amp, champ: palette.mauve77, hauteur });
   }
@@ -517,8 +523,10 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   /** sortir du mode Cercle (une parole s'ouvre) : ce que le Cercle a posé est rendu */
   function quitterCercle(): void {
     cercle = null;
-    basFilCercle = null;
+    listeCercle = null;
     fi.classList.remove('fi-cercle');
+    photo.removeAttribute('aria-disabled');
+    if (barreLabCercle.isConnected) barreLabCercle.replaceWith(barreLab);
     fil.hidden = true;
     fil.innerHTML = '';
     tete.hidden = true;
