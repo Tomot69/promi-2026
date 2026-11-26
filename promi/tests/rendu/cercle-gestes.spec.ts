@@ -238,7 +238,8 @@ test('les mots d’un Cercle : le nombre sur « Un mot… », « Les Mots » au 
   const { P, A, erreurs } = await deuxPilotes(browser, ls);
   try {
     // la sonde : « Les Mots » 6 pt plus haut (collé au fil)
-    if (sonde('cercle-mots-colles')) await A.addStyleTag({ content: '#detailPoster #cm5Titre{translate:0 -6px!important}' });
+    if (sonde('cercle-mots-colles'))
+      await A.addStyleTag({ content: '#detailPoster #cm5Titre{translate:0 -6px!important}' });
     await ouvrirCercle(P, A, 'n1');
     await comparer(P, A, 'mots-repos');
     const [p, a] = await defiler(P, A, 5000);
