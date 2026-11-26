@@ -1,0 +1,7 @@
+[
+  {
+    "nom": "cercle-fil-decale",
+    "test": "identité au pixel : la fiche d'un Cercle — cinq paroles, sombre",
+    "defaut": "le fil du Cercle posé 4 pt plus bas que le prototype"
+  }
+]

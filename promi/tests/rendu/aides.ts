@@ -484,6 +484,24 @@ export function stockageFiches(cercle = false): Record<string, string> {
   return ls;
 }
 
+/**
+ * LOT 5 — les Cercles : « Marseille » (n1, Rachel et Marion) porte cinq paroles — un Promi en cours, un tenu, un Chiche lancé, un Chiche tenu et
+ * `PAROLE_CERCLE` ; « Atelier » (n2) est vide et sans membre.
+ */
+export function stockageCercles(): Record<string, string> {
+  const ls = stockageFiches(true);
+  const st = JSON.parse(ls['promi_state']!) as {
+    promises: Array<{ id: number; nuee?: string }>;
+    NUE: Record<string, string>;
+    NUEEMEM: Record<string, string[]>;
+  };
+  for (const q of st.promises) if ([144, 146, 147, 152].includes(q.id)) q.nuee = 'n1';
+  st.NUE['n2'] = 'Atelier';
+  st.NUEEMEM['n2'] = [];
+  ls['promi_state'] = JSON.stringify(st);
+  return ls;
+}
+
 /** les cas : l'id de la parole dans `etat-fiches.json`, et ce qu'elle est */
 export const CAS_FICHES: ReadonlyArray<[number, string]> = [
   [144, 'Promi en cours, à soi'],

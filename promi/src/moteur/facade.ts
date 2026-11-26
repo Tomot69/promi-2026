@@ -128,7 +128,7 @@ export interface Facade {
     id: number,
     tw: number,
     th: number,
-    o?: { rampe?: { cols: number[][]; haut: number } },
+    o?: { rampe?: { cols: number[][]; haut: number }; monde?: MondeDalle },
   ): { cv: HTMLCanvasElement; lum: number | null } | null;
   clarteDalle(
     id: number,

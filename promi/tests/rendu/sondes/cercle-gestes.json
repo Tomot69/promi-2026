@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "cercle-defile-court",
+    "test": "le fil d’un Cercle défile comme le prototype : 60, 140, 250 pt, jusqu’au bout, puis revenu en haut",
+    "defaut": "le trait plat de la jonction absent : la vague ne se couche plus sous le plateau (C-259)"
+  },
+  {
+    "nom": "cercle-planter-sourd",
+    "test": "« Planter dans le Cercle » : le menu, puis Promi — la page + rattachée au Cercle, ses membres choisis",
+    "defaut": "« Planter dans le Cercle » n'ouvre plus rien"
+  }
+]

@@ -988,3 +988,204 @@
   background: var(--c-creme95);
   color: var(--c-framboise54);
 }
+
+/* ── LE MODE CERCLE (lot 5, SPEC-ECRANS §7 ; `_ficheNuee` du prototype, relevé du 26 nov. 2026, WebKit, ×3) — le corps du Cercle dans les deux
+   thèmes (C-132), « Avec … » au lilas en 19, le nom en 38, la ligne d'état lilas, le fil et sa tête, la barre Peaufiner lilas ── */
+#detailPoster.fi-cercle {
+  background: var(--c-mauve35);
+}
+#detailPoster.fi-cercle .fi-phrase {
+  font-size: 19px;
+  color: var(--c-mauve77);
+}
+#detailPoster.fi-cercle .fi-titre {
+  font-size: 38px;
+  letter-spacing: -0.025em;
+}
+#detailPoster.fi-cercle .fi-etat {
+  color: var(--c-mauve77);
+  text-transform: uppercase;
+}
+#detailPoster.fi-cercle #dpdTog {
+  background: var(--c-mauve77);
+}
+#detailPoster.fi-cercle #dpdTog :is(.dpd-mot, i, .dpd-part) {
+  color: var(--c-mauve12);
+}
+#detailPoster .fi-fil {
+  position: absolute;
+  left: 0;
+  width: 390px;
+  z-index: 3;
+}
+#detailPoster .fi-fil .nf-item {
+  position: relative;
+  margin: 0 var(--marge-d) 12px var(--marge-g);
+  width: 342px;
+  height: 79px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--c-mauve35);
+  cursor: pointer;
+}
+#detailPoster .fi-fil .s1b-fil-trait {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+}
+#detailPoster .fi-fil svg {
+  display: block;
+}
+#detailPoster .fi-fil .nf-dw {
+  position: absolute;
+  left: 8px;
+  top: 9px;
+  width: 70px;
+  height: 56px;
+  z-index: 1;
+}
+#detailPoster .fi-fil .nf-d {
+  display: block;
+  width: 70px;
+  height: 56px;
+}
+#detailPoster .fi-fil .nf-tx {
+  position: absolute;
+  left: 108px;
+  top: 16px;
+  width: 222px;
+  z-index: 2;
+}
+#detailPoster .fi-fil .nf-tx em {
+  display: block;
+  margin-bottom: 11px;
+  font: 500 13px/13px var(--f-texte);
+  font-style: normal;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-mauve77);
+}
+#detailPoster .fi-fil .nf-menthe .nf-tx em {
+  color: var(--c-creme95);
+}
+#detailPoster .fi-fil .nf-tx b {
+  display: block;
+  font: 700 19px/1.05 var(--f-libelle);
+  letter-spacing: -0.02em;
+  color: var(--c-creme95);
+  overflow: hidden;
+}
+#detailPoster .nf-tete {
+  position: absolute;
+  left: var(--marge-g);
+  bottom: 96px;
+  width: 342px;
+  z-index: 6;
+  isolation: isolate;
+}
+/* le bloc porte le corps de la fiche, plein, de 12 pt au-dessus de sa première ligne jusque sous le bandeau (v180b, C-238) : les lignes du fil passent dessous */
+#detailPoster .nf-tete::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  right: -24px;
+  top: -12px;
+  bottom: -14px;
+  background: var(--c-mauve35);
+  z-index: -1;
+  pointer-events: none;
+}
+#detailPoster.fi-cercle #dpdTog .dpd-mot {
+  font-size: 21px;
+  line-height: 31.5px;
+}
+/* le ▾ hérite de la chasse de la barre du Cercle (Gilbert 21, −0,01 em) : son glyphe est poussé de −0,21 pt */
+#detailPoster.fi-cercle #dpdTog i {
+  letter-spacing: -0.21px;
+}
+#detailPoster .nf-tete #cmCale {
+  position: relative;
+  height: 64px;
+}
+#detailPoster.fi-cercle .nf-tete #cm5Ligne {
+  left: 0;
+  top: 0;
+  translate: none;
+  background: var(--c-mauve35);
+  z-index: 7;
+}
+#detailPoster .nf-add {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 342px;
+  height: 62px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 12px;
+  border: 2px solid var(--c-creme95);
+  border-radius: 31px;
+  background: var(--c-mauve12);
+  font: 700 18px/1 var(--f-libelle);
+  letter-spacing: -0.01em;
+  color: var(--c-creme95);
+  cursor: pointer;
+}
+#detailPoster .nf-plus {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-creme95);
+}
+/* le menu de « Planter dans le Cercle » (C-230) : les encarts du + de l'accueil à 0,89 (300 × 60), sans le texte de droite */
+#cpChoix {
+  position: absolute;
+  z-index: 140;
+  width: 300px;
+  height: 131px;
+  display: none;
+}
+#cpChoix.ouvert {
+  display: block;
+}
+#cpChoix .cp-pil {
+  position: absolute;
+  left: 0;
+  width: 300px;
+  height: 60px;
+  border-radius: 30px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  font: 700 21px var(--f-libelle);
+  letter-spacing: -0.2px;
+  color: var(--c-seiche10);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.device.light #cpChoix .cp-pil {
+  color: var(--c-brun09);
+}
+#cpChoix .cp-pil .acc-nat {
+  font-family: var(--f-marque);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+#cpChoix .cp-pil[data-k='chiche'] {
+  top: 0;
+  background: var(--c-framboise54);
+}
+#cpChoix .cp-pil[data-k='promi'] {
+  top: 71px;
+  background: var(--c-bleu45);
+}

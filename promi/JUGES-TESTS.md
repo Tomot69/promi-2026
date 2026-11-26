@@ -539,3 +539,18 @@ titre (l'encre est entière : index.spec, fil.spec au pixel) ; le glyphe ⇅, qu
 prototype) ; le padding des feuilles du prototype (sans effet de mise en page ; le reprendre change les coins au rendu) ; la fiche d'une personne
 du prototype vit hors de `#device` (`horsAppareil` : les juges nœud à nœud la passent, personne.spec la juge au pixel). La recherche a sa
 « donnée » dans l'écran (`recherche()`), pas dans le magasin.
+
+## Lot 5-1 — la fiche d'un Cercle : au repos, le fil qui défile, « Planter dans le Cercle » (SPEC-ECRANS §7)
+
+| Juge du prototype                                            | Test                                                                                                                         | Sonde                  |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| redteam_nuee, redteam_cercle_dalles (C-231), redteam_aveugle | `cercle.spec` › « identité au pixel : la fiche d'un Cercle » (cinq paroles, vide × 2 thèmes)                                 | `cercle-fil-decale`    |
+| redteam_cercle_defile (C-238), redteam_jonction (C-259)      | `cercle-gestes.spec` › « le fil d’un Cercle défile comme le prototype » (60, 140, 250, le bout, le retour en haut, au pixel) | `cercle-defile-court`  |
+| redteam_cercle_plus (C-230), redteam_cercle_membres          | `cercle-gestes.spec` › « « Planter dans le Cercle » : le menu, puis Promi / Chiche » ; « un toucher à côté le referme »      | `cercle-planter-sourd` |
+
+La fiche d'un Cercle est un MODE de la fiche (comme le prototype : `#detailPoster.dp-mode-nuee`) — le même plateau, la même jonction (la vague du
+Cercle est le trait de jonction, C-259), la même barre ; ce qui est propre au Cercle vit dans `ecrans/fiche/cercle.ts` (la bande, le fil, sa tête,
+le menu) et `metier/cercle.ts` (ce qu'elle dit). **Exception nommée M1** : la bande entière est de la matière (le peintre déclare le champ, Q74), et
+la mini-dalle de chaque ligne du fil. **Trouvé en portant** : le menu posé dans l'appareil était caché par l'écran qui le couvre (`.couvert`) — il
+vit dans la fiche. Pas encore (la suite du lot 5) : Peaufiner d'un Cercle (sa barre, ses cartes, Dissoudre), « Un mot… » d'un Cercle (ses mots),
+le « + » des membres (il est posé ; son toucher), la dalle du Cercle sur la Toile, la création unique.

@@ -30,6 +30,8 @@ import { monterMenuPhoto, mondeOrigine, photoDe, SVG_RETOUR } from './photo.ts';
 import { imagePhoto, peindrePhoto } from '../photo/peinture.ts';
 import { monterEntier, type Cadre, type Entier } from '../photo/entier.ts';
 import { dessinVu, monterBandeDessin } from './dessin-fiche.ts';
+import { batirFil, batirTete, monterMenuPlanter, noyauxCercle, peindreBande } from './cercle.ts';
+import { AMP_CERCLE, baseCercle, ligneAvec, ligneEtatCercle, parolesDuCercle } from '../../metier/cercle.ts';
 import { couleurDe, dessinEntier, dessinPose, modeDessinPartage, type Dessin } from '../page-plus/dessin.ts';
 import { origineGardee } from '../../metier/origine.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
@@ -53,10 +55,13 @@ import {
 
 export interface Fiche {
   ouvrir(id: number): void;
+  /** la fiche d'un Cercle (lot 5) : le même écran, son mode Cercle */
+  ouvrirCercle(cle: string): void;
   fermer(): void;
   /** pour les tests : la parole ouverte, et ce que la fiche a posé */
   etat(): {
     id: number | null;
+    cercle: string | null;
     base: number;
     amp: number;
     mode: string;
@@ -143,15 +148,31 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   barreTog.append(barreLab, barreChev, partage);
   // pas encore porté (lot 8 : Partager) : il se déclare inactif (`aria-disabled`), et le retire quand son lot le branche
   partage.setAttribute('aria-disabled', 'true');
-  defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, espace);
+  // le fil d'un Cercle (lot 5), dans la couche qui défile ; sa tête (« Un mot… », « Planter dans le Cercle ») collée au bas, hors d'elle
+  const fil = el('div', { id: 'dpNueeFil', class: 'fi-fil' });
+  fil.hidden = true;
+  const { tete, cale, planter } = batirTete();
+  tete.hidden = true;
+  // « Planter dans le Cercle » : son menu (C-230) — Chiche ou Promi ; la page + de cette nature, rattachée au Cercle, ses membres déjà choisis
+  const menuPlanter = monterMenuPlanter(fi, dv, (nat) => {
+    if (cercle) nav.ouvrir('pagePlus', `${nat}:cercle:${cercle}`);
+  });
+  surToucher(planter, () => {
+    if (!cercle) return;
+    if (menuPlanter.ouvert()) menuPlanter.fermer();
+    else menuPlanter.ouvrir(planter);
+  });
+  defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, fil, unMot, espace);
   // le dessin posé, dans la bande (dessin-fiche.ts, lot 3b-5) : sa couche juste après le champ, sous le trait
   const bandeDessin = monterBandeDessin(defile, champ);
   const dessinDe = (p: Parole): Dessin | null => (p.suite?.['dessin'] as Dessin | undefined) ?? null;
   // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
-  fi.append(plateau, defile, barre);
+  fi.append(plateau, defile, tete, barre);
   dv.appendChild(fi);
 
   let courant: Parole | null = null;
+  /** le Cercle ouvert (sa clé), quand la fiche est en mode Cercle — alors `courant` est nul */
+  let cercle: string | null = null;
   let deplie = false;
   /**
    * C-244 : le titre coupé, déplié par un premier toucher (`_titreDeplie`, cette fiche seulement, oublié à la fermeture) ; C-280 : entier tant
@@ -172,6 +193,16 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   surToucher(croix, () => {
     fermer();
+  });
+  // une ligne du fil d'un Cercle touchée : la fiche redescend, puis remonte sur sa parole (240 ms : le prototype, `renderDetail` › `.nf-item`)
+  surToucher(fil, (ev) => {
+    const it = ev.target instanceof Element ? ev.target.closest<HTMLElement>('.nf-item') : null;
+    const id = Number(it?.dataset['id']);
+    if (!cercle || !it || !Number.isFinite(id)) return;
+    fermer();
+    horloge().minuteur(() => {
+      ouvrir(id);
+    }, 240);
   });
   // « + x personnes » : un toucher déroule la liste entière dans la phrase, qui s'allonge vers le bas ; le titre descend (C-069)
   surToucher(phrase, (ev) => {
@@ -331,8 +362,146 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     coter(!!c);
     tenir.poser(!instantF && p.status !== 'tenu');
     poserInstant(p);
-    poserPlus(p);
+    poserPlus(recue(p));
     poserMots(p);
+  }
+
+  /**
+   * LE MODE CERCLE (lot 5, SPEC-ECRANS §7 ; `_ficheNuee` du prototype) — le trait entier sur l'onde (base `baseCercle`, amplitude 40) ; la bande ;
+   * les Noyaux à boîte − 29, « Avec … » 127 plus bas, le nom 35 plus bas (38 pt, deux lignes au plus : jusqu'à 26, puis « … »), la ligne d'état
+   * 68 sous le nom (un nom de deux lignes : sa hauteur + 29,2), le fil 31 sous elle ; la tête collée au bas (son bas à 748).
+   */
+  function poserCercle(k: string): void {
+    const e = magasin.etat();
+    const liste = parolesDuCercle(e.paroles, k);
+    const nom = e.cercles[k] ?? k;
+    T = { mode: 'complet', base: baseCercle(liste.length), amp: AMP_CERCLE, carte: false };
+    fi.classList.remove('fi-promi', 'fi-chiche', 'fi-tenue');
+    fi.classList.add('fi-cercle');
+    mot.textContent = 'Cercle';
+    poserCroix(croix, croixG, mot);
+    poserPhoto();
+    peindreChampCercle(liste);
+    peindreTraitCercle();
+    geste.hidden = true;
+    tenir.poser(false);
+    const boite = T.base + T.amp + 40;
+    const yN = boite - 29;
+    const yQui = yN + 127;
+    const yTitre = yQui + 35;
+    noyaux.innerHTML = rangeeNoyaux(noyauxCercle(k, nom, liste, e.paroles), palette.mauve77, false, court);
+    peindreNoyaux(noyaux);
+    noyaux.style.top = `${String(yN)}px`;
+    phrase.textContent = ligneAvec(e.membres[k] ?? []);
+    phrase.style.top = `${String(yQui)}px`;
+    titre.style.top = `${String(yTitre)}px`;
+    titre.textContent = nom;
+    ajusterNom(nom);
+    const hT = Math.round(
+      titre.getBoundingClientRect().height / (fi.getBoundingClientRect().width / fi.offsetWidth || 1),
+    );
+    const yEtat = Math.round(yTitre + (hT > 50 ? hT + 29.2 : 68));
+    etatL.textContent = ligneEtatCercle(liste);
+    etatL.classList.remove('fi-tenu');
+    etatL.style.top = `${String(yEtat)}px`;
+    fil.hidden = false;
+    const basFil = batirFil(facade, fil, liste, yEtat + 31);
+    // la tête : « Un mot… » seulement si le Cercle porte des paroles (un Cercle vide : 16 pt seulement entre l'état et « Planter », la ligne y
+    // recouvrirait l'état — lot-V145-COMM, Q511)
+    tete.hidden = false;
+    cale.hidden = !liste.length;
+    if (unMot.parentElement !== cale) cale.appendChild(unMot);
+    unMot.style.translate = '';
+    nbMots.hidden = true;
+    partage.style.borderColor = palette.creme95;
+    poserPlus(false);
+    const hauteur = basFil != null && basFil + 282 > 844 ? Math.ceil(basFil + 282) : defile.clientHeight || 844;
+    espace.style.height = `${String(hauteur)}px`;
+    jonction.poser({ base: T.base, amp: T.amp, champ: palette.mauve77, hauteur });
+  }
+
+  /** le nom d'un Cercle : 38 pt ; plus de deux lignes, il descend jusqu'à 26 ; puis « … » (C-244 §5.2) */
+  function ajusterNom(nom: string): void {
+    const lignes = (): number => {
+      const lh = parseFloat(getComputedStyle(titre).lineHeight) || parseFloat(titre.style.fontSize) * 1.02;
+      return Math.round(titre.offsetHeight / lh);
+    };
+    delete titre.dataset['coupe'];
+    titre.style.fontSize = '38px';
+    if (lignes() <= 2) return;
+    let f = 38;
+    while (f > 26 && lignes() > 2) {
+      f -= 1;
+      titre.style.fontSize = `${String(f)}px`;
+    }
+    if (lignes() <= 2) return;
+    titre.dataset['coupe'] = '1';
+    let lo = 0;
+    let hi = nom.length;
+    while (lo < hi) {
+      const md = (lo + hi + 1) >> 1;
+      titre.textContent = nom.slice(0, md).replace(/\s+$/, '') + '\u2026';
+      if (lignes() <= 2) lo = md;
+      else hi = md - 1;
+    }
+    titre.textContent = nom.slice(0, lo).replace(/\s+$/, '') + '\u2026';
+  }
+
+  function peindreChampCercle(liste: readonly Parole[]): void {
+    const H = T.base + T.amp + 40;
+    const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
+    champ.width = Math.round(W * dpr);
+    champ.height = Math.round(H * dpr);
+    champ.style.width = `${String(W)}px`;
+    champ.style.height = `${String(H)}px`;
+    const g = champ.getContext('2d');
+    if (!g) return;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    g.imageSmoothingEnabled = true;
+    g.imageSmoothingQuality = 'high';
+    const top = parseFloat(photo.style.top) || 0;
+    const m = peindreBande(facade, g, {
+      liste,
+      toutes: magasin.etat().paroles,
+      base: T.base,
+      amp: T.amp,
+      photo: photo.hidden ? null : { x: 332, bas: top + 34 },
+    });
+    champ.setAttribute('data-champ', palette.mauve77);
+    champ.setAttribute('data-matiere', m);
+    champ.setAttribute('data-photo', '');
+    bandeDessin.poser({ d: null, y: onde(T.base, T.amp), nature: palette.mauve77, instant: false, masquer: () => {} });
+  }
+
+  function peindreTraitCercle(): void {
+    const H = T.base + T.amp + 40;
+    const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
+    trait.width = Math.round(W * dpr);
+    trait.height = Math.round(H * dpr);
+    trait.style.width = `${String(W)}px`;
+    trait.style.height = `${String(H)}px`;
+    const g = trait.getContext('2d');
+    if (!g) return;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    peindreLigne(g, T.base, T.amp, ligneCercle());
+    trait.setAttribute('data-trait', [T.base, T.amp, NATTRAIT.nuee, 'complet'].join(','));
+  }
+  const ligneCercle = (): Parameters<typeof peindreLigne>[3] => ({
+    mode: 'complet',
+    col: NATTRAIT.nuee,
+    attend: false,
+  });
+
+  /** sortir du mode Cercle (une parole s'ouvre) : ce que le Cercle a posé est rendu */
+  function quitterCercle(): void {
+    cercle = null;
+    fi.classList.remove('fi-cercle');
+    fil.hidden = true;
+    fil.innerHTML = '';
+    tete.hidden = true;
+    if (unMot.parentElement !== defile) defile.insertBefore(unMot, espace);
   }
 
   /** le nombre de mots sur la ligne « Un mot… » (C-257) : le total ; « +N » orange quand des mots d'autres ne sont pas encore vus (C-253) */
@@ -404,8 +573,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   }
 
   /** le « + » des membres : sur une parole que je fais, 26 pt après le dernier petit disque (« Toi » s'il n'y en a pas), centré sur lui */
-  function poserPlus(p: Parole): void {
-    plusM.hidden = recue(p) || instantF === 'referme';
+  function poserPlus(recu: boolean): void {
+    plusM.hidden = recu || instantF === 'referme';
     if (plusM.hidden) return;
     const ds = noyaux.querySelectorAll<HTMLElement>('.kr-wrap');
     const a = ds[ds.length - 1]!;
@@ -686,6 +855,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     zone: () => defile.querySelector<HTMLElement>('#tenirZone'),
     ligne(g, base, amp) {
       if (courant) peindreLigne(g, base, amp, optionsLigne(courant));
+      else if (cercle) peindreLigne(g, base, amp, ligneCercle());
     },
   });
 
@@ -845,9 +1015,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     peauf.ouvrirPersonnes();
   });
 
-  function ouvrir(id: number): void {
-    const p = magasin.etat().paroles.find((q) => q.id === id);
-    if (!p || p.draft) return;
+  /** ce qu'une fiche ouverte (parole ou Cercle) laisse derrière elle est refermé avant d'en ouvrir une autre */
+  function remettre(): void {
+    menuPlanter.fermer();
     peauf.fermer(false);
     saisieMot.fermer();
     menuPhoto.fermer(false);
@@ -858,21 +1028,44 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     titreCtl.sortir(true);
     instantF = null;
     doigtX = null;
-    courant = p;
     deplie = false;
     titreDeplie = false;
     titreEdite = false;
     dyFige = null;
     // une fiche se rouvre en haut (v182b)
     defile.scrollTop = 0;
-    // montrée AVANT d'être posée (en bas, invisible) : les cotes se lisent sur le rendu (le titre, la phrase, les disques) ; puis elle monte
+  }
+
+  function ouvrir(id: number): void {
+    const p = magasin.etat().paroles.find((q) => q.id === id);
+    if (!p || p.draft) return;
+    remettre();
+    quitterCercle();
+    courant = p;
+    montrer(() => {
+      poser(p);
+    });
+  }
+
+  function ouvrirCercle(k: string): void {
+    if (!(k in magasin.etat().cercles)) return;
+    remettre();
+    courant = null;
+    cercle = k;
+    montrer(() => {
+      poserCercle(k);
+    });
+  }
+
+  /** montrée AVANT d'être posée (en bas, invisible) : les cotes se lisent sur le rendu (le titre, la phrase, les disques) ; puis elle monte */
+  function montrer(poserLa: () => void): void {
     if (finFermeture != null) horloge().annuleMinuteur(finFermeture);
     finFermeture = null;
     fi.classList.add('fi-bas');
     // un écran qui s'ouvre passe devant ceux qui sont ouverts (l'Index, le Fil, la fiche d'une personne : même z) — encore caché, rien ne bouge
     if (dv.lastElementChild !== fi) dv.appendChild(fi);
     fi.hidden = false;
-    poser(p);
+    poserLa();
     // la feuille de style relue avant de retirer `fi-bas` : la transition part de l'état d'en bas
     fi.getBoundingClientRect();
     fi.classList.remove('fi-bas');
@@ -889,6 +1082,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   /** elle redescend (0,4 s), puis se cache */
   function fermer(): void {
     if (fi.hidden || fi.classList.contains('fi-bas')) return;
+    menuPlanter.fermer();
     peauf.fermer(false);
     saisieMot.fermer();
     menuPhoto.fermer(false);
@@ -901,6 +1095,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     const vus = mots.vus();
     if (courant && vus.length) magasin.motsVus(courant.id, vus);
     courant = null;
+    cercle = null;
     if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
     finOuverture = null;
     // l'accueil redevient visible dessous pendant qu'elle redescend
@@ -915,6 +1110,12 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   // C-049 : une seule source de vérité — la parole ouverte qui change (tenue, renommée, une part tracée) se repose ; effacée, la fiche se ferme
   magasin.abonner((e, action) => {
+    // le Cercle ouvert : il se repose à chaque changement (ses paroles, son nom, ses membres) ; dissous, la fiche se ferme
+    if (cercle && !fi.hidden) {
+      if (!(cercle in e.cercles)) fermer();
+      else poserCercle(cercle);
+      return;
+    }
     if (!courant || fi.hidden) return;
     const p = e.paroles.find((q) => q.id === courant!.id);
     if (!p) {
@@ -937,12 +1138,17 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   nav.poser('fiche', (arg) => {
     ouvrir(Number(arg));
   });
+  nav.poser('cercle', (arg) => {
+    ouvrirCercle(String(arg));
+  });
 
   return {
     ouvrir,
+    ouvrirCercle,
     fermer,
     etat: () => ({
       id: courant?.id ?? null,
+      cercle,
       base: T.base,
       amp: T.amp,
       mode: T.mode,

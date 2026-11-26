@@ -2497,17 +2497,29 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     // (« Je me promets » → « Je promets … à qui ? »), comme le prototype touche la pastille du sens une fois la page posée (`plus(true)`) ;
     // lot 4 (§22) : « + Planter un Promi » et « + Lancer un Chiche » de la fiche d'une personne ouvrent la page + la personne DÉJÀ choisie
     // (`promi:qui:<nom>`, `chiche:qui:<nom>` ; le prototype : `planter(nom, chiche)` de lot-FICHE-PERSONNE)
-    const m = typeof arg === 'string' ? /^(promi|chiche):(faire|qui:(.+))$/.exec(arg) : null;
+    // lot 5 (C-230) : « Planter dans le Cercle » ouvre la page + de sa nature rattachée au Cercle (`promi:cercle:<clé>`, `chiche:cercle:<clé>`),
+    // ses membres déjà choisis (« à qui », « qui ose ? » ; aucun autre membre que moi : « tout le monde ») — le prototype : `openCreateForNuee`,
+    // `preselect` de lot-V179B-CERCLE-PLUS
+    const m = typeof arg === 'string' ? /^(promi|chiche):(faire|qui:(.+)|cercle:(.+))$/.exec(arg) : null;
     if (m) {
       const nat = m[1] as Nature;
       const nom = m[3] ?? null;
+      const cle = m[4] ?? null;
+      const membres = cle
+        ? (magasin.etat().membres[cle] ?? []).map((x) => x.trim()).filter((x) => x && !/^moi$/i.test(x))
+        : [];
       ouvrir(nat);
       const poserPhrase = (n: number): void => {
         if (!cs.hidden && !cs.classList.contains('pp-part') && !cs.classList.contains('pp-entre')) {
-          const avant = JSON.stringify([P.sens, P.qui]);
-          if (nat === 'promi' && P.sens === 'soi') P.sens = 'faire';
-          if (nom) P.qui = [nom];
-          if (JSON.stringify([P.sens, P.qui]) !== avant) {
+          const avant = JSON.stringify([P.sens, P.qui, P.cercle]);
+          if (cle) {
+            P.cercle = cle;
+            P.qui = membres.length ? membres : [T.toutLeMonde];
+          } else {
+            if (nat === 'promi' && P.sens === 'soi') P.sens = 'faire';
+            if (nom) P.qui = [nom];
+          }
+          if (JSON.stringify([P.sens, P.qui, P.cercle]) !== avant) {
             choix = null;
             recomposer(true);
           }
