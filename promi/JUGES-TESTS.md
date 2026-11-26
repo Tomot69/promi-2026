@@ -567,3 +567,15 @@ le « + » des membres (il est posé ; son toucher), la dalle du Cercle sur la T
 **Le schéma passe en version 3** (`003-infos-cercles.ts`) : la DESCRIPTION, les PIÈCES JOINTES et le TRAIT d'un Cercle (`infosCercles`) — le prototype
 les gardait en mémoire seulement (`NUENOTE`, `NUEFILES` : perdus au rechargement). **Trouvé en portant** : le prototype pose un fichier de
 DÉMONSTRATION sur la première parole d'un Cercle (« 1 fichier ») ; l'état des juges donne à ses paroles une liste vide (comme `PAROLE_CERCLE`).
+
+## Lot 5-3 — « Un mot… » d'un Cercle : ses mots (lot-V146-CERCLE-MOT, C-248, C-261)
+
+| Juge du prototype                                    | Test                                                                                                     | Sonde                |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------- |
+| redteam_les_mots (C-261), redteam_commentaires_liste | `cercle-gestes.spec` › « les mots d’un Cercle : le nombre sur « Un mot… », « Les Mots » au bout du fil » | `cercle-mots-colles` |
+| redteam_envoi_mot (C-260), redteam_commentaires      | `cercle-gestes.spec` › « « Un mot… » d’un Cercle : écrit, envoyé — la liste et le Fil »                  | `mot-cercle-perdu`   |
+
+Les mots d'un Cercle passent de la clé de l'appareil du prototype (`promi_cercle_mots`) à leur place dans le schéma v3 (`infosCercles[k].mots`) —
+la migration 2 → 3 et l'import d'un export du prototype les rangent de même. **Trouvé en portant** : le glissement qui montre le mot neuf ne
+connaissait ni le bloc collé d'un Cercle, ni le retour vers le haut (un mot au-dessus de 120), ni les places sûres de la jonction (C-267) — porté
+tel que le prototype (`envoie`), pour la fiche d'une parole aussi.

@@ -43,6 +43,12 @@ describe('la fiche d’un Cercle', () => {
   it('le schéma v3 : un état v2 reçoit sa table des réglages des Cercles, vide ; rien d’autre ne change', () => {
     const v2 = { schema: 2, paroles: [{ id: 1, title: 'a' }], cercles: { n1: 'Marseille' } };
     const e = migrer(v2, MIGRATIONS, 3) as unknown as Record<string, unknown>;
-    expect(e).toEqual({ ...v2, schema: 3, infosCercles: {} });
+    expect(e).toEqual({ ...v2, schema: 3, infosCercles: {}, autres: {} });
+    // les mots des Cercles, gardés dans la clé de l'appareil du prototype, passent à leur place ; la clé part, le reste demeure
+    const mot = { t: 'On commence lundi ?', d: '2026-11-20T10:00:00.000Z', by: 'Rachel', vu: true };
+    const v2b = { ...v2, autres: { promi_cercle_mots: JSON.stringify({ n1: [mot], n2: [] }), promi_onb: '1' } };
+    const e2 = migrer(v2b, MIGRATIONS, 3) as unknown as Record<string, unknown>;
+    expect(e2['infosCercles']).toEqual({ n1: { mots: [mot] } });
+    expect(e2['autres']).toEqual({ promi_onb: '1' });
   });
 });

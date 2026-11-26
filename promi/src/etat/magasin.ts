@@ -75,6 +75,13 @@ export interface Actions {
    * (`infosCercles`, v3 : le prototype ne les gardait pas). Écrit tout de suite.
    */
   peaufinerCercle(cle: string, champs: { note?: string; fichiers?: string[]; trait?: string }): void;
+  /**
+   * UN MOT sur la fiche d'un Cercle (lot 5 ; `_cercleMots` de lot-V146-CERCLE-MOT, `envoie` de lot-V145-COMM) — signé de mon prénom, vu ; une
+   * ligne du Fil (« Tu as commenté « Marseille » · Marseille » : le Cercle est son propre titre et son propre destinataire, comme le prototype).
+   */
+  motCercle(cle: string, texte: string, moi: string, maintenant: number): void;
+  /** C-253 : les mots d'un Cercle que la fiche a montrés sont vus */
+  motsVusCercle(cle: string, cles: readonly string[]): void;
   /** les MEMBRES d'un Cercle (`_nqMembers`, l'ajout et la croix) : la liste neuve */
   membresCercle(cle: string, membres: string[]): void;
   /**
@@ -605,6 +612,33 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       const neuf = { ...avant, ...champs };
       if (JSON.stringify(neuf) === JSON.stringify(avant)) return;
       valider('peaufinerCercle', { ...e, infosCercles: { ...e.infosCercles, [cle]: neuf } });
+    },
+    motCercle(cle, texte, moi, maintenant) {
+      const t = texte.trim();
+      if (!(cle in e.cercles) || !t) return;
+      const nom = e.cercles[cle]!;
+      const info = e.infosCercles[cle] ?? {};
+      const mot: Mot = { t, d: new Date(maintenant).toISOString(), by: moi, vu: true };
+      const fid = e.compteurs.fid;
+      const ligne = ligneFil(fid, 'comment', `Tu as commenté « ${nom} » · ${nom}`, maintenant);
+      valider('motCercle', {
+        ...e,
+        infosCercles: { ...e.infosCercles, [cle]: { ...info, mots: [...(info.mots ?? []), mot] } },
+        fil: [ligne, ...e.fil],
+        compteurs: { ...e.compteurs, fid: fid + 1 },
+      });
+    },
+    motsVusCercle(cle, cles) {
+      const info = e.infosCercles[cle];
+      if (!info?.mots?.length || !cles.length) return;
+      const C = new Set(cles);
+      let n = 0;
+      const mots = info.mots.map((m) => {
+        if (m.vu || !C.has(cleMot(m))) return m;
+        n++;
+        return { ...m, vu: true };
+      });
+      if (n) valider('motsVusCercle', { ...e, infosCercles: { ...e.infosCercles, [cle]: { ...info, mots } } });
     },
     membresCercle(cle, membres) {
       if (!(cle in e.cercles)) return;

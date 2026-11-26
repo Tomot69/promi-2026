@@ -412,10 +412,30 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     cale.hidden = !liste.length;
     if (unMot.parentElement !== cale) cale.appendChild(unMot);
     unMot.style.translate = '';
-    nbMots.hidden = true;
     partage.style.borderColor = palette.creme95;
     poserPlus(false);
-    const hauteur = basFil != null && basFil + 282 > 844 ? Math.ceil(basFil + 282) : defile.clientHeight || 844;
+    basFilCercle = basFil;
+    poserMotsCercle(k);
+  }
+
+  /** le bas de la dernière ligne du fil du Cercle ouvert (null : un Cercle vide) */
+  let basFilCercle: number | null = null;
+  /**
+   * LES MOTS D'UN CERCLE (lot-V146-CERCLE-MOT, C-248, C-261) — le nombre sur « Un mot… » (« +N » orange s'il en est de neufs), « Les Mots » 32 pt
+   * sous la dernière ligne du fil puis la liste ; un Cercle vide n'a ni la ligne ni les mots. La hauteur du contenu : le bas de ce qui finit le fil,
+   * plus 48, plus le bloc collé (126), 12 et la barre (84).
+   */
+  function poserMotsCercle(k: string): void {
+    const ms = basFilCercle != null ? (magasin.etat().infosCercles[k]?.mots ?? []) : [];
+    const moi = moiNom();
+    const neufs = ms.filter((m) => !m.vu && !/^moi$/i.test(String(m.by)) && m.by !== moi).length;
+    nbMots.hidden = !ms.length;
+    nbMots.textContent = neufs ? '+' + String(neufs) : String(ms.length);
+    nbMots.classList.toggle('cm5-neufs', !!neufs);
+    let bas: number | null = null;
+    if (basFilCercle != null) bas = mots.poser(ms, basFilCercle - 748) ?? basFilCercle + 12;
+    else mots.retirer();
+    const hauteur = bas != null && bas + 270 > 844 ? Math.ceil(bas + 270) : defile.clientHeight || 844;
     espace.style.height = `${String(hauteur)}px`;
     jonction.poser({ base: T.base, amp: T.amp, champ: palette.mauve77, hauteur });
   }
@@ -497,6 +517,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   /** sortir du mode Cercle (une parole s'ouvre) : ce que le Cercle a posé est rendu */
   function quitterCercle(): void {
     cercle = null;
+    basFilCercle = null;
     fi.classList.remove('fi-cercle');
     fil.hidden = true;
     fil.innerHTML = '';
@@ -896,9 +917,17 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     ligne: unMot,
     mot: unMotTxt,
     nb: nbMots,
-    actif: () => !!courant && !fi.hidden && !fi.classList.contains('fi-bas') && !instantF,
+    actif: () =>
+      (!!courant || (!!cercle && !cale.hidden)) && !fi.hidden && !fi.classList.contains('fi-bas') && !instantF,
     envoyer: (t) => {
       if (courant) magasin.ajouterMot(courant.id, t, moiNom(), Date.now());
+      else if (cercle) magasin.motCercle(cercle, t, moiNom(), Date.now());
+    },
+    bloc: () => (cercle ? cale : null),
+    sure: (t) => {
+      const b = jonction.etat().bornes;
+      if (!b || t <= b.a + 0.5 || t >= b.z - 0.5) return t;
+      return b.z <= b.m ? b.z : b.a;
     },
   });
 
@@ -1126,6 +1155,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     // C-253 : les mots que la fiche a montrés sont vus, quand on la quitte (les mots neufs perdent leur pastille, « +N » redevient le total)
     const vus = mots.vus();
     if (courant && vus.length) magasin.motsVus(courant.id, vus);
+    if (cercle && vus.length) magasin.motsVusCercle(cercle, vus);
     courant = null;
     cercle = null;
     if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
@@ -1145,7 +1175,10 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     // le Cercle ouvert : il se repose à chaque changement (ses paroles, son nom, ses membres) ; dissous, la fiche se ferme
     if (cercle && !fi.hidden) {
       if (!(cercle in e.cercles)) fermer();
-      else {
+      else if (action === 'motCercle' || action === 'motsVusCercle') {
+        // un mot envoyé : seuls le nombre et la liste changent (comme sur une parole : la fiche ne se repose pas)
+        poserMotsCercle(cercle);
+      } else {
         poserCercle(cercle);
         peauf.reposer();
       }

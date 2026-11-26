@@ -13,6 +13,7 @@
 import type { CouleurDalle, Etat, EvenementFil, Mot, Parole, Place, Reglages, Studio } from '../schema.ts';
 import { VERSION_SCHEMA, etatVide } from '../schema.ts';
 import { figerDalles, poserCles, reparerPlaces, sansTombes } from '../../metier/relecture.ts';
+import { rangerMotsCercles } from './003-infos-cercles.ts';
 
 export type StockagePrototype = Record<string, string>;
 
@@ -195,7 +196,11 @@ export function importerEtRelire(x: ExportPrototype | StockagePrototype): Etat {
       }
     e.autres['promi_mots_v184'] = '1';
   }
-  return { ...e, paroles, placesCercles: r.cercles };
+  // v3 (lot 5) : les mots des Cercles passent de la clé de l'appareil à leur place (`infosCercles`), comme la migration 2 → 3
+  const mc = rangerMotsCercles(e.autres);
+  const infosCercles = { ...e.infosCercles };
+  for (const [k, v] of Object.entries(mc.infos)) infosCercles[k] = { ...(infosCercles[k] ?? {}), mots: v.mots as Mot[] };
+  return { ...e, paroles, placesCercles: r.cercles, infosCercles, autres: mc.autres };
 }
 
 /**

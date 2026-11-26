@@ -59,11 +59,12 @@ export interface Brouillon {
   [cle: string]: unknown;
 }
 
-/** Ce que Peaufiner écrit d'un Cercle (v3) : sa DESCRIPTION, ses PIÈCES JOINTES (leurs noms), son TRAIT (un pinceau). */
+/** Ce qu'un Cercle porte en propre (v3) : sa DESCRIPTION, ses PIÈCES JOINTES (leurs noms), son TRAIT (un pinceau) — Peaufiner ; SES MOTS (« Un mot… »). */
 export interface InfosCercle {
   note?: string;
   fichiers?: string[];
   trait?: string;
+  mots?: Mot[];
 }
 
 /** Une parole (Promi ou Chiche ; un gardé de côté porte `draft: true`). */
@@ -142,7 +143,7 @@ export interface Etat {
   dallesCercles: Record<string, CouleurDalle>;
   /** la place gardée de chaque Cercle (`promi_nueplace`) */
   placesCercles: Record<string, Place>;
-  /** v3 (lot 5) : ce que Peaufiner écrit d'un Cercle — sa description, ses pièces jointes, son trait (le prototype ne les gardait pas) */
+  /** v3 (lot 5) : ce qu'un Cercle porte en propre — sa description, ses pièces jointes, son trait (le prototype ne les gardait pas), ses mots */
   infosCercles: Record<string, InfosCercle>;
   personnes: unknown[];
   fil: EvenementFil[];

@@ -223,3 +223,58 @@ for (const theme of ['sombre', 'clair'] as const)
       await Promise.all([P.context().close(), A.context().close()]);
     }
   });
+
+/** les mots d'un Cercle (`promi_cercle_mots` du prototype) : un de Rachel, un de moi */
+const MOTS = JSON.stringify({
+  n1: [
+    { t: 'On commence lundi ?', d: '2026-11-20T10:00:00.000Z', by: 'Rachel', vu: true },
+    { t: 'Je prends le dessert', d: '2026-11-21T18:30:00.000Z', by: 'Tom', vu: true },
+  ],
+});
+test('les mots d’un Cercle : le nombre sur « Un mot… », « Les Mots » au bout du fil, comme le prototype (C-248, C-261)', async ({
+  browser,
+}) => {
+  const ls = { ...stockageCercles(), promi_prenom: 'Tom', promi_cercle_mots: MOTS, promi_mots_v184: '1' };
+  const { P, A, erreurs } = await deuxPilotes(browser, ls);
+  try {
+    // la sonde : « Les Mots » 6 pt plus haut (collé au fil)
+    if (sonde('cercle-mots-colles')) await A.addStyleTag({ content: '#detailPoster #cm5Titre{translate:0 -6px!important}' });
+    await ouvrirCercle(P, A, 'n1');
+    await comparer(P, A, 'mots-repos');
+    const [p, a] = await defiler(P, A, 5000);
+    expect(a, 'le bout du défilement').toBe(p);
+    await comparer(P, A, 'mots-bas');
+    expect(erreurs).toEqual([]);
+  } finally {
+    await Promise.all([P.context().close(), A.context().close()]);
+  }
+});
+
+test('« Un mot… » d’un Cercle : écrit, envoyé — la liste et le Fil comme le prototype (lot-V146-CERCLE-MOT, C-260)', async ({
+  browser,
+}) => {
+  const ls = { ...stockageCercles(), promi_prenom: 'Tom', promi_cercle_mots: MOTS, promi_mots_v184: '1' };
+  const { P, A, erreurs } = await deuxPilotes(browser, ls);
+  try {
+    // la sonde : le mot d'un Cercle n'est pas écrit
+    if (sonde('mot-cercle-perdu'))
+      await A.evaluate(`(() => { const m = ${P_}.magasin; m.motCercle = () => undefined; })()`);
+    await ouvrirCercle(P, A, 'n1');
+    for (const pg of [P, A]) await pg.addStyleTag({ content: '#device input{caret-color:transparent!important}' });
+    await toucherDeux(P, A, '#cm5Ligne');
+    await poser(P, A, 3);
+    for (const pg of [P, A]) await pg.keyboard.type('Bravo');
+    await poser(P, A, 4);
+    for (const pg of [P, A]) await pg.keyboard.press('Enter');
+    await poser(P, A, 6);
+    await comparer(P, A, 'mot-envoye');
+    // la ligne du Fil
+    const fil = (pg: Page, proto: boolean): Promise<string> =>
+      proto ? pg.evaluate(`String(FEED[0] && FEED[0].text)`) : pg.evaluate(`String(${P_}.magasin.etat().fil[0].text)`);
+    expect(await fil(A, false)).toBe(await fil(P, true));
+    expect(await fil(A, false)).toContain('Marseille');
+    expect(erreurs).toEqual([]);
+  } finally {
+    await Promise.all([P.context().close(), A.context().close()]);
+  }
+});

@@ -32,6 +32,10 @@ export function monterSaisieMot(o: {
   actif: () => boolean;
   /** le mot s'écrit (le magasin) : la liste de la fiche se repose dans la même tâche */
   envoyer: (texte: string) => void;
+  /** le bloc collé où vit la ligne (« Un mot… » d'un Cercle, lot 5) : le mot neuf doit se poser au-dessus de lui */
+  bloc?: () => HTMLElement | null;
+  /** C-267 (v201b) : la place sûre d'un défilement posé par l'app — jamais la vague à demi sous la bande (`_ficheSure`, au-delà quand il le peut) */
+  sure?: (t: number) => number;
 }): SaisieMot {
   const { fi, defile, ligne, mot, nb } = o;
   const saisie = el('input', {
@@ -163,17 +167,25 @@ export function monterSaisieMot(o: {
       t.style.removeProperty('visibility');
       copie.remove();
     };
-    // le mot neuf doit se VOIR se poser : s'il tomberait sous la barre (760, ou le clavier), la fiche glisse d'autant
+    // le mot neuf doit se VOIR se poser : s'il tomberait sous la barre (760, le clavier, ou le bloc « Un mot… » d'un Cercle), la fiche glisse
+    // d'autant ; au-dessus de 120, elle remonte ; jamais au-delà de ce qui défile, ni la vague à demi sous la bande (le prototype : `envoie`)
     const vv = window.visualViewport;
     let bas = 760;
+    const hb = o.bloc?.();
+    const rb = hb?.getBoundingClientRect();
+    if (rb?.height) bas = Math.min(bas, (rb.top - R.top) / k);
     if (vv) bas = Math.min(bas, (vv.offsetTop + vv.height - R.top) / k);
     const un = t.closest('.cm5-un')!.getBoundingClientRect();
+    const hu = (un.top - R.top) / k;
     const bu = (un.bottom - R.top) / k - 12;
+    let sc = 0;
     if (bu > bas - 8) {
-      const lt = (ligne.getBoundingClientRect().top - R.top) / k;
-      const sc = Math.min(bu - (bas - 8), Math.max(0, lt - 120));
-      if (sc > 0.5) defile.scrollTo({ top: defile.scrollTop + sc, behavior: 'smooth' });
-    }
+      sc = bu - (bas - 8);
+      if (!rb?.height) sc = Math.min(sc, Math.max(0, (ligne.getBoundingClientRect().top - R.top) / k - 120));
+    } else if (hu < 120) sc = hu - 120;
+    sc = Math.max(-defile.scrollTop, Math.min(sc, defile.scrollHeight - defile.clientHeight - defile.scrollTop));
+    if (o.sure) sc = o.sure(defile.scrollTop + sc) - defile.scrollTop;
+    if (Math.abs(sc) > 0.5) defile.scrollTo({ top: defile.scrollTop + sc, behavior: 'smooth' });
   }
 
   /** C-257 : le nombre touché, la fiche glisse jusqu'au premier mot neuf, ou au plus récent, 16 pt sous l'en-tête (le défilement doux natif) */
