@@ -491,11 +491,16 @@ export function stockageFiches(cercle = false): Record<string, string> {
 export function stockageCercles(): Record<string, string> {
   const ls = stockageFiches(true);
   const st = JSON.parse(ls['promi_state']!) as {
-    promises: Array<{ id: number; nuee?: string }>;
+    promises: Array<{ id: number; nuee?: string; files?: unknown[] }>;
     NUE: Record<string, string>;
     NUEEMEM: Record<string, string[]>;
   };
-  for (const q of st.promises) if ([144, 146, 147, 152].includes(q.id)) q.nuee = 'n1';
+  // leurs listes de fichiers, vides : sans elles, le prototype pose un fichier de DÉMONSTRATION sur la première parole d'un Cercle (PAROLE_CERCLE)
+  for (const q of st.promises)
+    if ([144, 146, 147, 152].includes(q.id)) {
+      q.nuee = 'n1';
+      q.files = [];
+    }
   st.NUE['n2'] = 'Atelier';
   st.NUEEMEM['n2'] = [];
   ls['promi_state'] = JSON.stringify(st);

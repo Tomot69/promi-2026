@@ -3,6 +3,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import type { Parole } from '../../src/donnees/schema.ts';
+import { migrer, MIGRATIONS } from '../../src/donnees/migrations/index.ts';
 import { baseCercle, ligneAvec, ligneEtatCercle, motDuFil, parolesDuCercle } from '../../src/metier/cercle.ts';
 
 const P = (o: Partial<Parole>): Parole => ({ id: 1, title: 't', who: 'moi', status: 'encours', ...o }) as Parole;
@@ -38,5 +39,10 @@ describe('la fiche d’un Cercle', () => {
     expect(motDuFil(P({ chiche: true }))).toBe('CHICHE LANCÉ');
     expect(motDuFil(P({ chiche: true, status: 'tenu' }))).toBe('CHICHE RELEVÉ');
     expect(motDuFil(P({ chiche: true, suite: { chicheEtat: 'releve' } }))).toBe('CHICHE RELEVÉ');
+  });
+  it('le schéma v3 : un état v2 reçoit sa table des réglages des Cercles, vide ; rien d’autre ne change', () => {
+    const v2 = { schema: 2, paroles: [{ id: 1, title: 'a' }], cercles: { n1: 'Marseille' } };
+    const e = migrer(v2, MIGRATIONS, 3) as unknown as Record<string, unknown>;
+    expect(e).toEqual({ ...v2, schema: 3, infosCercles: {} });
   });
 });

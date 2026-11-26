@@ -1189,3 +1189,176 @@
   top: 71px;
   background: var(--c-bleu45);
 }
+
+/* ── PEAUFINER D'UN CERCLE (lot 5 ; `PLAN` de lot-NUEE-PEAUFINER, relevé du 26 nov. 2026) — des cartes en cotes absolues sur deux pages de 760 ;
+   le corps du Cercle, ses libellés au lilas ── */
+#detailPoster.fi-cercle #dpdCorps {
+  background: var(--c-mauve35);
+}
+#detailPoster.fi-cercle #dpdCorps :is(.s2-lab, .s2-txt, .s2-vis, .pc-ap) {
+  color: var(--c-mauve77);
+}
+/* deux pages de 760 : la hauteur est celle du pied (`#npPied`, qui grandit avec MEMBRES déplié) — ni le padding de la liste d'une parole */
+#detailPoster #dpdCorps .s2-liste.np-liste {
+  padding: 0;
+}
+#dpdCorps #npPied {
+  width: 1px;
+  height: 1520px;
+}
+#dpdCorps .np-carte {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  border-radius: 30px;
+  color: var(--c-creme95);
+}
+#dpdCorps .np-lab {
+  font: 500 11.5px var(--f-texte);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-mauve77);
+}
+#dpdCorps .np-val {
+  font: 700 18px var(--f-libelle);
+  white-space: nowrap;
+  color: var(--c-creme95);
+}
+#dpdCorps .np-bas {
+  font: 700 14px var(--f-libelle);
+  white-space: nowrap;
+  color: var(--c-mauve77);
+}
+/* LE TRAIT : 118 de haut, le libellé et la valeur à 22 du bord, le rail (298) dessous */
+#dpdCorps #npTrait .np-lab {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+}
+#dpdCorps #npTrait .np-val {
+  position: absolute;
+  right: 22px;
+  top: 19px;
+}
+/* le nom d'un pinceau dans la carte LE TRAIT d'un Cercle : 12 pt (le prototype : `#npTrait .pc-n`, hors du plancher d'`echelle()`) */
+#dpdCorps #npTrait .pc-n {
+  font-size: 12px;
+}
+#dpdCorps #npTrait .pc-glisse {
+  position: absolute;
+  left: 22px;
+  top: 48px;
+  width: 298px;
+}
+/* DESCRIPTION : 104, le libellé 17 sous le bord, le champ, sa ligne à 67 */
+#dpdCorps #npDesc {
+  padding: 17px 23px 0;
+}
+#dpdCorps #npDesc .np-champ {
+  display: block;
+  width: 292px;
+  height: 22.5px;
+  margin: 5.3px 0 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  font: 400 18px/22.5px var(--f-libelle);
+  color: var(--c-mauve77);
+}
+#dpdCorps #npDesc .np-champ::placeholder {
+  color: var(--c-mauve77);
+  opacity: 1;
+}
+#dpdCorps #npDesc .np-bas {
+  position: absolute;
+  left: 23px;
+  top: 65px;
+}
+/* MEMBRES et PIÈCES JOINTES : le libellé à gauche, la valeur à droite, 25 des bords ; PIÈCES JOINTES porte sa ligne dessous */
+#dpdCorps :is(#npMemb, #npFich) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+  padding: 0 23px;
+}
+#dpdCorps #npMemb {
+  border-radius: 32px;
+}
+#dpdCorps #npFich {
+  border-radius: 46px;
+  align-content: flex-start;
+  padding-top: 17.5px;
+}
+#dpdCorps #npFich .np-bas {
+  flex: 0 0 100%;
+  margin-top: 9.3px;
+}
+#dpdCorps :is(#npMemb, #npFich) .np-val {
+  line-height: 25px;
+}
+#dpdCorps #npMemb.np-ouv {
+  align-content: flex-start;
+  padding-top: 19.5px;
+  padding-bottom: 16px;
+}
+#dpdCorps .np-ctl {
+  flex: 0 0 100%;
+  margin-top: 12px;
+}
+/* « Planter dans le Cercle » : le bouton de la fiche, sur le corps (son trait à sa couleur) */
+#dpdCorps .np-planter {
+  position: absolute;
+  left: var(--marge-g);
+  top: 552px;
+  border-color: var(--c-mauve12);
+  letter-spacing: normal;
+  opacity: 0.9;
+}
+#dpdCorps .np-murs {
+  position: absolute;
+  left: var(--marge-g);
+  top: 630px;
+  width: 342px;
+  margin: 0;
+}
+/* DISSOUDRE LE CERCLE : une rangée sans contour, le libellé centré, la corbeille devant */
+#dpdCorps .np-diss {
+  height: 64px;
+  border-color: transparent;
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+/* la corbeille de « SUPPRIMER CE PROMI » (16 pt, 10 pt avant le libellé, à la crème) */
+#dpdCorps .np-diss::before {
+  content: '';
+  display: block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: var(--c-creme95);
+  -webkit-mask: var(--v16-corbeille) center / 16px 16px no-repeat;
+  mask: var(--v16-corbeille) center / 16px 16px no-repeat;
+}
+#dpdCorps .np-diss .np-lab {
+  font-size: 13px;
+  line-height: 13px;
+  letter-spacing: 0.18em;
+  color: var(--c-creme95);
+}
+/* le nom du Cercle en tête de Peaufiner : l'encre de sa dernière lettre dépasse son avance (le « e » de Marseille) — le prototype ne le rogne pas
+   (`#npNom`, un span sans découpe) ; 2 pt de jeu à droite de la boîte qui rogne */
+#dpdCorps .np-tete .s2-titre {
+  padding-right: 2px;
+}

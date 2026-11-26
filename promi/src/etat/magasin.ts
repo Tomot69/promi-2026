@@ -71,6 +71,20 @@ export interface Actions {
   /** un Cercle créé ; son dessin (C-042), gardé par Cercle dans la clé du prototype `promi_dessins_cercle` */
   creerCercle(nom: string, membres: string[], maintenant: number, dessin?: unknown): string;
   /**
+   * PEAUFINER UN CERCLE (lot 5 ; le prototype : le Peaufiner d'une Nuée, `_nueePeaufiner`) — sa DESCRIPTION, ses PIÈCES JOINTES, son TRAIT
+   * (`infosCercles`, v3 : le prototype ne les gardait pas). Écrit tout de suite.
+   */
+  peaufinerCercle(cle: string, champs: { note?: string; fichiers?: string[]; trait?: string }): void;
+  /** les MEMBRES d'un Cercle (`_nqMembers`, l'ajout et la croix) : la liste neuve */
+  membresCercle(cle: string, membres: string[]): void;
+  /**
+   * DISSOUDRE un Cercle (C-192 ; `_nqDissolve(cle, false)`) : ses paroles restent, hors du Cercle ; le Cercle, ses membres et ses réglages
+   * partent. Rend ce qu'il faut pour l'annuler (« Annuler », 5 s), ou null.
+   */
+  dissoudre(cle: string): { cle: string; avant: Etat } | null;
+  /** « Annuler » après une dissolution : le Cercle revient tel qu'il était (ce qui a changé depuis reste) */
+  rendreCercle(x: { cle: string; avant: Etat }): void;
+  /**
    * TENIR (lot 3a-2 ; le prototype : le clic « tenue » de `#segStatus`, `lot-S5`, `lot-V145-PARTS`, `lot-V149-VALIDATION`) — le trait tracé
    * jusqu'au bout sur une fiche. Seul (ou la dernière part) : la parole passe tenue (`trace`, `vuTenue.moi`, une ligne du Fil, une parole
    * récurrente renaît) → « tenue ». À plusieurs, ma part n'étant pas la dernière : `parts.moi` seul → « part ». Je ne suis pas de ceux qui
@@ -584,6 +598,46 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       fil.unshift(ligneFil(fid++, 'kept', texte, maintenant, { pid: id }));
       valider('tenir', { ...e, paroles, fil, compteurs: { ...e.compteurs, nid, fid } });
       return 'tenue';
+    },
+    peaufinerCercle(cle, champs) {
+      if (!(cle in e.cercles)) return;
+      const avant = e.infosCercles[cle] ?? {};
+      const neuf = { ...avant, ...champs };
+      if (JSON.stringify(neuf) === JSON.stringify(avant)) return;
+      valider('peaufinerCercle', { ...e, infosCercles: { ...e.infosCercles, [cle]: neuf } });
+    },
+    membresCercle(cle, membres) {
+      if (!(cle in e.cercles)) return;
+      const l = membres.map((x) => x.trim()).filter((x, i, a) => x && a.indexOf(x) === i);
+      if (JSON.stringify(l) === JSON.stringify(e.membres[cle] ?? [])) return;
+      valider('membresCercle', { ...e, membres: { ...e.membres, [cle]: l } });
+    },
+    dissoudre(cle) {
+      if (!(cle in e.cercles)) return null;
+      const avant = e;
+      const sans = <T>(o: Record<string, T>): Record<string, T> =>
+        Object.fromEntries(Object.entries(o).filter(([c]) => c !== cle));
+      valider('dissoudre', {
+        ...e,
+        paroles: e.paroles.map((q) => (q.nuee === cle ? { ...q, nuee: null } : q)),
+        cercles: sans(e.cercles),
+        membres: sans(e.membres),
+        infosCercles: sans(e.infosCercles),
+      });
+      return { cle, avant };
+    },
+    rendreCercle(x) {
+      const a = x.avant;
+      const k = x.cle;
+      if (k in e.cercles || !(k in a.cercles)) return;
+      const ids = new Set(a.paroles.filter((q) => q.nuee === k).map((q) => q.id));
+      valider('rendreCercle', {
+        ...e,
+        paroles: e.paroles.map((q) => (ids.has(q.id) && q.nuee == null ? { ...q, nuee: k } : q)),
+        cercles: { ...e.cercles, [k]: a.cercles[k]! },
+        membres: { ...e.membres, [k]: a.membres[k] ?? [] },
+        infosCercles: a.infosCercles[k] ? { ...e.infosCercles, [k]: a.infosCercles[k] } : e.infosCercles,
+      });
     },
     creerCercle(nom, membres, maintenant, dessin) {
       const cle = `n${String(maintenant)}`;

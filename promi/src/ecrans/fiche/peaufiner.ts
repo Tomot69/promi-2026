@@ -22,6 +22,8 @@ import { connus as connusDe, monterAjout, rendreListe } from '../personnes/gens.
 import { motAvant, dateQuand } from '../../metier/echeance.ts';
 import { recue } from '../../metier/fiche.ts';
 import { TEXTES_PAGE_PLUS as TP } from '../../textes/page-plus.ts';
+import { champSansEmoji } from '../../metier/emoji.ts';
+import { batirTete } from './cercle.ts';
 
 const TXT = {
   trait: 'LE TRAIT',
@@ -34,6 +36,15 @@ const TXT = {
   enLair: 'en l’air',
   supprimerPromi: 'SUPPRIMER CE PROMI',
   supprimerChiche: 'SUPPRIMER CE CHICHE',
+  // le Peaufiner d'un Cercle (lot 5 ; `PLAN` de lot-NUEE-PEAUFINER)
+  description: 'DESCRIPTION',
+  descriptionVide: 'présente le Cercle, son but…',
+  descriptionVis: 'visible par tous les membres',
+  membres: 'MEMBRES',
+  personneEncore: 'personne encore',
+  aucunFichier: 'aucun fichier',
+  fichiersVis: 'visibles par le Cercle',
+  dissoudre: 'DISSOUDRE LE CERCLE',
   visible: (qui: string): string => `visible par ${qui}`,
   visibles: (qui: string): string => `visibles par ${qui}`,
 } as const;
@@ -64,6 +75,14 @@ export function monterPeaufinerFiche(o: {
   couleur: (p: Parole) => string | null;
   /** SUPPRIMER (la confirmation, la pierre tombale : lot 3b-1b) — tant qu'il n'est pas branché, sa rangée se déclare inactive */
   supprimer?: (p: Parole) => void;
+  /** lot 5 : le Cercle ouvert (sa clé) — Peaufiner porte alors ses réglages à lui */
+  cercle?: () => string | null;
+  /** « Planter dans le Cercle » touché dans Peaufiner : son menu (C-230) */
+  planter?: (bouton: HTMLElement) => void;
+  /** DISSOUDRE LE CERCLE (C-192) : la feuille de confirmation, puis l'annulation */
+  dissoudre?: (cle: string) => void;
+  /** LA COULEUR d'un Cercle (le mur) : celle de sa dalle (`NUEDALLE`), ou rien */
+  couleurCercle?: (cle: string) => string | null;
 }): PeaufinerFiche {
   const { fi, barre, chevron, magasin } = o;
   const L = TP.peauf;
@@ -97,6 +116,12 @@ export function monterPeaufinerFiche(o: {
     surface: fi,
     connus,
     valider: (n) => {
+      const k = o.cercle?.();
+      if (k && gensCercle) {
+        const l = magasin.etat().membres[k] ?? [];
+        if (!l.includes(n)) magasin.membresCercle(k, [...l, n]);
+        return;
+      }
       const p = o.parole();
       if (!p || !gensOuvert) return;
       const l = lire(p, gensOuvert);
@@ -141,6 +166,190 @@ export function monterPeaufinerFiche(o: {
     });
     return gn;
   }
+  /** les MEMBRES d'un Cercle, dépliés (le choix des personnes, sans tête : « Toi » n'est pas un membre qu'on retire) */
+  let gensCercle = false;
+  function gensDuCercle(k: string): HTMLElement {
+    gensCercle = true;
+    const membres = (): string[] => (magasin.etat().membres[k] ?? []).filter((n) => !/^moi$/i.test(n));
+    const { gn, zone } = rendreListe(
+      {
+        nat: 'nuee',
+        choisis: membres,
+        tete: null,
+        teteOn: () => false,
+        teteCroix: false,
+        connus,
+        touche: (nom, croix) => {
+          if (nom === null) return;
+          const l = membres();
+          if (croix)
+            magasin.membresCercle(
+              k,
+              l.filter((x) => x !== nom),
+            );
+          else if (!l.includes(nom)) magasin.membresCercle(k, [...l, nom]);
+        },
+      },
+      ajout.touche,
+    );
+    ajout.rendre(zone);
+    horloge().image(() => {
+      ajout.poser();
+    });
+    return gn;
+  }
+
+  /**
+   * LE PEAUFINER D'UN CERCLE (lot 5 ; `PLAN` de lot-NUEE-PEAUFINER, lot-NUEE-CERCLE, C-192) — en cotes absolues sur deux pages de 760 : la tête
+   * (le nom, le X), LE TRAIT (son rail toujours déplié, 110 → 228), DESCRIPTION (244), MEMBRES (364), PIÈCES JOINTES (444), « Planter dans le
+   * Cercle » (552), le bloc de Ma Parole ! (630, 384 de haut), DISSOUDRE LE CERCLE (104 sous le bloc). MEMBRES déplié grandit de la liste des
+   * personnes : ce qui le suit descend d'autant (C-242).
+   */
+  function batirCercle(k: string): void {
+    const e = magasin.etat();
+    const info = e.infosCercles[k] ?? {};
+    const liste = el('div', { class: 's2-liste np-liste' });
+    const tete = pf.tete(e.cercles[k] ?? k, TP.fermerGlyphe, TP.fermer, () => {
+      fermer();
+    });
+    tete.classList.add('np-tete');
+    liste.appendChild(tete);
+    const carte = (id: string, y: number, h: number, lab: string, val: string | null): HTMLElement => {
+      const c = el('div', { id, class: 'np-carte' });
+      c.style.top = `${String(y)}px`;
+      c.style.minHeight = `${String(h)}px`;
+      const l = el('div', { class: 'np-lab' });
+      l.textContent = lab;
+      c.appendChild(l);
+      if (val != null) {
+        const v = el('div', { class: 'np-val' });
+        v.textContent = val;
+        c.appendChild(v);
+      }
+      return c;
+    };
+    // LE TRAIT : son rail toujours déplié ; un toucher choisit (le trait de la fiche se refait sous les yeux)
+    const nomT = typeof info.trait === 'string' && PINCEAUX.some((x) => x.nom === info.trait) ? info.trait : 'Plein';
+    const ct = carte('npTrait', 110, 118, TXT.trait, nomT);
+    ct.appendChild(
+      railPinceaux(
+        ct,
+        nomT,
+        (n) => {
+          magasin.peaufinerCercle(k, { trait: n });
+        },
+        ct.querySelector<HTMLElement>('.np-lab'),
+      ),
+    );
+    liste.appendChild(ct);
+    // DESCRIPTION : le champ (sans emoji), sa ligne de visibilité
+    const cd = carte('npDesc', 244, 104, TXT.description, null);
+    const ta = el('textarea', { id: 'nqNote', class: 'np-champ', rows: '1', placeholder: TXT.descriptionVide });
+    ta.value = info.note ?? '';
+    champSansEmoji(ta);
+    // écrite en quittant le champ (`blur` : un champ que le filtre des emoji a réécrit ne produit plus de `change`) ; le magasin compare avant d'écrire
+    for (const t of ['change', 'blur'] as const)
+      ta.addEventListener(t, () => {
+        magasin.peaufinerCercle(k, { note: ta.value });
+      });
+    const bd = el('div', { class: 'np-bas' });
+    bd.textContent = TXT.descriptionVis;
+    cd.append(ta, bd);
+    liste.appendChild(cd);
+    // MEMBRES : « Rachel · Marion », « Rachel · Adrien · +3 » au-delà de trois (moi compris) ; déplié : le choix des personnes
+    const m = (e.membres[k] ?? []).slice();
+    const vm = m.length
+      ? m.length > 3
+        ? m.slice(0, 2).join(' · ') + ' · +' + String(m.length - 1)
+        : m.join(' · ')
+      : TXT.personneEncore;
+    const cm = carte('npMemb', 364, 64, TXT.membres, vm);
+    liste.appendChild(cm);
+    // PIÈCES JOINTES : celles du Cercle et de ses paroles ; le sélecteur de fichiers s'ouvre dans le geste
+    const n =
+      (info.fichiers?.length ?? 0) +
+      e.paroles
+        .filter((q) => q.nuee === k && !q.draft)
+        .reduce((s2, q) => s2 + (Array.isArray(q.suite?.['files']) ? (q.suite['files'] as unknown[]).length : 0), 0);
+    const cf = carte('npFich', 444, 92, L.pieces, n ? L.piecesVal(n) : TXT.aucunFichier);
+    const fin = el('input', { type: 'file', multiple: '', class: 's2-fichiers', 'aria-hidden': 'true' });
+    fin.addEventListener('change', () => {
+      const avant = info.fichiers ?? [];
+      const noms = [...(fin.files ?? [])].map((f) => f.name).filter((x) => !avant.includes(x));
+      if (noms.length) magasin.peaufinerCercle(k, { fichiers: [...avant, ...noms] });
+    });
+    cf.addEventListener('click', () => {
+      fin.click();
+    });
+    const bf = el('div', { class: 'np-bas' });
+    bf.textContent = TXT.fichiersVis;
+    cf.append(fin, bf);
+    liste.appendChild(cf);
+    // « Planter dans le Cercle » : le même bouton que la fiche, son menu (C-230)
+    const pl = batirTete().planter;
+    pl.removeAttribute('id');
+    pl.classList.add('np-planter');
+    surToucher(pl, () => {
+      o.planter?.(pl);
+    });
+    liste.appendChild(pl);
+    // le bloc de Ma Parole ! (des murs, flous)
+    const mu = pf.murs(L.murs, o.couleurCercle?.(k) ?? null);
+    mu.classList.add('np-murs');
+    liste.appendChild(mu);
+    // DISSOUDRE LE CERCLE
+    const di = el('div', { id: 'npDiss', class: 'np-carte np-diss', role: 'button' });
+    const dl = el('div', { class: 'np-lab' });
+    dl.textContent = TXT.dissoudre;
+    di.appendChild(dl);
+    surToucher(di, () => {
+      o.dissoudre?.(k);
+    });
+    liste.appendChild(di);
+    liste.appendChild(el('div', { id: 'npPied' }));
+    // MEMBRES déplié : la liste des personnes sous sa rangée (elle le reste quand Peaufiner se rebâtit), ce qui suit descend d'autant
+    const ouvreM = (): void => {
+      const ctl = el('div', { class: 's2-ctl np-ctl' });
+      ctl.appendChild(gensDuCercle(k));
+      cm.appendChild(ctl);
+      cm.classList.add('np-ouv');
+    };
+    if (pf.ouverte === TXT.membres) ouvreM();
+    surToucher(cm, (ev) => {
+      if ((ev.target as Element).closest('.s2-ctl')) return;
+      if (cm.classList.contains('np-ouv')) {
+        cm.classList.remove('np-ouv');
+        cm.querySelector('.s2-ctl')?.remove();
+        pf.ouverte = null;
+        gensCercle = false;
+        ajout.remettre();
+      } else {
+        pf.ouverte = TXT.membres;
+        ouvreM();
+      }
+      descendre();
+    });
+    pf.poser(liste);
+    descendre();
+  }
+  /** ce qui suit MEMBRES descend de ce qu'il a grandi (C-242 : `_npGensH`) */
+  function descendre(): void {
+    const cm = corps.querySelector<HTMLElement>('#npMemb');
+    if (!cm) return;
+    const dh = Math.max(0, cm.offsetHeight - 64);
+    for (const [sel, y] of [
+      ['#npFich', 444],
+      ['.np-planter', 552],
+      ['.np-murs', 630],
+      ['#npDiss', 1118],
+    ] as const) {
+      const x = corps.querySelector<HTMLElement>(sel);
+      if (x) x.style.top = `${String(y + dh)}px`;
+    }
+    const pied = corps.querySelector<HTMLElement>('#npPied');
+    if (pied) pied.style.height = `${String(Math.max(1520, 1118 + dh + 64 + 56))}px`;
+  }
+
   const passages = new Map<HTMLElement, ControlePassage>();
 
   const reduit = (): boolean => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -313,10 +522,13 @@ export function monterPeaufinerFiche(o: {
 
   function ouvrir(): void {
     const p = o.parole();
-    if (ouvert || !p) return;
+    const k = o.cercle?.() ?? null;
+    if (ouvert || (!p && !k)) return;
     ouvert = true;
     pf.ouverte = null;
-    batir(p);
+    if (p) batir(p);
+    else if (k) batirCercle(k);
+    fi.classList.toggle('dpd-cercle', !p);
     corps.hidden = false;
     corps.scrollTop = 0;
     pf.croix();
@@ -330,6 +542,7 @@ export function monterPeaufinerFiche(o: {
     ouvert = false;
     ajout.remettre();
     gensOuvert = null;
+    gensCercle = false;
     parLePlus = false;
     barre.setAttribute('aria-expanded', 'false');
     const fin = (): void => {
@@ -352,10 +565,12 @@ export function monterPeaufinerFiche(o: {
   }
   function reposer(): void {
     const p = o.parole();
-    if (!ouvert || !p) return;
+    const k = o.cercle?.() ?? null;
+    if (!ouvert || (!p && !k)) return;
     // calendrier ouvert : jamais rebâti (un champ retiré de la page referme le calendrier d'iOS) ; il se rebâtit à sa fermeture
     if (document.activeElement instanceof HTMLElement && corps.contains(document.activeElement)) return;
-    batir(p);
+    if (p) batir(p);
+    else if (k) batirCercle(k);
   }
 
   barre.setAttribute('aria-expanded', 'false');
@@ -386,17 +601,21 @@ export function monterPeaufinerFiche(o: {
 
   function ouvrirPersonnes(): void {
     const p = o.parole();
-    if (!p) return;
-    const lab = p.chiche ? TXT.quiOse : TXT.aQui;
+    const k = o.cercle?.() ?? null;
+    if (!p && !k) return;
+    const lab = k ? TXT.membres : p?.chiche ? TXT.quiOse : TXT.aQui;
     if (ouvert) fermer(false);
     parLePlus = true;
     ouvrir();
-    // la rangée des personnes, dépliée (Peaufiner se rebâtit sur elle)
+    // la rangée des personnes, dépliée (Peaufiner se rebâtit sur elle) ; sur un Cercle, MEMBRES (C-242 : lot-V181A-CERCLE)
     pf.ouverte = lab;
-    batir(p);
-    const r = [...corps.querySelectorAll<HTMLElement>('.s2-reg')].find(
-      (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
-    );
+    if (p) batir(p);
+    else if (k) batirCercle(k);
+    const r = k
+      ? corps.querySelector<HTMLElement>('#npMemb')
+      : [...corps.querySelectorAll<HTMLElement>('.s2-reg')].find(
+          (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
+        );
     if (!r) return;
     // le panneau glisse jusqu'à elle (420 ms, aller-retour quadratique ; l'avancée bornée à 34 ms par image : une image longue ne le fait pas sauter)
     const cible = Math.max(0, Math.min(r.offsetTop - 110, corps.scrollHeight - corps.clientHeight));
@@ -428,7 +647,12 @@ export function monterPeaufinerFiche(o: {
  * de 2 pt, plein (libre) ou en pointillés (Ma Parole !), à l'encre du contour de la rangée ; la choisie à la teinte du libellé ; l'échantillon
  * (60 pt) d'un pinceau libre ou choisi ; un pinceau de Ma Parole ! est un MUR (lot-V163B-PINCEAU : flou 4,8 px, trait plein, sans prise)
  */
-function railPinceaux(r: HTMLElement, choisi: string, choisit: (nom: string) => void): HTMLElement {
+function railPinceaux(
+  r: HTMLElement,
+  choisi: string,
+  choisit: (nom: string) => void,
+  lab: HTMLElement | null = null,
+): HTMLElement {
   const gl = el('div', { class: 'pc-glisse', 'data-glisse': '1' });
   const rail = el('div', { class: 'pc-rail' });
   const B: Array<[HTMLElement, HTMLElement, HTMLElement, boolean, boolean]> = [];
@@ -461,7 +685,7 @@ function railPinceaux(r: HTMLElement, choisi: string, choisit: (nom: string) => 
   // la teinte (celle du libellé) et l'encre (le contour de la rangée) se LISENT sur la rangée rendue (le prototype : « la teinte se relève à
   // l'écran, jamais dans une règle ») — rebâtie après un choix, la rangée n'est pas encore dans la page : on les lit à l'image qui suit
   const colorer = (): boolean => {
-    const teinte = r.isConnected ? getComputedStyle(r.querySelector('.s2-lab')!).color : '';
+    const teinte = r.isConnected ? getComputedStyle(lab ?? r.querySelector('.s2-lab')!).color : '';
     const encre = r.isConnected ? getComputedStyle(r).borderTopColor : '';
     if (!teinte || !encre) return false;
     for (const [b, e, n, on, libre] of B) {

@@ -986,6 +986,37 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     magasin,
     parole: () => courant,
     couleur: (p) => facade.couleurDalle(p),
+    // lot 5 : le Peaufiner d'un Cercle — « Planter dans le Cercle » (son menu, C-230), DISSOUDRE (C-192 : la feuille, puis 5 s pour annuler ;
+    // ses paroles restent, hors du Cercle ; la fiche se ferme — l'abonné : le Cercle n'est plus là)
+    cercle: () => cercle,
+    couleurCercle: (k) => {
+      const d = magasin.etat().dallesCercles[k];
+      return d ? facade.couleurDalle({ id: -1, dalle: d }) : null;
+    },
+    planter: (b) => {
+      if (menuPlanter.ouvert()) menuPlanter.fermer();
+      else menuPlanter.ouvrir(b);
+    },
+    dissoudre: (k) => {
+      const nom = magasin.etat().cercles[k] ?? k;
+      confirmer(dv, {
+        titre: `Dissoudre « ${nom} » ?`,
+        texte: 'Ses Promi restent, hors du Cercle.',
+        oui: 'Dissoudre',
+        non: TXT.garder,
+        faire: () => {
+          const x = magasin.dissoudre(k);
+          if (!x) return;
+          annulable(dv, {
+            mot: `« ${nom} » dissous`,
+            annuler: TXT.annuler,
+            defaire: () => {
+              magasin.rendreCercle(x);
+            },
+          });
+        },
+      });
+    },
     // SUPPRIMER (`_v16SupprimerPromi`, v187) : la feuille ; « Supprimer » efface la parole (sa pierre tombale), la fiche se ferme (l'abonné
     // ci-dessous : la parole n'est plus là), sa dalle quitte la Toile ; « Annuler » la rend, 5 s
     supprimer: (p) => {
@@ -1009,9 +1040,10 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
       });
     },
   });
-  // le « + » des membres (C-254) : Peaufiner s'ouvre sur les personnes de la parole (sa rangée dépliée, le panneau glissé jusqu'à elle)
+  // le « + » des membres (C-254) : Peaufiner s'ouvre sur les personnes de la parole (sa rangée dépliée, le panneau glissé jusqu'à elle) ; sur un
+  // Cercle, sur ses MEMBRES (C-242)
   surToucher(plusM, () => {
-    if (!courant || plusM.hidden) return;
+    if ((!courant && !cercle) || plusM.hidden) return;
     peauf.ouvrirPersonnes();
   });
 
@@ -1113,7 +1145,10 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     // le Cercle ouvert : il se repose à chaque changement (ses paroles, son nom, ses membres) ; dissous, la fiche se ferme
     if (cercle && !fi.hidden) {
       if (!(cercle in e.cercles)) fermer();
-      else poserCercle(cercle);
+      else {
+        poserCercle(cercle);
+        peauf.reposer();
+      }
       return;
     }
     if (!courant || fi.hidden) return;

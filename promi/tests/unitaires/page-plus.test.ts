@@ -5,7 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { tirer, variante } from '../../src/metier/exemples.ts';
 import { elision } from '../../src/metier/elision.ts';
-import { migrer } from '../../src/donnees/migrations/index.ts';
+import { migrer, MIGRATIONS } from '../../src/donnees/migrations/index.ts';
 import { creerMagasin } from '../../src/etat/magasin.ts';
 import { stockageMemoire } from '../../src/donnees/stockage.ts';
 import { EXEMPLES } from '../../src/textes/page-plus.ts';
@@ -76,7 +76,8 @@ describe('le schéma v2 : le gardé de côté porte son brouillon', () => {
         { id: 3, title: 'c' },
       ],
     };
-    const e = migrer(v1) as unknown as { schema: number; paroles: Array<Record<string, unknown>> };
+    // la migration 1 → 2 seule (la cible : la version 2)
+    const e = migrer(v1, MIGRATIONS, 2) as unknown as { schema: number; paroles: Array<Record<string, unknown>> };
     expect(e.schema).toBe(2);
     expect(e.paroles[0]).toEqual({
       id: 1,

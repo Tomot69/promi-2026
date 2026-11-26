@@ -34,16 +34,30 @@ async function zones(A: Page, P: Page): Promise<{ Z: Zone[]; n: number }> {
           const r = d.getBoundingClientRect();
           out.push([(r.left - D.left) / k - 8, (r.top - D.top) / k - 8, r.width / k + 16, r.height / k + 16]);
         }
-        return out;
+        // une zone sous Peaufiner ouvert ne se voit pas : elle n'est pas exceptée (sinon elle masquerait Peaufiner)
+        const corps = document.getElementById('dpdCorps');
+        const C =
+          corps && !corps.hidden && getComputedStyle(corps).display !== 'none' ? corps.getBoundingClientRect() : null;
+        return out.filter(([x, y, w, h]) => {
+          if (!C) return true;
+          const cx = D.left + (x! + w! / 2) * k;
+          const cy = D.top + (y! + h! / 2) * k;
+          return !(cx >= C.left && cx <= C.right && cy >= C.top && cy <= C.bottom);
+        });
       })) as Zone[]),
     );
   const anneaux = (await A.evaluate(() => {
     const D = document.getElementById('detailPoster')!.getBoundingClientRect();
     const k = D.width / 390 || 1;
-    return [...document.querySelectorAll('#detailPoster.fiche canvas.kr-c')].map((c) => {
-      const r = c.getBoundingClientRect();
-      return [(r.left - D.left) / k, (r.top - D.top) / k, r.width / k, r.height / k];
-    });
+    // un anneau sous Peaufiner ouvert ne se voit pas : il n'est pas excepté
+    const corps = document.getElementById('dpdCorps');
+    const ouvert = !!corps && !corps.hidden;
+    return ouvert
+      ? []
+      : [...document.querySelectorAll('#detailPoster.fiche canvas.kr-c')].map((c) => {
+          const r = c.getBoundingClientRect();
+          return [(r.left - D.left) / k, (r.top - D.top) / k, r.width / k, r.height / k];
+        });
   })) as Zone[];
   return { Z: [...z, ...anneaux], n: anneaux.length };
 }
@@ -174,3 +188,38 @@ test('le menu de « Planter dans le Cercle » : un toucher à côté le referme 
     await Promise.all([P.context().close(), A.context().close()]);
   }
 });
+
+for (const theme of ['sombre', 'clair'] as const)
+  test(`Peaufiner d’un Cercle, ouvert par sa barre, comme le prototype : en haut, puis défilé (700, 1400) — ${theme}`, async ({
+    browser,
+  }) => {
+    const ls = { ...stockageCercles(), promi_prenom: 'Tom', promi_theme: theme === 'clair' ? 'light' : 'dark' };
+    const { P, A, erreurs } = await deuxPilotes(browser, ls);
+    try {
+      // la sonde (sur « … sombre ») : la carte MEMBRES 4 pt plus bas
+      if (sonde('cercle-peauf-decale') && theme === 'sombre')
+        await A.addStyleTag({ content: '#dpdCorps #npMemb{translate:0 4px}' });
+      await ouvrirCercle(P, A, 'n1');
+      await toucherDeux(P, A, '#dpdTog');
+      await poser(P, A, 20);
+      await comparer(P, A, `peauf-${theme}`);
+      for (const y of [700, 1400]) {
+        const p = await P.evaluate((y) => {
+          const c = document.getElementById('dpdCorps')!;
+          c.scrollTop = y;
+          return c.scrollTop;
+        }, y);
+        const a = await A.evaluate((y) => {
+          const c = document.getElementById('dpdCorps')!;
+          c.scrollTop = y;
+          return c.scrollTop;
+        }, y);
+        expect(a, `le défilement de Peaufiner (${String(y)})`).toBe(p);
+        await poser(P, A, 4);
+        await comparer(P, A, `peauf-${theme}-${String(y)}`);
+      }
+      expect(erreurs).toEqual([]);
+    } finally {
+      await Promise.all([P.context().close(), A.context().close()]);
+    }
+  });

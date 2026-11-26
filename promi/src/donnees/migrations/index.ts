@@ -2,18 +2,19 @@
  * LES MIGRATIONS DU SCHÉMA. Chaque version a sa migration vers la suivante, testée sur l'état réel de Tom (etats/) avant d'être livrée.
  * Aucune perte : une migration qui ne sait pas ranger un champ le garde (`suite`, `autres`).
  *
- * Version 1 (L0) ; version 2 (lot 2a : `brouillon`, 002-brouillon.ts) — le schéma de src/donnees/schema.ts. La « version 0 » est le stockage du prototype : on y entre par `importer`.
+ * Version 1 (L0) ; version 2 (lot 2a : `brouillon`, 002-brouillon.ts) ; version 3 (lot 5 : `infosCercles`, 003-infos-cercles.ts) — le schéma de src/donnees/schema.ts. La « version 0 » est le stockage du prototype : on y entre par `importer`.
  * Pour ajouter la version 2 : écrire `002-….ts` (une fonction pure, de la version n à n + 1), l'ajouter à MIGRATIONS, monter VERSION_SCHEMA.
  */
 import type { Etat } from '../schema.ts';
 import { VERSION_SCHEMA } from '../schema.ts';
 import { importerEtRelire, type ExportPrototype } from './prototype.ts';
 import { migrer1vers2 } from './002-brouillon.ts';
+import { migrer2vers3 } from './003-infos-cercles.ts';
 
 type EtatBrut = { schema: number } & Record<string, unknown>;
 
 /** MIGRATIONS[n] mène de la version n à la version n + 1. */
-export const MIGRATIONS: Record<number, (e: EtatBrut) => EtatBrut> = { 1: migrer1vers2 };
+export const MIGRATIONS: Record<number, (e: EtatBrut) => EtatBrut> = { 1: migrer1vers2, 2: migrer2vers3 };
 
 export function estPrototype(x: unknown): x is ExportPrototype {
   if (typeof x !== 'object' || x === null) return false;

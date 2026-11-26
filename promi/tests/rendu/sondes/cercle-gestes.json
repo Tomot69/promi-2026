@@ -8,5 +8,10 @@
     "nom": "cercle-planter-sourd",
     "test": "« Planter dans le Cercle » : le menu, puis Promi — la page + rattachée au Cercle, ses membres choisis",
     "defaut": "« Planter dans le Cercle » n'ouvre plus rien"
+  },
+  {
+    "nom": "cercle-peauf-decale",
+    "test": "Peaufiner d’un Cercle, ouvert par sa barre, comme le prototype : en haut, puis défilé (700, 1400) — sombre",
+    "defaut": "la carte MEMBRES de Peaufiner 4 pt plus bas que le prototype"
   }
 ]

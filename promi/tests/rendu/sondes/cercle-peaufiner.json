@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "dissoudre-emporte",
+    "test": "DISSOUDRE LE CERCLE : « Garder » ne fait rien ; « Dissoudre » : ses paroles restent hors de lui, la fiche se ferme ; « Annuler » le rend (C-192)",
+    "defaut": "dissoudre un Cercle efface aussi ses paroles"
+  },
+  {
+    "nom": "plus-membres-sourd",
+    "test": "MEMBRES : déplié, la croix retire une personne, une personne connue s’ajoute ; « Avec … » suit ; le « + » des membres ouvre MEMBRES déplié (C-242)",
+    "defaut": "le « + » des membres d'un Cercle n'ouvre rien"
+  }
+]

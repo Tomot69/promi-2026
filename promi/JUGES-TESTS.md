@@ -554,3 +554,16 @@ le menu) et `metier/cercle.ts` (ce qu'elle dit). **Exception nommée M1** : la b
 la mini-dalle de chaque ligne du fil. **Trouvé en portant** : le menu posé dans l'appareil était caché par l'écran qui le couvre (`.couvert`) — il
 vit dans la fiche. Pas encore (la suite du lot 5) : Peaufiner d'un Cercle (sa barre, ses cartes, Dissoudre), « Un mot… » d'un Cercle (ses mots),
 le « + » des membres (il est posé ; son toucher), la dalle du Cercle sur la Toile, la création unique.
+
+## Lot 5-2 — Peaufiner d'un Cercle (sa barre, ses cartes, DISSOUDRE, MEMBRES) ; le schéma v3
+
+| Juge du prototype                                           | Test                                                                                                                      | Sonde                 |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| releve-S2 (le Peaufiner d'une Nuée), redteam_cercle_couleur | `cercle-gestes.spec` › « Peaufiner d’un Cercle, ouvert par sa barre, comme le prototype » (en haut, 700, 1400 × 2 thèmes) | `cercle-peauf-decale` |
+| redteam_peauf_rangees (C-192 : DISSOUDRE)                   | `cercle-peaufiner.spec` › « DISSOUDRE LE CERCLE … « Annuler » le rend »                                                   | `dissoudre-emporte`   |
+| redteam_cercle_plus_membres (C-242), redteam_gens           | `cercle-peaufiner.spec` › « MEMBRES : déplié, la croix retire … le « + » des membres ouvre MEMBRES déplié »               | `plus-membres-sourd`  |
+| (neuf : le prototype ne la gardait pas)                     | `cercle-peaufiner.spec` › « DESCRIPTION : écrite, gardée au rechargement (schéma v3), sans emoji »                        | —                     |
+
+**Le schéma passe en version 3** (`003-infos-cercles.ts`) : la DESCRIPTION, les PIÈCES JOINTES et le TRAIT d'un Cercle (`infosCercles`) — le prototype
+les gardait en mémoire seulement (`NUENOTE`, `NUEFILES` : perdus au rechargement). **Trouvé en portant** : le prototype pose un fichier de
+DÉMONSTRATION sur la première parole d'un Cercle (« 1 fichier ») ; l'état des juges donne à ses paroles une liste vide (comme `PAROLE_CERCLE`).
