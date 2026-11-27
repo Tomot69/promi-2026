@@ -7,6 +7,7 @@
  */
 import './peaufiner.css';
 import { changerTexte } from '../../animation/trace/trace.ts';
+import { champExemple } from '../../animation/trace/retour.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { el, poserCroix, surToucher } from '../commun.ts';
 
@@ -107,10 +108,11 @@ export function creerPeauf(hote: HTMLElement): Peauf {
         ...(o.id ? { id: o.id } : {}),
         class: 's2-txt',
         rows: '1',
-        placeholder: o.vide,
         'aria-label': o.lab,
       });
       ta.value = o.valeur;
+      // lot 4b (C-271) : le texte d'exemple part et revient en se traçant (la brique commune)
+      champExemple(ta, o.vide);
       champSansEmoji(ta);
       ta.addEventListener('input', () => {
         o.change(ta.value);

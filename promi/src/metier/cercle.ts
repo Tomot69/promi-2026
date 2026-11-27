@@ -7,6 +7,16 @@
 import type { Parole } from '../donnees/schema.ts';
 import { champ } from './fiche.ts';
 
+/** les dessins des Cercles (C-042 : la clé du prototype, `promi_dessins_cercle` — un objet { clé du Cercle : dessin }), lus dans les clés gardées */
+export function dessinsCercles(autres: Readonly<Record<string, string>>): Record<string, unknown> {
+  try {
+    const L = JSON.parse(autres['promi_dessins_cercle'] ?? '{}') as Record<string, unknown> | null;
+    return L && typeof L === 'object' ? L : {};
+  } catch {
+    return {};
+  }
+}
+
 /** les paroles d'un Cercle — jamais un gardé de côté — dans l'ordre où elles sont gardées (le fil les montre ainsi) */
 export function parolesDuCercle(paroles: readonly Parole[], cle: string): Parole[] {
   return paroles.filter((q) => !q.draft && q.nuee === cle);

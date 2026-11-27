@@ -49,6 +49,10 @@ export function monterMenuPhoto(o: {
   dessiner: () => void;
   aDessin: (p: Parole) => boolean;
   retirerDessin: () => void;
+  /** la fiche d'un Cercle ouverte (C-042, v132) : « un Cercle ne porte pas de photo : il dessine » — le menu n'a que « Dessiner » (et
+   *  « Retirer le dessin ») ; son dessin posé ou commencé */
+  cercle?: () => boolean;
+  aDessinCercle?: () => boolean;
 }): MenuPhoto {
   const { hote, bouton, magasin } = o;
   const entree = el('input', { type: 'file', accept: 'image/*', class: 'fi-photo-in', 'aria-hidden': 'true' });
@@ -74,7 +78,8 @@ export function monterMenuPhoto(o: {
   }
   function ouvrir(): void {
     const p = o.parole();
-    if (!p) return;
+    const c = !p && !!o.cercle?.();
+    if (!p && !c) return;
     if (menu) {
       fermer();
       return;
@@ -102,24 +107,25 @@ export function monterMenuPhoto(o: {
       },
       'data-dessiner',
     );
-    item(TP.menuPhoto.importer, () => {
-      entree.click();
-      fermer();
-    });
-    if (p.monde?.m)
+    if (p)
+      item(TP.menuPhoto.importer, () => {
+        entree.click();
+        fermer();
+      });
+    if (p?.monde?.m)
       item(mondeOrigine(p) ? TXT.studio : TXT.origine, () => {
         fermer();
         magasin.photo(p.id, { origine: !mondeOrigine(p) });
         o.repeindre(false);
       });
-    if (photoDe(p))
+    if (p && photoDe(p))
       item(TP.menuPhoto.retirer, () => {
         fermer();
         magasin.photo(p.id, { photo: null });
         o.repeindre(false);
       });
     // un dessin posé ou commencé : « Retirer le dessin » (le prototype, `retire`), en dernier
-    if (o.aDessin(p))
+    if (p ? o.aDessin(p) : !!o.aDessinCercle?.())
       item(TP.menuPhoto.retirerDessin, () => {
         fermer();
         o.retirerDessin();

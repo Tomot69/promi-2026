@@ -31,7 +31,14 @@ import { imagePhoto, peindrePhoto } from '../photo/peinture.ts';
 import { monterEntier, type Cadre, type Entier } from '../photo/entier.ts';
 import { dessinVu, monterBandeDessin } from './dessin-fiche.ts';
 import { batirFil, batirTete, monterMenuPlanter, noyauxCercle, peindreBande } from './cercle.ts';
-import { AMP_CERCLE, baseCercle, ligneAvec, ligneEtatCercle, parolesDuCercle } from '../../metier/cercle.ts';
+import {
+  AMP_CERCLE,
+  baseCercle,
+  dessinsCercles,
+  ligneAvec,
+  ligneEtatCercle,
+  parolesDuCercle,
+} from '../../metier/cercle.ts';
 import { couleurDe, dessinEntier, dessinPose, modeDessinPartage, type Dessin } from '../page-plus/dessin.ts';
 import { origineGardee } from '../../metier/origine.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
@@ -84,6 +91,7 @@ const TXT = {
   fermer: 'Fermer',
   fermerGlyphe: 'X',
   photo: 'Photo',
+  dessinerCercle: 'Dessiner sur ce Cercle',
   unMot: 'Un mot…',
   peaufiner: 'Peaufiner',
   chevron: '▾',
@@ -169,6 +177,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   // le dessin posé, dans la bande (dessin-fiche.ts, lot 3b-5) : sa couche juste après le champ, sous le trait
   const bandeDessin = monterBandeDessin(defile, champ);
   const dessinDe = (p: Parole): Dessin | null => (p.suite?.['dessin'] as Dessin | undefined) ?? null;
+  /** le dessin d'un Cercle (C-042 : la clé du prototype, `promi_dessins_cercle`) */
+  const dessinCercleDe = (k: string): Dessin | null =>
+    (dessinsCercles(magasin.etat().autres)[k] as Dessin | undefined) ?? null;
   // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
   fi.append(plateau, defile, barre);
   dv.appendChild(fi);
@@ -381,8 +392,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     T = { mode: 'complet', base: baseCercle(liste.length), amp: AMP_CERCLE, carte: false };
     fi.classList.remove('fi-promi', 'fi-chiche', 'fi-tenue');
     fi.classList.add('fi-cercle');
-    // le dessin d'un Cercle (son bouton photo) n'est pas encore porté : le bouton se déclare inactif, comme le rond Partager
-    photo.setAttribute('aria-disabled', 'true');
+    // C-042 (v132) : « la fiche d'un Cercle reçoit son bouton photo (il ouvre « Dessiner ») » — un Cercle ne porte pas de photo : il dessine
+    photo.setAttribute('aria-label', TXT.dessinerCercle);
     if (barreLab.isConnected) barreLab.replaceWith(barreLabCercle);
     mot.textContent = 'Cercle';
     poserCroix(croix, croixG, mot);
@@ -497,7 +508,18 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     champ.setAttribute('data-champ', palette.mauve77);
     champ.setAttribute('data-matiere', m);
     champ.setAttribute('data-photo', '');
-    bandeDessin.poser({ d: null, y: onde(T.base, T.amp), nature: palette.mauve77, instant: false, masquer: () => {} });
+    // le dessin posé d'un Cercle REMPLACE ses dalles (le prototype : `bande` d'un Cercle) ; l'œil le masque pour soi
+    const k = cercle;
+    bandeDessin.poser({
+      d: k ? dessinCercleDe(k) : null,
+      y: onde(T.base, T.amp),
+      nature: palette.mauve77,
+      instant: false,
+      masquer: () => {
+        const d = k && dessinCercleDe(k);
+        if (k && d && dessinPose(d)) magasin.dessinCercle(k, { ...d, masque: !d.masque });
+      },
+    });
   }
 
   function peindreTraitCercle(): void {
@@ -525,7 +547,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     cercle = null;
     listeCercle = null;
     fi.classList.remove('fi-cercle');
-    photo.removeAttribute('aria-disabled');
+    photo.setAttribute('aria-label', TXT.photo);
     if (barreLabCercle.isConnected) barreLabCercle.replaceWith(barreLab);
     fil.hidden = true;
     fil.innerHTML = '';
@@ -945,12 +967,33 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     bouton: photo,
     magasin,
     parole: () => (courant && !fi.hidden && !fi.classList.contains('fi-bas') && !instantF ? courant : null),
+    cercle: () => !!cercle && !fi.hidden && !fi.classList.contains('fi-bas'),
+    aDessinCercle: () => {
+      const d = cercle ? dessinCercleDe(cercle) : null;
+      return !!d && (dessinPose(d) || d.traits.length > 0);
+    },
     repeindre: () => {
       if (courant) peindreChamp(courant);
     },
     // le mode dessin (le même que la page +) : il habille le dessin de la parole ; POSER le pose dans la bande (la photo retirée, v140)
     dessiner: () => {
       const p = courant;
+      // la fiche d'un Cercle : son dessin, gardé par Cercle ; POSER le pose dans sa bande (à la place de ses dalles)
+      const k = cercle;
+      if (!p && k) {
+        modeDessin.ouvrir({
+          lire: () => dessinCercleDe(k),
+          ecrire: (d) => {
+            magasin.dessinCercle(k, d);
+          },
+          nature: 'nuee',
+          corps: couleurDe(fi),
+          apres: () => {
+            if (cercle === k) poserCercle(k);
+          },
+        });
+        return;
+      }
       if (!p) return;
       modeDessin.ouvrir({
         lire: () => (courant ? dessinDe(courant) : null),
@@ -972,6 +1015,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
     retirerDessin: () => {
       if (courant) magasin.dessin(courant.id, null);
+      else if (cercle) magasin.dessinCercle(cercle, null);
     },
   });
   const modeDessin = modeDessinPartage({
@@ -985,7 +1029,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   let vueDessin: { cle: string; src: string } | null = null;
   // ── LA PHOTO EN ENTIER, ET CADRÉE AU DOIGT (entier.ts, lot 3b-4) : sur la bande, au repos, rien par-dessus ──
   const ficheLibre = (): boolean =>
-    !!courant &&
+    (!!courant || !!cercle) &&
     !fi.hidden &&
     !fi.classList.contains('fi-bas') &&
     !instantF &&
@@ -999,7 +1043,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     surface: (t) => t === champ || t === defile || t === fi,
     photo: () => (courant && ficheLibre() ? photoDe(courant) : null),
     dessin: () => {
-      const d = courant && ficheLibre() ? dessinDe(courant) : null;
+      const d = ficheLibre() ? (courant ? dessinDe(courant) : cercle ? dessinCercleDe(cercle) : null) : null;
       if (!d || !dessinVu(d)) return null;
       const cle = JSON.stringify([d.fond, d.h, d.poses.length, JSON.stringify(d.poses).length]);
       if (vueDessin?.cle !== cle) vueDessin = { cle, src: dessinEntier(d, 3).toDataURL('image/png') };

@@ -622,3 +622,38 @@ l'ordre est inverse : aucun banc ne le voyait ; le test joue un vrai doigt. ③ 
 partie de son Cercle), dans l'app et dans le prototype (sa demande). **Le saut de l'écran sans geste n'est reproduit ni au banc ni sur le
 simulateur** (relevé de l'app, 40 s, le même chemin) : probable, non prouvé — l'ouverture puis la fermeture du clavier par ② (la vue visible qui
 change, Peaufiner qui suit le clavier) ; le test des 30 s le garde.
+
+## Lot 4b — la brique commune des champs (C-271 ; lot-V203-RETOUR `_retour`, lot-CURSEUR)
+
+| Juge                                                                                       | Test                                                                        | Sonde                 |
+| ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- | --------------------- |
+| la recherche de l'Index : « Rechercher » ↔ « … » au focus, la lettre, l'effacement, quitté | `champs.spec` › « … la recherche de l'Index part et revient en se traçant » | `champ-sec`           |
+| la recherche du Fil : le texte natif caché sous la copie qui se trace                      | `champs.spec` › « … la recherche du Fil … »                                 | `champ-natif-visible` |
+| la NOTE de Peaufiner (fiche ; la page + par la même brique `note`)                         | `champs.spec` › « … la NOTE de Peaufiner … »                                | `champ-sans-curseur`  |
+| la DESCRIPTION d'un Cercle                                                                 | `champs.spec` › « … la DESCRIPTION d'un Cercle … »                          | —                     |
+
+**La brique** : `src/animation/trace/retour.ts` — `champExemple` (le texte d'exemple d'un champ : il part à la première lettre, revient quand on
+efface tout, devient « … » au focus et revient au repos en le quittant ; la brique est le seul écrivain du `placeholder`), `bascule` (« Un mot… »,
+saisie-mot.ts), `remplacer` et `detracerCopie` (« + ajouter quelqu'un » ↔ la ligne de saisie, « un prénom… », gens.ts). Un seul module de tracé
+(C-125), « Réduire les animations » : d'un coup ; une veille finit toute transition qui ne rend pas la main.
+
+**Le juge** : chaque étape posée, la zone du champ au pixel contre le prototype et son texte d'exemple ; pendant elle, la vraie app image par image —
+au moins trois images entre le départ et l'arrivée, et, tant qu'une copie se trace, le texte natif caché sous elle. Image par image contre le
+prototype, non : son ouvrier du tracé répond en temps réel, les deux tracés ne partent pas à la même image. **Écart nommé** : le prototype laisse
+le « … » natif visible sous la copie dans la recherche ouverte et la page + (sa règle de couleur bat `.v203-phx`) — un « … » qui paraît d'un coup,
+ce que C-271 interdit ; la vraie app le cache partout. **Préexistant, hors du lot** : le prototype agrandit la NOTE d'une ligne dès la première
+lettre (`caleZone` lit 2 lignes pour « a ») ; la vraie app non — le juge ne regarde que la première ligne d'une zone de texte. **Corrigé en
+chemin** : quitter la DESCRIPTION vide d'un Cercle écrivait `note: ''`, Peaufiner se rebâtissait sous le doigt et le texte d'exemple revenait d'un
+coup (un garde : une note vide jamais écrite n'est pas réécrite).
+
+## Lot 5-6 — le dessin d'un Cercle (C-042, v132 : `boutonCercle`, le `_photoMenu` d'un Cercle, sa `bande`)
+
+| Juge                                                                                               | Test                                                                               | Sonde                  |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------- |
+| le menu d'un Cercle (« Dessiner » seul) ; posé, le dessin remplace ses dalles (au pixel)           | `cercle-dessin.spec` › « le dessin d'un Cercle, comme le prototype » (deux thèmes) | `dessin-cercle-absent` |
+| l'œil : masqué pour soi, les dalles reviennent (au pixel) ; ce qui s'écrit ; « Retirer le dessin » | `cercle-dessin.spec` (les deux)                                                    | —                      |
+
+Le dessin d'un Cercle est gardé dans la clé du prototype (`promi_dessins_cercle`, celle où la page + d'un Cercle le pose déjà) : aucun
+changement de schéma. **Trouvé en chemin, corrigé** (fiche d'une parole aussi) : la bande collée du haut (`#v187Bande`, 0 → 112 pt) ne peignait que
+le champ — un dessin posé qui montait au-dessus de 112 pt y était coupé net ; elle peint maintenant le dessin par-dessus, comme le prototype
+(`peint` de la bande, v195).

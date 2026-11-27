@@ -11,6 +11,7 @@ import { migrer } from '../donnees/migrations/index.ts';
 import { minuit, poserCles, recompterEcheances, tombe } from '../metier/relecture.ts';
 import { aPlusieurs, etatParts } from '../metier/fiche.ts';
 import { ligneFil } from '../metier/fil.ts';
+import { dessinsCercles } from '../metier/cercle.ts';
 import type { Stockage } from '../donnees/stockage.ts';
 
 export type Abonne = (e: Readonly<Etat>, action: string) => void;
@@ -75,6 +76,8 @@ export interface Actions {
    * (`infosCercles`, v3 : le prototype ne les gardait pas). Écrit tout de suite.
    */
   peaufinerCercle(cle: string, champs: { note?: string; fichiers?: string[]; trait?: string }): void;
+  /** C-042 : le dessin d'un Cercle (posé, en cours, masqué) ou null (retiré) — dans la clé du prototype, `promi_dessins_cercle` */
+  dessinCercle(cle: string, d: unknown): void;
   /**
    * UN MOT sur la fiche d'un Cercle (lot 5 ; `_cercleMots` de lot-V146-CERCLE-MOT, `envoie` de lot-V145-COMM) — signé de mon prénom, vu ; une
    * ligne du Fil (« Tu as commenté « Marseille » · Marseille » : le Cercle est son propre titre et son propre destinataire, comme le prototype).
@@ -613,6 +616,14 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (JSON.stringify(neuf) === JSON.stringify(avant)) return;
       valider('peaufinerCercle', { ...e, infosCercles: { ...e.infosCercles, [cle]: neuf } });
     },
+    dessinCercle(cle, d) {
+      if (!(cle in e.cercles)) return;
+      const L = dessinsCercles(e.autres);
+      if (JSON.stringify(L[cle] ?? null) === JSON.stringify(d ?? null)) return;
+      if (d) L[cle] = d;
+      else Reflect.deleteProperty(L, cle);
+      valider('dessinCercle', { ...e, autres: { ...e.autres, promi_dessins_cercle: JSON.stringify(L) } });
+    },
     motCercle(cle, texte, moi, maintenant) {
       const t = texte.trim();
       if (!(cle in e.cercles) || !t) return;
@@ -676,15 +687,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
     creerCercle(nom, membres, maintenant, dessin) {
       const cle = `n${String(maintenant)}`;
       const autres = { ...e.autres };
-      if (dessin) {
-        let L: Record<string, unknown> = {};
-        try {
-          L = (JSON.parse(e.autres['promi_dessins_cercle'] ?? '{}') as Record<string, unknown> | null) ?? {};
-        } catch {
-          L = {};
-        }
-        autres['promi_dessins_cercle'] = JSON.stringify({ ...L, [cle]: dessin });
-      }
+      if (dessin) autres['promi_dessins_cercle'] = JSON.stringify({ ...dessinsCercles(e.autres), [cle]: dessin });
       const fid = e.compteurs.fid;
       const texte = `Tu as créé le Cercle ${nom}${membres.length ? ` · invité ${membres.join(', ')}` : ''}`;
       valider('creerCercle', {

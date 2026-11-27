@@ -23,6 +23,7 @@ import { motAvant, dateQuand } from '../../metier/echeance.ts';
 import { recue } from '../../metier/fiche.ts';
 import { TEXTES_PAGE_PLUS as TP } from '../../textes/page-plus.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
+import { champExemple } from '../../animation/trace/retour.ts';
 import { batirTete } from './cercle.ts';
 
 const TXT = {
@@ -246,12 +247,17 @@ export function monterPeaufinerFiche(o: {
     liste.appendChild(ct);
     // DESCRIPTION : le champ (sans emoji), sa ligne de visibilité
     const cd = carte('npDesc', 244, 104, TXT.description, null);
-    const ta = el('textarea', { id: 'nqNote', class: 'np-champ', rows: '1', placeholder: TXT.descriptionVide });
+    const ta = el('textarea', { id: 'nqNote', class: 'np-champ', rows: '1' });
     ta.value = info.note ?? '';
+    // lot 4b (C-271) : « présente le Cercle, son but… » part et revient en se traçant (la brique commune)
+    champExemple(ta, TXT.descriptionVide);
     champSansEmoji(ta);
     // écrite en quittant le champ (`blur` : un champ que le filtre des emoji a réécrit ne produit plus de `change`) ; le magasin compare avant d'écrire
     for (const t of ['change', 'blur'] as const)
       ta.addEventListener(t, () => {
+        // une note vide jamais écrite n'est pas une note : sans ce garde, quitter le champ vide écrivait `note: ''`, Peaufiner se rebâtissait
+        // sous le doigt et le texte d'exemple revenait d'un coup, sans son tracé (lot 4b)
+        if ((magasin.etat().infosCercles[k]?.note ?? '') === ta.value) return;
         magasin.peaufinerCercle(k, { note: ta.value });
       });
     const bd = el('div', { class: 'np-bas' });

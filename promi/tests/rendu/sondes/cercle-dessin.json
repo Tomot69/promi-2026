@@ -1,0 +1,7 @@
+[
+  {
+    "nom": "dessin-cercle-absent",
+    "test": "le dessin d'un Cercle, comme le prototype",
+    "defaut": "le dessin posé d'un Cercle n'est pas peint dans sa bande (les dalles y restent)"
+  }
+]

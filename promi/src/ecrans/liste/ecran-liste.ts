@@ -14,6 +14,7 @@ import type { Magasin } from '../../etat/magasin.ts';
 import { el, poserCroix, centrerTitre, surToucher } from '../commun.ts';
 import { horloge } from '../../animation/horloge.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
+import { champExemple } from '../../animation/trace/retour.ts';
 
 const TXT = {
   fermer: 'Fermer',
@@ -83,13 +84,14 @@ export function monterEcranListe<T extends string, F extends string>(
   const champ = el('input', {
     id: c.ids.champ,
     class: 'ix-search',
-    placeholder: TXT.rechercher,
     autocomplete: 'off',
     'aria-label': TXT.rechercher,
   });
   srch.appendChild(champ);
   // C-129 : aucun emoji, tapé ou collé
   champSansEmoji(champ);
+  // lot 4b (C-271) : « Rechercher » part à la première lettre et revient en se traçant ; « … » au focus (la brique commune)
+  const exemple = champExemple(champ, TXT.rechercher);
   const btnTri = el('button', { type: 'button', id: c.ids.tri, class: 'ix-tri', 'aria-label': TXT.trier });
   btnTri.textContent = TXT.tri;
   barre.append(srch, btnTri);
@@ -183,6 +185,7 @@ export function monterEcranListe<T extends string, F extends string>(
     filtre: () => filtre,
     viderRecherche() {
       champ.value = '';
+      exemple.etat();
       q = '';
       c.batir(false);
     },

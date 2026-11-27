@@ -11,7 +11,8 @@
  */
 import { el, surToucher } from '../commun.ts';
 import { horloge } from '../../animation/horloge.ts';
-import { chargerTrace, copieA, detracerCopie, remplacer } from '../../animation/trace/trace.ts';
+import { chargerTrace } from '../../animation/trace/trace.ts';
+import { copieA, detracerCopie, remplacer } from '../../animation/trace/retour.ts';
 import { TEXTES_PAGE_PLUS as T } from '../../textes/page-plus.ts';
 import type { Etat } from '../../donnees/schema.ts';
 

@@ -64,3 +64,12 @@ body {
 .device.couvert > :not(.couvre, .v16-conf, .v16-toast, .promi-toast, #entierVue) {
   visibility: hidden;
 }
+
+/* lot 4b (C-271, la brique commune `champExemple`, src/animation/trace/retour.ts) : le texte d'exemple natif d'un champ, caché le temps que sa
+   copie se trace (le prototype : `.v203-phx`, lot-V203-RETOUR) */
+input.ch-phx::placeholder,
+textarea.ch-phx::placeholder {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  opacity: 0 !important;
+}

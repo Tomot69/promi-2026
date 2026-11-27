@@ -1,0 +1,17 @@
+[
+  {
+    "nom": "champ-sec",
+    "test": "le texte d'exemple de la recherche de l'Index part et revient en se traçant, comme le prototype",
+    "defaut": "le texte d'exemple change d'un coup (la brique ne trace plus) — C-271"
+  },
+  {
+    "nom": "champ-natif-visible",
+    "test": "le texte d'exemple de la recherche du Fil part et revient en se traçant, comme le prototype",
+    "defaut": "le texte d'exemple natif laissé visible sous la copie qui se trace : il paraît d'un coup (C-271)"
+  },
+  {
+    "nom": "champ-sans-curseur",
+    "test": "le texte d'exemple de la NOTE de Peaufiner part et revient en se traçant, comme le prototype",
+    "defaut": "le champ focalisé garde son texte du repos : le « … » de lot-CURSEUR oublié"
+  }
+]

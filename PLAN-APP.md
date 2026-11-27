@@ -168,6 +168,25 @@ l'a trouvé : la seconde colonne et le ⇅ sortaient de l'écran). Ils entrent d
 
 ---
 
+## Lot 4b · La brique commune des champs (C-271)
+
+**(a) Porté** — « Aucun changement sec à l'écran » (C-271, v203 clôture §2 : `_retour` de lot-V203-RETOUR, le « … » du focus de lot-CURSEUR) : tout
+texte d'exemple d'un champ part et revient en se traçant, par UNE brique (`src/animation/trace/retour.ts`) — la recherche de l'Index, du Fil et de
+la fiche d'une personne (« Rechercher » ↔ « … » au focus), la NOTE de Peaufiner (fiche et page +), la DESCRIPTION d'un Cercle (`champExemple`) ;
+« Un mot… » (`bascule`) ; « un prénom… » et « + ajouter quelqu'un » (`remplacer`, `detracerCopie`). Un seul module de tracé (C-125, C-279).
+
+**(b) Juges** : redteam_retours (§2, ③ et ④), redteam_un_trace (C-279) — `promi/tests/rendu/champs.spec.ts`, trois sondes.
+
+**(c) Tom sur l'iPhone**
+- Index, Fil : toucher la recherche — « Rechercher » se détrace, « … » se trace ; une lettre, « … » part ; tout effacé, il revient en se traçant.
+- Peaufiner › NOTE, Peaufiner d'un Cercle › DESCRIPTION : même chose.
+
+**(d) État au 27 nov. 2026 — LE LOT 4b EST FAIT (au banc).** Écart nommé : le prototype laisse le « … » natif visible sous la copie qui se trace
+(recherche ouverte, page +) — la vraie app le cache (C-271). Préexistant, hors du lot : le prototype agrandit la NOTE d'une ligne dès la première
+lettre ; la vraie app non (à trancher par Tom s'il le veut identique). Juges : `promi/JUGES-TESTS.md`, « Lot 4b ».
+
+---
+
 ## Lot 5 · Le Cercle et les membres
 
 **(a) Porté** — SPEC-ECRANS §7 (fiche d'un Cercle : bande des dalles C-231, fil qui défile C-238, « + Planter dans le Cercle » et son menu Chiche/Promi C-230, Peaufiner ouvert par sa barre §13, Dissoudre C-192, la couleur C-150), « Un mot… » du Cercle (`promi_cercle_mots`), le + des membres près du petit disque (C-242, C-254), membres pré-choisis, création unique (C-306), la dalle du Cercle sur la Toile (`kind:'nuee'`), la ligne « Avec … » (C-252).
@@ -194,6 +213,12 @@ l'envoi, A3 à 0,79), `cercle-peaufiner.spec` (dissoudre, membres, description).
 le dessin d'un Cercle (son bouton photo se déclare inactif) ; les murs de Ma Parole ! de Peaufiner (lot 8) ; ce que LE TRAIT d'un Cercle change
 ailleurs ; les mots neufs d'un Cercle venus d'un autre (synchro, 1.1). Juges : `promi/JUGES-TESTS.md`, lots 5-1 à 5-4 ; à vérifier :
 `promi/A-VERIFIER-LOT-5.md`.
+
+**(e) Le 27 nov. 2026 — LE DESSIN D'UN CERCLE EST PORTÉ** (C-042, v132 : `boutonCercle`, le `_photoMenu` d'un Cercle, sa `bande`) : le bouton photo de
+la fiche d'un Cercle (« Dessiner sur ce Cercle ») ouvre son menu — « Dessiner » seul (un Cercle ne porte pas de photo), « Retirer le dessin » quand
+il en a un ; le mode dessin (le même que la fiche) ; POSER : le dessin REMPLACE les dalles dans la bande, l'œil le masque pour soi, la bande touchée
+l'ouvre en entier. Gardé par Cercle dans la clé du prototype (`promi_dessins_cercle`, celle où la page + d'un Cercle le pose déjà). **Identique au
+pixel** : `cercle-dessin.spec` (deux thèmes, une sonde). Son partage : lot 8 (Partager).
 
 ---
 

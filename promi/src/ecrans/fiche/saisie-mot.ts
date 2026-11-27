@@ -10,7 +10,7 @@
  * toucher ailleurs referme la saisie. Le nombre de mots (fermée) : un toucher fait glisser la fiche jusqu'au premier mot neuf, ou au plus récent.
  */
 import { el, surToucher } from '../commun.ts';
-import { chargerTrace } from '../../animation/trace/trace.ts';
+import { bascule } from '../../animation/trace/retour.ts';
 import { horloge } from '../../animation/horloge.ts';
 
 const TXT = { voix: 'Un mot', envoyer: 'Envoyer' } as const;
@@ -54,25 +54,9 @@ export function monterSaisieMot(o: {
   const reduit = (): boolean => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // « Un mot… » : montré tant que le champ est vide (il se trace en revenant), parti à la première lettre (il se détrace)
-  let montre = true;
+  // (la brique commune du lot 4b, `bascule` : le prototype, `motLigne` → `avance`)
   function motVisible(v: boolean): void {
-    if (v === montre) return;
-    montre = v;
-    if (reduit()) {
-      mot.hidden = !v;
-      return;
-    }
-    const t = chargerTrace();
-    if (v) {
-      mot.hidden = false;
-      t.trace(mot, null);
-    } else
-      t.trace(mot, null, {
-        inverse: true,
-        surFin: () => {
-          if (!montre) mot.hidden = true;
-        },
-      });
+    bascule(mot, v);
   }
   saisie.addEventListener('input', () => {
     motVisible(!saisie.value);

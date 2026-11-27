@@ -165,6 +165,14 @@ export function monterJonction(h: HoteJonction): Jonction {
     gb.fillRect(0, 0, bande.width, bande.height);
     const hc = Math.min(J, h.champ.offsetHeight || J);
     gb.drawImage(h.champ, 0, 0, h.champ.width, hc * E, 0, 0, h.champ.width, hc * E);
+    // ⚑ v195 (le prototype : `peint` de la bande) — le dessin posé, par-dessus le champ : au repos la bande EST le haut du champ, dessin compris
+    // (sans lui, un dessin qui monte au-dessus de 112 pt y était coupé net — trouvé par cercle-dessin.spec)
+    const dz = d.querySelector<HTMLCanvasElement>(':scope > canvas.dz-bande');
+    if (dz && dz.width && getComputedStyle(dz).display !== 'none') {
+      const Ez = dz.width / (dz.offsetWidth || W);
+      const hz = Math.min(dz.height, J * Ez);
+      gb.drawImage(dz, 0, 0, dz.width, hz, 0, 0, (dz.width * E) / Ez, (hz * E) / Ez);
+    }
 
     // ④ le trait plat : 2 pt du champ, puis le trait couché à la jonction (le même peintre, l'onde d'amplitude 0), coupé net à 112 + 40
     platCv.width = Math.round((W + 2 * XO) * E);
