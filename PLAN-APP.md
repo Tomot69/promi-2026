@@ -234,6 +234,15 @@ pixel** : `cercle-dessin.spec` (deux thèmes, une sonde). Son partage : lot 8 (P
 - Caresser, appuyer : le creux suit le doigt, la trace reste dans le sens du geste, fluide.
 - « PARTAGER MA PELOTE » sur le fond crème de l'encart, en clair (#14) ; tenir une parole : elle entre dans « Ce que tu as tenu ».
 
+**(d) État au 27 nov. 2026, soir — LE LOT 6 EST COMMENCÉ.** L6-1 : ce que l'Aura DIT, sans rien peindre (`src/metier/aura.ts`, le prototype :
+`mesPromi`, `ordreTenus`, `natureMaj`, `parts`, `personnes`, `envers`, `gensRecip`, `donnees`, `remplit`, `comptes`) — mes paroles, les tenues dans
+l'ordre où elles sont apparues, la nature du sol, les anneaux (deux états), les personnes (ordre alphabétique) et ce qu'on te tient (Q215), la
+phrase (cinq mots, E4), « Ce que tu as tenu » (toutes, la plus récente en premier), les deux chiffres (R-015) ; `tests/unitaires/aura.test.ts`
+(valeurs en dur). **À trancher par Tom avant la Pelote (Q-L6)** : le moteur de la Pelote (`lot-AURA-PELOTE-MOTEUR`, 3 150 lignes : le velours, ses
+îles, son semis, son peintre WebGL 2) n'est pas l'une des quatre pièces reprises (moteur de la Toile, tracé, flaques, jetons). Soit il devient la
+CINQUIÈME, reprise octet pour octet derrière une interface typée (comme le moteur de la Toile : le rendu est garanti identique) ; soit il est
+réécrit en TypeScript (plusieurs jours, et l'identité au pixel à reprouver poil par poil). Recommandation : la reprise.
+
 ---
 
 ## Lot 7 · Le Studio et les achats
