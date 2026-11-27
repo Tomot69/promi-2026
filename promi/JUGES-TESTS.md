@@ -603,3 +603,22 @@ de sa boîte qui rogne, son encre est entière, comme le prototype. **Exception 
 n'atteint pas toujours le repos de la fiche d'un Cercle — sa passe `_v16Passe` (la hauteur v102 d'une ligne du fil, la couleur de « TENU ») tourne ou
 non selon le moment ; mesuré : 74 pt dans une passe, 79 dans une autre, même état. Les juges nœud à nœud (couleurs, aspects A et B, contrat
 visuel) la passent ; elle est jugée au pixel par `cercle.spec` et `cercle-gestes.spec`, sur le banc piloté où le prototype atteint son repos.
+
+## Correctif du 27 nov. 2026 — le choix des personnes dans Peaufiner, sur l'iPhone (page + d'un Cercle, MEMBRES)
+
+| Juge                                                       | Test                                                                                 | Sonde                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------ |
+| rien ne bouge sans geste (30 s), MEMBRES déplié            | `membres.spec` › « page + / Cercle / Promi / Chiche : les personnes dans Peaufiner » | `membres-saut`                             |
+| le prénom : le focus dans le geste, et gardé               | `membres.spec` (les quatre)                                                          | `prenom-focus-tard`, `prenom-focus-perdu`  |
+| aucun chevauchement dans MEMBRES ; « Toi, pour l’instant » | `membres.spec` (les quatre) ; `page-plus.spec` › « nuee, membres » (au pixel)        | `membres-hors-rangee`, `membres-chevauche` |
+
+**Les causes** : ① sur la page + d'un Cercle, la liste de MEMBRES dépliée prenait la règle du choix de la phrase (`#createSheet .gn` en
+absolu, posé sous la phrase) : hors du flux, la rangée ne grandissait pas et les pastilles la chevauchaient ; et ce dépliage n'avait pas de
+« + ajouter quelqu'un » — aucun prénom ne pouvait s'écrire. Il prend la brique commune (gens.ts : pastilles, croix, ajout, sa propre entrée
+invisible) et la géométrie du prototype (deux colonnes de 142, Gilbert 23,1, le libellé replié à 12 : identique au pixel). ② **au doigt**, le
+navigateur envoie après le lever un `mousedown` de compatibilité qui donnait le focus à la zone « + ajouter quelqu'un » (`tabindex`) :
+l'entrée du prénom, focalisée dans le geste, le perdait aussitôt — le clavier ne s'ouvrait pas (partout : page +, fiche, Cercle). À la souris
+l'ordre est inverse : aucun banc ne le voyait ; le test joue un vrai doigt. ③ « personne encore » → « Toi, pour l’instant » (Tom fait toujours
+partie de son Cercle), dans l'app et dans le prototype (sa demande). **Le saut de l'écran sans geste n'est reproduit ni au banc ni sur le
+simulateur** (relevé de l'app, 40 s, le même chemin) : probable, non prouvé — l'ouverture puis la fermeture du clavier par ② (la vue visible qui
+change, Peaufiner qui suit le clavier) ; le test des 30 s le garde.

@@ -1,6 +1,6 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — le lot 5 (le Cercle et ses membres), à vérifier sur l'iPhone, dans l'app « Promi »
 
-**Installée le … — commit `…`** (à remplir à l'installation, lu sur le téléphone : `sh outils/version-iphone.sh`).
+**Installée le 27 nov. 2026 à 0 h 15 — commit `4cf53cb`** (lu sur le téléphone : `sh outils/version-iphone.sh`).
 Pour chaque point : **tenu**, **non tenu** ou **non vu**. Ton téléphone n'a pas encore de Cercle : on en crée un d'abord.
 
 1. **Créer un Cercle** — le + → « Un Cercle », un nom, deux personnes, tracer : un seul Cercle, une seule dalle sur la Toile, une ligne au Fil.

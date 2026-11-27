@@ -41,7 +41,8 @@ const TXT = {
   descriptionVide: 'présente le Cercle, son but…',
   descriptionVis: 'visible par tous les membres',
   membres: 'MEMBRES',
-  personneEncore: 'personne encore',
+  // Tom fait toujours partie de son Cercle (27 nov. 2026) : seul, MEMBRES le dit
+  personneEncore: 'Toi, pour l’instant',
   aucunFichier: 'aucun fichier',
   fichiersVis: 'visibles par le Cercle',
   dissoudre: 'DISSOUDRE LE CERCLE',
@@ -112,7 +113,8 @@ export function monterPeaufinerFiche(o: {
   let defile0 = 0;
   const ajout = monterAjout({
     parent: fi,
-    zone: () => corps.querySelector<HTMLElement>('.s2-reg.s2-ouv .ph-add'),
+    // (sur un Cercle, la carte MEMBRES dépliée : `#npMemb.np-ouv`)
+    zone: () => corps.querySelector<HTMLElement>('.s2-reg.s2-ouv .ph-add, #npMemb.np-ouv .ph-add'),
     surface: fi,
     connus,
     valider: (n) => {

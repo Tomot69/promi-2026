@@ -1,0 +1,22 @@
+[
+  {
+    "nom": "membres-saut",
+    "test": "page + : les personnes dans Peaufiner",
+    "defaut": "un recalcul qui fait sauter Peaufiner tout seul, toutes les 5 s (vu sur l'iPhone de Tom, 27 nov. 2026)"
+  },
+  {
+    "nom": "prenom-focus-tard",
+    "test": "Promi : les personnes dans Peaufiner",
+    "defaut": "le focus de l'entrée du prénom donné après le geste (iOS n'ouvre pas le clavier)"
+  },
+  {
+    "nom": "prenom-focus-perdu",
+    "test": "page + : les personnes dans Peaufiner",
+    "defaut": "le mousedown de compatibilité donne le focus à la zone : l'entrée du prénom le perd, le clavier se referme (vu sur l'iPhone de Tom)"
+  },
+  {
+    "nom": "membres-hors-rangee",
+    "test": "Cercle : les personnes dans Peaufiner",
+    "defaut": "la liste des personnes hors du flux de la rangée : les pastilles chevauchent MEMBRES (vu sur l'iPhone de Tom)"
+  }
+]

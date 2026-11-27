@@ -257,6 +257,7 @@ type Cas = {
     | 'saisie'
     | 'tape'
     | 'peauf'
+    | 'membres'
     | 'photo'
     | 'prenom'
     | 'prete'
@@ -293,6 +294,8 @@ const CAS: Cas[] = [
   { nat: 'promi', choix: null, etat: 'peauf' },
   { nat: 'chiche', choix: null, etat: 'peauf' },
   { nat: 'nuee', choix: null, etat: 'peauf' },
+  // (son titre : « identité au pixel : la page + nuee, membres, sombre » ; sa sonde : `membres-chevauche`)
+  { nat: 'nuee', choix: null, etat: 'membres' },
   { nat: 'promi', choix: null, etat: 'photo' },
   { nat: 'nuee', choix: null, etat: 'photo' },
   { nat: 'promi', choix: null, etat: 'prete' },
@@ -512,9 +515,31 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
         }, outil);
     await P.waitForTimeout(800);
   }
-  if (c.etat === 'peauf') {
+  if (c.etat === 'peauf' || c.etat === 'membres') {
     await protoPose(P);
     await Promise.all([toucheSel(P, '#csBotBar', true), toucheSel(A, '#csBotBar', false)]);
+    await P.waitForTimeout(2000);
+  }
+  // 27 nov. 2026 (Tom, l'iPhone) : MEMBRES déplié dans Peaufiner d'un Cercle — la liste dans la rangée, « + ajouter quelqu'un » dessous,
+  // « Toi, pour l'instant » (les pastilles le chevauchaient : `#createSheet .gn` en absolu)
+  if (c.etat === 'membres') {
+    const membres = (proto: boolean): string =>
+      `[...document.querySelectorAll('${proto ? '#createSheet' : '#csPeauf'} .s2-reg')].find((x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === 'MEMBRES')`;
+    for (const [pg, proto] of [
+      [P, true],
+      [A, false],
+    ] as const)
+      await pg.evaluate(
+        ([q, proto]) => {
+          const e = (0, eval)(q) as HTMLElement;
+          const r = e.getBoundingClientRect();
+          const o = { bubbles: true, clientX: r.left + 30, clientY: r.top + 20, pointerId: 22 };
+          e.dispatchEvent(new PointerEvent('pointerdown', o));
+          e.dispatchEvent(new PointerEvent('pointerup', o));
+          if (proto) e.click();
+        },
+        [membres(proto), proto] as const,
+      );
     await P.waitForTimeout(2000);
   }
   if (c.etat === 'photo') {
@@ -602,6 +627,9 @@ for (const theme of ['sombre', 'clair'] as const)
         // la sonde : la phrase de la vraie app décalée d'un point
         if (sonde('pp-identite-decale'))
           await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0!important}' });
+        // la sonde : MEMBRES déplié, la liste remise hors du flux (le défaut vu sur l'iPhone de Tom, 27 nov. 2026)
+        if (sonde('membres-chevauche') && c.etat === 'membres')
+          await A.addStyleTag({ content: '#createSheet #csPeauf .gn{position:absolute!important}' });
         await P.waitForTimeout(600);
         const dv = await P.evaluate(() => {
           const r = document.getElementById('device')!.getBoundingClientRect();

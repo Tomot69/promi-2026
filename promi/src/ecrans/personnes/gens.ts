@@ -94,6 +94,12 @@ export function rendreListe(
   surToucher(zone, (ev) => {
     ajout(!!(ev.target as Element).closest('.gn-plus'));
   });
+  // 27 nov. 2026 (l'iPhone de Tom : « le clavier ne s'ouvre pas ») — au DOIGT, le navigateur envoie après le lever un `mousedown` de
+  // compatibilité qui donne le focus à la zone (`tabindex`) : l'entrée du prénom, focalisée dans le geste, le perdait aussitôt et le clavier
+  // se refermait (à la souris l'ordre est inverse : les bancs ne le voyaient pas). La zone ne prend jamais le focus par la souris.
+  zone.addEventListener('mousedown', (ev) => {
+    ev.preventDefault();
+  });
   gn.append(gl, zone);
   return { gn, liste: gl, zone };
 }

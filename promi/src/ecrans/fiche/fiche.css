@@ -770,8 +770,8 @@
   opacity: 0.72;
 }
 /* déplié, le libellé d'une rangée (« LE TRAIT », « À QUI », « AVEC »…) est à 12 pt : le plancher du prototype (`echelle()`, §6) le pose à 13 puis
-   le replie de 0,5 en 0,5 tant qu'il déborde de sa boîte, jusqu'à 12 — relevé sur le rendu */
-#dpdCorps .s2-reg.s2-ouv .s2-lab {
+   le replie de 0,5 en 0,5 tant qu'il déborde de sa boîte, jusqu'à 12 — relevé sur le rendu ; Peaufiner de la page + de même (MEMBRES, 27 nov.) */
+:is(#csPeauf, #dpdCorps) .s2-reg.s2-ouv .s2-lab {
   font-size: 12px;
   letter-spacing: 0.18em;
 }

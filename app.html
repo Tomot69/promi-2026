@@ -19069,7 +19069,7 @@ var CREMEETAT='#F7F0DE';
         var mem = '';
         try{ var L = window.newNueeMembers||[];
              mem = L.length ? (L.slice(0,2).join(' \u00b7 ') + (L.length>2?(' \u00b7 +'+(L.length-2)):''))
-                            : 'personne encore'; }catch(_){ mem='personne encore'; }
+                            : 'Toi, pour l\u2019instant'; }catch(_){ mem='Toi, pour l\u2019instant'; }   /* 27 nov. 2026 (Tom) : Tom fait toujours partie de son Cercle */
         liste.appendChild(B.reg('MEMBRES', mem, {hote:(window._gensPage ? window._gensPage('nuee') : B.emprunte('nMembers'))}));
         /* v163b (C-192) : INVITER et LES PROMI DU CERCLE sont retirés (le champ de « Les Promi » n'ajoutait rien ; « + ajouter quelqu'un » invite) */
         liste.setAttribute('data-pp-sig', _sig);
@@ -21902,7 +21902,7 @@ var CREMEETAT='#F7F0DE';
   ];
 
   function valeurs(cle){
-    var out = {membres:'personne encore', fichiers:'aucun fichier',
+    var out = {membres:'Toi, pour l\u2019instant', fichiers:'aucun fichier',   /* 27 nov. 2026 (Tom) : Tom fait toujours partie de son Cercle */
                trait:(window._pinceauNuee ? window._pinceauNuee(cle) : 'Plein')};
     try{
       var m = (typeof NUEEMEM !== 'undefined' && NUEEMEM[cle]) ? NUEEMEM[cle].slice() : [];

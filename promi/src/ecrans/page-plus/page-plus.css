@@ -797,6 +797,37 @@
 #createSheet.pp-nuee #csPeauf {
   background: var(--c-mauve35);
 }
+/* MEMBRES déplié dans Peaufiner d'un Cercle (le prototype : `_gensPage('nuee')` dans la rangée) : la liste DANS LE FLUX de la rangée — la règle
+   du choix de la phrase (`.gn` en absolu, sous la phrase) ne vaut pas ici : la rangée grandit de la liste, rien ne la chevauche. Relevé sur le
+   prototype : deux colonnes de 142 (10 d'écart, 8 entre deux rangées), 14 sous la valeur ; « + ajouter quelqu'un » 14 plus bas, toute la
+   largeur, en pointillés */
+#createSheet #csPeauf .gn {
+  position: static;
+  width: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 142px));
+  gap: 8px 10px;
+  margin-top: 14px;
+}
+#createSheet #csPeauf .gn-liste {
+  grid-template-columns: repeat(2, minmax(0, 142px));
+  gap: 8px 10px;
+}
+/* (la pastille du prototype dans Peaufiner : Gilbert 23,1 fixe — pas la taille relative du choix de la phrase —, 10 à gauche, 8 à droite,
+   6 entre le visage et le nom) */
+#createSheet #csPeauf .ph-o {
+  font-size: 23.1px;
+  line-height: 23.1px;
+  padding: 0 8px 0 10px;
+  gap: 6px;
+}
+#createSheet #csPeauf .ph-add {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 14px;
+  justify-content: center;
+  border-style: dashed;
+}
 #createSheet.pp-peauf #csBotBar {
   z-index: 31;
 }

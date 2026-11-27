@@ -209,7 +209,8 @@ export const TEXTES_PAGE_PLUS = {
     piecesVal: (n: number): string => `${String(n)} fichier${n > 1 ? 's' : ''}`,
     piecesPrivees: 'privées — visibles par toi seul',
     membres: 'MEMBRES',
-    personneEncore: 'personne encore',
+    // Tom fait toujours partie de son Cercle (27 nov. 2026) : seul, MEMBRES le dit
+    personneEncore: 'Toi, pour l’instant',
     /** les réglages de Ma Parole ! : des MURS (flou 4,8 px ; leur phrase : lot 8) */
     murs: [
       ['RÉCURRENCE', 'chaque semaine'],

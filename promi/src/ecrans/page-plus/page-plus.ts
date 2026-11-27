@@ -1967,6 +1967,28 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   /** les briques de Peaufiner (la tête, la rangée, le dépliage, la NOTE, les PIÈCES JOINTES, les murs, la pose) : communes à la fiche */
   const pf = creerPeauf(peauf);
   const deplie = pf.deplie;
+  // l'ajout d'une personne dans MEMBRES (Peaufiner d'un Cercle) : sa propre entrée invisible, posée sur la zone dépliée ; rien ne passe sous le
+  // clavier — Peaufiner défile (comme Peaufiner d'une fiche : le conteneur qui défile)
+  let peaufDefile0 = 0;
+  const ajoutPf = monterAjout({
+    parent: cs,
+    zone: () => peauf.querySelector<HTMLElement>('.s2-reg.s2-ouv .ph-add'),
+    surface: cs,
+    connus,
+    valider: (n) => {
+      if (!P.membres.includes(n)) P.membres.push(n);
+      composer();
+      rendrePeauf(T.peauf.membres);
+    },
+    deplacer: (y) => {
+      if (y < 0.01) {
+        peaufDefile0 = peauf.scrollTop;
+        return;
+      }
+      peauf.scrollTop = peaufDefile0 + y;
+    },
+  });
+  champSansEmoji(ajoutPf.champ);
   /** `ouverte` : la rangée qui reste dépliée (un membre coché) ; sans elle, Peaufiner se rebâtit replié (un choix fait la replie) */
   function rendrePeauf(ouverte: string | null = null): void {
     pf.ouverte = ouverte;
@@ -1981,30 +2003,33 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     if (P.nat === 'nuee') {
       const r = rang(L.membres, autres(P.membres).length ? autres(P.membres).join(', ') : L.personneEncore);
       deplie(r, () => {
-        // le choix des membres (le prototype : `_gensPage('nuee')`, sans « Moi » en tête) : un toucher coche ou décoche
-        const liste2 = el('div', { class: 'gn-liste' });
-        const pris = autres(P.membres);
-        const noms = [...pris];
-        for (const n of connus()) if (!noms.includes(n) && noms.length < pris.length + 6) noms.push(n);
-        for (const n of noms) {
-          const b = el('button', { type: 'button', class: 'ph-o' + (pris.includes(n) ? ' on' : ''), 'data-v': n });
-          const ini = el('span', { class: 'ppo-ini' });
-          ini.textContent = n.charAt(0).toUpperCase();
-          const nm = el('span', { class: 'ppo-nom' });
-          nm.textContent = n;
-          b.append(ini, nm);
-          surToucher(b, () => {
-            const i = P.membres.indexOf(n);
-            if (i >= 0) P.membres.splice(i, 1);
-            else P.membres.push(n);
-            if (!autres(P.membres).length) P.membres.splice(0);
-            composer();
-            rendrePeauf(L.membres);
-          });
-          liste2.appendChild(b);
-        }
-        const gn = el('div', { class: 'ph-opts gn', 'data-nat': 'nuee' });
-        gn.appendChild(liste2);
+        // le choix des membres (le prototype : `_gensPage('nuee')`, sans « Moi » en tête) : la brique des personnes (gens.ts), la même que le
+        // choix de la phrase et que Peaufiner d'une fiche — les pastilles (un toucher coche, la croix décoche), puis « + ajouter quelqu'un »
+        // (l'entrée reçoit le focus DANS le geste : le clavier d'iOS s'ouvre)
+        const { gn, zone } = rendreListe(
+          {
+            nat: 'nuee',
+            choisis: () => autres(P.membres),
+            tete: null,
+            teteOn: () => false,
+            teteCroix: false,
+            connus,
+            touche: (nom, croix) => {
+              if (nom === null) return;
+              const i = P.membres.indexOf(nom);
+              if (i >= 0) P.membres.splice(i, 1);
+              else if (!croix) P.membres.push(nom);
+              if (!autres(P.membres).length) P.membres.splice(0);
+              composer();
+              rendrePeauf(L.membres);
+            },
+          },
+          ajoutPf.touche,
+        );
+        ajoutPf.rendre(zone);
+        h.image(() => {
+          ajoutPf.poser();
+        });
         return gn;
       });
       liste.appendChild(r);
@@ -2137,6 +2162,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     if (!peaufOuvert) return;
     peaufOuvert = false;
     barre.setAttribute('aria-expanded', 'false');
+    ajoutPf.remettre();
     const fin = (): void => {
       if (peaufOuvert) return;
       peauf.hidden = true;
@@ -2359,6 +2385,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     fermerPeauf(false);
     if (modeDessin.ouvert()) modeDessin.sortir(false);
     ajout.remettre();
+    ajoutPf.remettre();
     for (const x of [phrase, photo, pinceau, garder, barre]) x.style.removeProperty('translate');
     cs.style.removeProperty('translate');
     for (const c of cs.querySelectorAll('.ppo-copie')) c.remove();
