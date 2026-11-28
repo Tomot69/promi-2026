@@ -243,6 +243,16 @@ phrase (cinq mots, E4), « Ce que tu as tenu » (toutes, la plus récente en pre
 CINQUIÈME, reprise octet pour octet derrière une interface typée (comme le moteur de la Toile : le rendu est garanti identique) ; soit il est
 réécrit en TypeScript (plusieurs jours, et l'identité au pixel à reprouver poil par poil). Recommandation : la reprise.
 
+**(e) État au 28 nov. 2026 — Q-L6 TRANCHÉE (Tom : « Oui, le reprendre »).** L6-2 : le moteur de la Pelote est la CINQUIÈME pièce reprise, octet pour
+octet (`src/moteur/repris/pelote-moteur.js`), derrière SA façade (`src/moteur/pelote.ts`) — le lint interdit `PeloteMoteur` et `_pelote…` ailleurs.
+L6-3 : l'ÉCRAN (`src/ecrans/aura/`) — la colonne de la composition B (cotes en dur dans le juge), les Noyaux (deux arcs, un jour de 3 px d'arc, le filet
+crème en sombre), la légende et ses deux chiffres, « Ce que tu as tenu », « Ce qu'on t'a tenu » (flouté en gratuit), « PARTAGER MA PELOTE » (sa couleur
+tirée de la palette) ; la Pelote : ses couleurs (`src/metier/pelote-couleurs.ts`, 41 tests contre les fonctions du prototype), sa rotation
+(`src/metier/derive.ts`, la dérive de C-302 rejouée tirage pour tirage), ses préparations, sa respiration, son régulateur de densité ; ses gestes
+(`gestes.ts` : la prise, l'élan, le creux, la trace sous le doigt, l'appui, le double toucher). Juges : `aura.spec.ts` (au repos, au pixel, deux thèmes,
+Pelote comprise — exceptions M1 et G nommées), `aura-gestes.spec.ts` (les gestes, à événements égaux). Pas encore porté : l'aide (« i »), la
+préparation au repos (C-135 : l'app prépare à l'ouverture), le partage de la Pelote (lot 8).
+
 ---
 
 ## Lot 7 · Le Studio et les achats

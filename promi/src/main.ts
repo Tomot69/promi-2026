@@ -20,6 +20,7 @@ import { monterFiche, type Fiche } from './ecrans/fiche/fiche.ts';
 import { monterIndex, type Index } from './ecrans/index/index.ts';
 import { monterFil, type Fil } from './ecrans/fil/fil.ts';
 import { monterPersonne, type Personne } from './ecrans/personne/personne.ts';
+import { monterAura, type Aura } from './ecrans/aura/aura.ts';
 import { creerNavigation } from './navigation/navigation.ts';
 import { chargerPolices } from './design/polices.ts';
 import { chargerTrace } from './animation/trace/trace.ts';
@@ -57,6 +58,7 @@ let fiche: Fiche | null = null;
 let index: Index | null = null;
 let fil: Fil | null = null;
 let personne: Personne | null = null;
+let aura: Aura | null = null;
 
 async function etatEmbarque(): Promise<unknown> {
   // L0 : l'export de Tom, embarqué à la construction (src/donnees/etat-embarque.json, hors dépôt) ; importé au premier lancement.
@@ -89,6 +91,7 @@ async function demarrer(o: { accueil?: boolean } = {}): Promise<void> {
     pagePlus = monterPagePlus(facade, magasin, nav);
     index = monterIndex(facade, magasin, nav);
     fil = monterFil(facade, magasin, nav);
+    aura = monterAura(facade, magasin, nav);
     personne = monterPersonne(facade, magasin, nav);
     fiche = monterFiche(facade, magasin, nav);
   }
@@ -114,6 +117,7 @@ if (q.get('banc') != null) {
     index: () => index,
     fil: () => fil,
     personne: () => personne,
+    aura: () => aura,
     demarrer,
     chargerTrace,
     chargerFlaques,

@@ -117,6 +117,21 @@ export interface Facade {
    */
   labDalle(id: number, monde: MondeDalle): [number, number, number] | null;
   /**
+   * LA DALLE D'UNE ÎLE DE LA PELOTE (lot 6 ; `dalleDe` et `dalleLisible` de lot-AURA-PELOTE) : la dalle `id` rendue à l'échelle 1 dans le monde de SA
+   * plantation (`monde`), avec ses pixels (`donnees`, la Pelote en tisse une fourrure) et ce que le moteur en DÉCLARE (`__dalleInfo` : son Lab moyen,
+   * ce qu'elle remplit) ; `rampe` (Ingénu : la clarté remappée sur la rampe de sa nature) ou `decale` (le chantier 59 : la teinte qui cède) peints
+   * par le moteur. Dans le thème de l'appareil. Rien, si le moteur ne la rend pas.
+   */
+  dalleIle(
+    id: number,
+    monde: MondeDalle | undefined,
+    o?: { rampe?: { cols: number[][]; haut: number }; decale?: { a: number; b: number } },
+  ): (HTMLCanvasElement & { __dalleInfo?: { lab?: number[]; plein?: number } }) | null;
+  /** les tons de la palette du Studio, tournés de la teinte (`Toile.cols()`) : des triplets RGB — la Pelote les lit tels quels */
+  tonsPelote(): number[][];
+  /** la clé de la palette du Studio (`Toile.getPalette()`) */
+  paletteCourante(): string;
+  /**
    * la CLARTÉ moyenne (luminance 0–255) de la dalle `id` rendue pour tenir dans `tw × th` px (`_rendDalle`, le cache du moteur), telle que le
    * moteur la DÉCLARE (`__dalleInfo.lum`, jamais relue en pixels : redteam_decoupe) — le champ d'une carte d'Index lui cède (Q93, `champCede`)
    */
@@ -465,6 +480,24 @@ export function creerFacade(magasin: Magasin): Facade {
         return null;
       }
     },
+    dalleIle(id, monde, o) {
+      try {
+        const T = toile() as MoteurToile & {
+          dalleTrame(cv: HTMLCanvasElement, id: number, k: number, m: MondeDalle | undefined, o: object): boolean;
+        };
+        const cv = document.createElement('canvas') as HTMLCanvasElement & {
+          __dalleInfo?: { lab?: number[]; plein?: number };
+        };
+        if (!T.dalleTrame(cv, id, 1, monde, { ...(o ?? {}), donnees: true }) || !cv.width) return null;
+        return cv;
+      } catch {
+        return null;
+      }
+    },
+    tonsPelote() {
+      return ((toile().cols() as number[][] | null) ?? []).map((c) => [c[0]!, c[1]!, c[2]!]);
+    },
+    paletteCourante: () => toile().getPalette(),
     dalleEntiere(id) {
       const T = toile();
       const a = T.dalleAbs(id) as { minx: number; miny: number; w: number; h: number } | null;

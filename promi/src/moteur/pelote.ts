@@ -44,7 +44,7 @@ export interface MoteurPelote {
     nc: number,
     m: number,
     joint: number,
-    k: number,
+    k: number | readonly number[],
     nbCoul: number,
     tourne: boolean,
     gril: number,

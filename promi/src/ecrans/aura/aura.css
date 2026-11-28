@@ -1,0 +1,482 @@
+/* L'AURA (lot 6, SPEC-ECRANS §10) — les cotes sont celles du prototype RENDU (relevé du 28 nov. 2026, WebKit, 390 × 844, ×3, clair et sombre :
+   lot-AURA-PELOTE, lot-V139-OMBRE-css, lot-V95-AURA-CPT-css, les pastilles de v173, le plancher du §6). La colonne se CALCULE (`place` de
+   aura.ts) : les `top` ci-dessous ne sont que ceux d'avant la première pose. L'écran est une feuille de l'Index (ecran-liste : l'entrée du bas,
+   l'encart du haut, le corps d'écran de C-247 — #050302 en sombre, #EAD9B9 en clair). */
+
+.ecran-aura .enh-t .au-apo {
+  color: var(--c-bleu45-txt);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ecran-aura .enh-t .au-apo {
+    animation: promiBlink 1.15s steps(1, end) infinite;
+  }
+}
+/* le « i » de l'aide : 20 × 20, trait 1,33, Gilbert 13, 0,42 ; sa zone de toucher fait 44 (lot-V157 : `::after`) */
+.ecran-aura .aura-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  margin-left: 6px;
+  border-radius: 50%;
+  border: 1.4px solid currentColor;
+  font: 700 13px/1 var(--f-libelle);
+  font-style: normal;
+  text-transform: none;
+  opacity: 0.42;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.ecran-aura .aura-info::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+/* ── la colonne : elle défile SOUS le plateau (elle rogne à 100 : rien ne remonte au-dessus de lui) ── */
+.au-cadre {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  height: 844px;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  color: var(--c-creme95);
+  font-family: var(--f-texte);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  clip-path: inset(100px 0 0 0);
+}
+.au-cadre::-webkit-scrollbar {
+  display: none;
+}
+.device.light .au-cadre {
+  color: var(--c-brun09);
+}
+.au-fin {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* l'ombre (v139, géométrie de v121 : 0,45 D × 0,07 D) — l'encre à 0,10 en clair, la crème à 0,105 en sombre ; la SEULE exception de redteam_volume */
+.au-ombre {
+  position: absolute;
+  left: 142.786px;
+  top: 391.224px;
+  width: 104.429px;
+  height: 16.245px;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--c-creme95) 10.5%, transparent),
+    color-mix(in srgb, var(--c-creme95) 0%, transparent)
+  );
+}
+.device.light .au-ombre {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--c-brun09) 10%, transparent),
+    color-mix(in srgb, var(--c-brun09) 0%, transparent)
+  );
+}
+
+/* la Pelote : 296 × 296 à (47 ; 105,532) ; ses canevas dans un calque qui tourne (le roulis de la dérive, C-302) */
+.au-bo {
+  position: absolute;
+  left: 47px;
+  top: 105.532px;
+  width: 296px;
+  height: 296px;
+  z-index: 1;
+}
+.au-rot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 296px;
+  height: 296px;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  pointer-events: none;
+}
+.au-bo canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 296px;
+  height: 296px;
+  display: block;
+  max-width: none;
+}
+.au-prise {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 296px;
+  height: 296px;
+  z-index: 2;
+  touch-action: none;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* la phrase : Gilbert 20,4 / 1,25, centrée */
+.au-mot {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 527.141px;
+  margin: 0;
+  text-align: center;
+  font: 700 20.4px/1.25 var(--f-libelle);
+  letter-spacing: -0.012em;
+}
+/* une Aura vide (E4) : deux lignes, la seconde se touche */
+.au-inv {
+  position: absolute;
+  left: 37.8px;
+  right: 37.8px;
+  top: 536.761px;
+  margin: 0;
+  text-align: center;
+  font: 700 19.5px/1.42 var(--f-libelle);
+  letter-spacing: -0.012em;
+}
+.au-l2 {
+  display: block;
+  margin-top: 12.6px;
+  font-style: normal;
+  font: 700 14.9px/1.5 var(--f-libelle);
+  letter-spacing: -0.005em;
+  color: var(--c-beige67);
+  cursor: pointer;
+}
+.au-mot .au-l2 {
+  font: 700 20.4px/1.25 var(--f-libelle);
+  margin-top: 0;
+}
+.device.light .au-l2 {
+  color: var(--c-beige43);
+}
+
+/* les Noyaux (§2.9) : le tien 78, une personne 58 ; colonnes de 107, alignées par le bas ; la rangée glisse */
+.au-nx {
+  position: absolute;
+  left: 24px;
+  right: 0;
+  top: 454px;
+  height: 107px;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.au-nx::-webkit-scrollbar {
+  display: none;
+}
+.au-gp {
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+  margin-left: 4px;
+  padding-right: 24px;
+  flex: none;
+}
+.au-n {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: none;
+  height: 107px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.au-nb {
+  position: relative;
+  flex: none;
+}
+.au-nb svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  /* le dessin déborde de sa boîte (20 sept. : le bord de l'arc et son filet touchent le bord du SVG — rognés, ils perdaient leur lissage) */
+  overflow: visible;
+}
+.au-vis {
+  position: absolute;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.au-grain {
+  position: absolute;
+  inset: 0;
+  background-size: 88px 88px;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  border-radius: inherit;
+}
+.au-lb {
+  height: 18px;
+  line-height: 18px;
+  margin-top: 11px;
+  font: 700 13.5px/18px var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.au-moi .au-lb {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/* la légende : deux rectangles d'aperçu de la hauteur d'une capitale (v173), le filet crème DANS la pastille (v16) */
+.au-lg {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 589px;
+  height: 24.25px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font: 700 19.4px/24.25px var(--f-libelle);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--c-beige67);
+}
+.device.light .au-lg {
+  color: var(--c-beige43);
+}
+.au-lg span {
+  display: block;
+}
+.au-lg i {
+  display: inline-block;
+  width: 24px;
+  height: 15.2px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin: -6px 12px -6px 0;
+  box-shadow: inset 0 0 0 1.4px color-mix(in srgb, var(--c-creme95) 55%, transparent);
+}
+
+/* les deux chiffres (R-015) : PromiLate 29, chacun centré sous son entrée de légende */
+.au-cpt {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  height: 30px;
+  margin: 0;
+  font: 400 29px/30px var(--f-marque);
+  font-synthesis: none;
+  color: var(--c-creme95);
+}
+.device.light .au-cpt {
+  color: var(--c-brun09);
+}
+.au-cpt span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* « Ce que tu as tenu » : trois par rangée, toutes, la plus récente en premier (C-052, v132) */
+.au-mo {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 633px;
+  margin: 0;
+}
+.au-mo h3 {
+  margin: 0 0 21px;
+  padding: 0;
+  font: 700 13px/16px var(--f-libelle);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-beige67);
+}
+.device.light .au-mo h3 {
+  color: var(--c-beige43);
+}
+.au-gr {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.au-c {
+  min-width: 0;
+  cursor: pointer;
+}
+.au-bx {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.au-bx canvas {
+  display: block;
+  max-width: none;
+  max-height: none;
+}
+/* le titre d'une dalle : Gilbert 13 (le plancher du §6 relève les 12,6 du prototype), deux lignes au plus */
+.au-c > span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  margin-top: 9px;
+  font: 700 13px/1.25 var(--f-libelle);
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--c-creme79);
+}
+.device.light .au-c > span {
+  color: var(--c-beige30);
+}
+.au-mo.au-sans,
+.au-cadre.au-vide :is(.au-mot, .au-nx, .au-lg, .au-mo, .au-cpt),
+.au-cadre:not(.au-vide) .au-inv {
+  display: none;
+}
+
+/* « PARTAGER MA PELOTE » : 342 × 60, trait 2, rayon 30, le fond du plateau ; PromiLate 15 (la capitale des phrases du trait), sa couleur tirée
+   de la palette (`texteBouton`) */
+.au-bt {
+  position: absolute;
+  left: 24px;
+  top: 762px;
+  width: 342px;
+  height: 60px;
+  margin: 0;
+  border-radius: 30px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  background: var(--c-seiche10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 400 15px var(--f-marque);
+  font-synthesis: none;
+  letter-spacing: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.device.light .au-bt {
+  border-color: var(--c-brun09);
+  background: var(--c-creme95);
+}
+
+/* « Ce qu'on t'a tenu » (Q215, lot-RECIPROCITE-css) : les trois dernières ; en gratuit, la rangée floutée à 2,4 px et l'encart « ✦ Ma Parole ! »
+   posé dessus — on voit qu'il existe une autre moitié, jamais ce qu'elle contient */
+.au-mo2 {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  margin: 0;
+}
+.au-mo2 h3 {
+  margin: 0 0 21px;
+  padding: 0;
+  font: 700 13px/16px var(--f-libelle);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-beige67);
+}
+.device.light .au-mo2 h3 {
+  color: var(--c-beige43);
+}
+.au-gr2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.au-c2 {
+  min-width: 0;
+}
+.au-c2 > span {
+  display: block;
+  margin-top: 9px;
+  font: 700 13px/1.25 var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: var(--c-creme79);
+}
+.device.light .au-c2 > span {
+  color: var(--c-beige30);
+}
+.au-mo2.au-sans,
+.au-cadre.au-vide .au-mo2 {
+  display: none;
+}
+.au-zone2 {
+  position: relative;
+}
+.au-enc2 {
+  display: none;
+}
+.au-voile .au-gr2 {
+  filter: blur(2.4px);
+  pointer-events: none;
+}
+.au-voile .au-enc2 {
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 62px;
+  transform: translateY(-50%);
+  z-index: 3;
+  border-radius: 31px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--c-creme95);
+}
+.device.light .au-voile .au-enc2 {
+  background: var(--c-brun09);
+}
+.au-enc2 span {
+  font: 700 22px var(--f-libelle);
+  letter-spacing: -0.02em;
+  color: var(--c-mauve12);
+  white-space: nowrap;
+}
+.device.light .au-enc2 span {
+  color: var(--c-mauve75);
+}

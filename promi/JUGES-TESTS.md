@@ -657,3 +657,18 @@ Le dessin d'un Cercle est gardé dans la clé du prototype (`promi_dessins_cercl
 changement de schéma. **Trouvé en chemin, corrigé** (fiche d'une parole aussi) : la bande collée du haut (`#v187Bande`, 0 → 112 pt) ne peignait que
 le champ — un dessin posé qui montait au-dessus de 112 pt y était coupé net ; elle peint maintenant le dessin par-dessus, comme le prototype
 (`peint` de la bande, v195).
+
+## Lot 6 — l'Aura et la Pelote (SPEC-ECRANS §10 ; lot-AURA-PELOTE, la composition B de v126 ; le moteur de la Pelote, cinquième pièce reprise)
+
+| Juge                                                                                                                                        | Test                                                                                  | Sonde          |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | -------------- |
+| ce que l'Aura dit (mes paroles, l'ordre des îles, la nature, les anneaux, les personnes, ce qu'on te tient, la phrase, les chiffres)        | `tests/unitaires/aura.test.ts` (valeurs en dur)                                       | —              |
+| les couleurs de la Pelote (le poil, le corps, le bouton, le fond, les îles, les ouvertures de suite) contre les fonctions du prototype      | `tests/unitaires/pelote-couleurs.test.ts` (41 cas, valeurs relevées sur le prototype) | —              |
+| la rotation : la dérive de l'axe (C-302) tirage pour tirage, un tour en 66,7 s (C-298), la vitesse continue                                 | `tests/unitaires/derive.test.ts`                                                      | —              |
+| au repos, au pixel, deux thèmes — la Pelote comprise (sans ses îles, M1), la colonne aux cotes B en dur, ce qu'elle dit identique           | `aura.spec` › « l'Aura au repos, comme le prototype » (sombre, clair)                 | `aura-colonne` |
+| les gestes à événements égaux : la vue suit la main (1e-4 rad), les segments de trace (nombre, largeur, bouts), l'élan, l'appui, le relissé | `aura-gestes.spec`                                                                    | `aura-sourde`  |
+
+EXCEPTIONS NOMMÉES de `aura.spec` : **M1**, la matière de chaque dalle (celles de « Ce que tu as tenu », leur boîte ; celles que portent les îles :
+la Pelote est jugée au pixel SANS ses îles, et les îles par leur nombre, celles qui sont peintes et la direction de la dernière — leur matière
+respire avec le temps, comme toute dalle) ; **G**, le visage d'un Noyau (son grain : le prototype le tire au hasard à chaque chargement). Les
+tirages de couleur (le poil, le corps, le bouton : au hasard à chaque ouverture, Tom) sont ceux du prototype, posés dans l'app par le juge.

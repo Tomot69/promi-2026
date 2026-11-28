@@ -34,6 +34,12 @@ export interface Actions {
    * dans les clés du prototype (`promi_ex_<type>`, `promi_ex_sac_<type>`, `promi_ex_der_<type>`) — rend le rang de la phrase
    */
   tirerExemple(type: string, longueur: number, fixes: number, alea: () => number): number;
+  /**
+   * ce que la Pelote garde d'une ouverture à l'autre (lot 6) — l'ordre de ses îles (`promi_pelote_ordre`), la couleur vue (`promi_pelote_vue`), le
+   * palier de densité appliqué (`promi_pelote_palier`), le nombre de tenues déjà vues (`promi_pelote_vus`) : dans les clés du prototype (`autres`),
+   * sous leur nom ; seules les clés `promi_pelote_*` s'écrivent ici
+   */
+  noterPelote(cle: string, valeur: string): void;
   /** l'exemple « promets-moi » : le rang du prénom (v211, C-309, `promi_ex_prenom`) — il avance d'un cran et rend le nouveau rang */
   avancerPrenom(): number;
   /**
@@ -289,6 +295,10 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (t.suivant.sac !== sac) b['promi_ex_sac_' + type] = JSON.stringify(t.suivant.sac);
       valider('tirerExemple', { ...e, autres: b });
       return t.rang;
+    },
+    noterPelote(cle, valeur) {
+      if (!cle.startsWith('promi_pelote_') || e.autres[cle] === valeur) return;
+      valider('noterPelote', { ...e, autres: { ...e.autres, [cle]: valeur } });
     },
     avancerPrenom() {
       const v = e.autres['promi_ex_prenom'];

@@ -1103,32 +1103,35 @@ test("un écran n'est jamais vide : les écrans portés enchaînés sans recharg
  * classes, rien en trop, rien de perdu). Tous les couples d'écrans portés (le second ouvert après le retour à l'accueil, comme le doigt).
  * Les couples du juge (page + → page +, fiche → fiche, Index → fiche, Fil → fiche…) : s'étendent aux lots 2 à 4 par ECRANS_PORTES.
  */
-test('enchaîner deux écrans : le second est lui-même — mêmes classes, rien en trop, rien de perdu (redteam_enchaine)', async ({
-  browser,
-}) => {
-  const ref = await references(browser, ['sombre']);
-  const fautes: string[] = [];
-  for (const a of ECRANS_PORTES)
-    for (const b of ECRANS_PORTES) {
-      const E = await ouvrirEcran(browser, a, { theme: 'sombre', donnees: true });
-      if (sonde('enchaine-classe'))
-        await E.page.evaluate(() => {
-          const ch = document.getElementById('accChoix')!;
-          new MutationObserver(() => {
-            if (!ch.classList.contains('ouvert')) document.getElementById('accBarre')!.classList.add('pp-ouvert');
-          }).observe(ch, { attributes: true });
-        });
-      await E.page.waitForTimeout(400);
-      expect(await retourAccueil(E.page), "retour à l'accueil").toBe(true);
-      await b.ouvrir(E.page);
-      await E.page.waitForTimeout(1000);
-      const e = (await E.page.evaluate(EMPREINTE)) as Empreinte;
-      for (const f of comparerEmpreintes(ref[`sombre · ${b.nom}`]!, e)) fautes.push(`${a.nom} → ${b.nom} : ${f}`);
-      expect(E.erreurs).toEqual([]);
-      await E.fermer();
-    }
-  expect(fautes).toEqual([]);
-});
+// lot 6 : avec l'Aura, 121 couples — au-delà des 15 minutes d'un test ; deux moitiés, selon le PREMIER écran (aucun couple retiré)
+for (const moitie of [0, 1] as const)
+  test(`enchaîner deux écrans : le second est lui-même — mêmes classes, rien en trop, rien de perdu (redteam_enchaine)${moitie ? ', seconde moitié' : ''}`, async ({
+    browser,
+  }) => {
+    const ref = await references(browser, ['sombre']);
+    const fautes: string[] = [];
+    const m = Math.ceil(ECRANS_PORTES.length / 2);
+    for (const a of moitie ? ECRANS_PORTES.slice(m) : ECRANS_PORTES.slice(0, m))
+      for (const b of ECRANS_PORTES) {
+        const E = await ouvrirEcran(browser, a, { theme: 'sombre', donnees: true });
+        if (sonde('enchaine-classe'))
+          await E.page.evaluate(() => {
+            const ch = document.getElementById('accChoix')!;
+            new MutationObserver(() => {
+              if (!ch.classList.contains('ouvert')) document.getElementById('accBarre')!.classList.add('pp-ouvert');
+            }).observe(ch, { attributes: true });
+          });
+        await E.page.waitForTimeout(400);
+        expect(await retourAccueil(E.page), "retour à l'accueil").toBe(true);
+        await b.ouvrir(E.page);
+        await E.page.waitForTimeout(1000);
+        const e = (await E.page.evaluate(EMPREINTE)) as Empreinte;
+        for (const f of comparerEmpreintes(ref[`sombre · ${b.nom}`]!, e)) fautes.push(`${a.nom} → ${b.nom} : ${f}`);
+        expect(E.erreurs).toEqual([]);
+        await E.fermer();
+      }
+    expect(fautes).toEqual([]);
+  });
 
 // ────────────────────────────────────────────────────────────────── redteam_app ──
 
@@ -1327,7 +1330,7 @@ test("l'inventaire des fonctions de l'accueil : chaque geste a son résultat dan
     // lot 2a : une pilule OUVRE la page + (elle couvre l'accueil) — son X la referme avant le geste suivant
     if (f.vers === 'pagePlus') await refermerPagePlus(pg);
     // lot 4 : INDEX ouvre l'Index, FIL le Fil (ils couvrent l'accueil) — refermés avant le geste suivant
-    if (f.vers === 'index' || f.vers === 'fil') await fermerIndex(pg);
+    if (f.vers === 'index' || f.vers === 'fil' || f.vers === 'aura') await fermerIndex(pg);
     if (f.vers === 'compte') {
       const a1 = (await pg.evaluate(`${P_}.magasin.etat().autres`)) as Record<string, string>;
       if (a1['promi_rappel_n'] !== String((+(JSON.parse(a0) as Record<string, string>)['promi_rappel_n']! || 0) + 1))

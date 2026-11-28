@@ -82,7 +82,7 @@
   display: block;
   box-sizing: border-box;
   width: 292px;
-  height: 56px;
+  height: 22.5px;
   margin: 15.6px 0 0;
   padding: 0;
   border: 0;
@@ -92,6 +92,10 @@
   overflow: hidden;
   font: 700 18px/22.5px var(--f-libelle);
   letter-spacing: -0.01em;
+}
+/* la NOTE d'une fiche : deux lignes (le prototype : `rows="2"`, 56 pt — le jambage d'un « j » n'y est pas rogné) ; celle de la page + : une (22,5) */
+#dpdCorps .s2-txt {
+  height: 56px;
 }
 :is(#csPeauf, #dpdCorps) .s2-txt::placeholder {
   color: currentColor;

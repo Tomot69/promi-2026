@@ -34,7 +34,8 @@ function caleNote(zone: HTMLElement, ta: HTMLTextAreaElement): (anime: boolean) 
   };
   const poser = (x: number): void => {
     zone.style.height = `${String(NOTE.H0 + (x - 1) * NOTE.LH)}px`;
-    ta.style.height = `${String(Math.max(NOTE.HT, x * NOTE.LH))}px`;
+    // la ligne d'écriture d'une fiche fait deux lignes au moins (`rows="2"`) ; celle de la page +, une (le prototype : 22,5 pt)
+    ta.style.height = `${String(Math.max(ta.closest('#dpdCorps') ? NOTE.HT : NOTE.LH, x * NOTE.LH))}px`;
     ta.style.marginTop = `${String(NOTE.MARGE1 + (NOTE.MARGE - NOTE.MARGE1) * Math.min(1, x - 1))}px`;
   };
   const courant = (): number => {

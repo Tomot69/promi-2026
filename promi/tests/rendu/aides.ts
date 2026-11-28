@@ -478,6 +478,8 @@ export const ECRANS_PORTES: EcranPorte[] = [
   LISTE('Index', 'indexSheet', `${P_}.index().ouvrir()`, `document.getElementById('indexBtn').click()`),
   LISTE('Fil', 'feedView', `${P_}.fil().ouvrir()`, `document.getElementById('filBtn').click()`),
   LISTE('fiche de Rachel', 'personSheet', `${P_}.personne().ouvrir('Rachel')`, `openPerson('Rachel')`, true),
+  // lot 6 : l'Aura, ouverte par sa porte (la façade de la navigation ; le prototype, par son bouton de la barre)
+  LISTE('Aura', 'auraScreen', `${P_}.nav.ouvrir('aura')`, `document.getElementById('souffleBtn').click()`),
 ];
 
 /**
@@ -584,11 +586,11 @@ export async function fermerFiche(page: Page): Promise<void> {
 
 /**
  * LOT 4 — l'Index et le Fil ouverts par une porte de la barre couvrent l'accueil : un test qui touche ensuite l'accueil les referme (ils
- * redescendent ou repartent à droite, 0,4 s)
+ * redescendent ou repartent à droite, 0,4 s) ; lot 6 : l'Aura de même
  */
 export async function fermerIndex(page: Page): Promise<void> {
   const ouvert = (await page.evaluate(`(() => { let o = false;
-    for (const [id, f] of [['indexSheet', ${P_}.index()], ['feedView', ${P_}.fil()]]) { const e = document.getElementById(id);
+    for (const [id, f] of [['indexSheet', ${P_}.index()], ['feedView', ${P_}.fil()], ['auraScreen', ${P_}.aura && ${P_}.aura()]]) { const e = document.getElementById(id);
       if (e && !e.hidden && !e.classList.contains('ix-bas') && f) { f.fermer(); o = true; } }
     return o; })()`)) as boolean;
   if (ouvert) await page.waitForTimeout(450);

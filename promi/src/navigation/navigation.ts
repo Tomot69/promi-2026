@@ -1,7 +1,7 @@
 /**
  * LA NAVIGATION — la seule porte d'un écran à un autre. Un écran ne s'ouvre jamais lui-même : il le demande ici, et l'écran destinataire
- * s'y inscrit (`poser`) quand il est porté. Portés : la page + (lot 2a), la fiche (lot 3a). Pas encore (
- * le Studio : lot 7 ; l'Aura : lot 5 ; l'Index, le Fil : lot 4 ; Partager, les Réglages, l'offre : lot 8 ; le compte : lot 9) : la demande est notée et
+ * s'y inscrit (`poser`) quand il est porté. Portés : la page + (lot 2a), la fiche (lot 3a), l'Index, le Fil, une personne (lot 4), l'Aura (lot 6).
+ * Pas encore (le Studio : lot 7 ; l'aide de l'Aura : lot 6 ; Partager, les Réglages, l'offre : lot 8 ; le compte : lot 9) : la demande est notée et
  * rien ne s'ouvre. Le journal des demandes sert les tests (toucher une dalle demande SA fiche).
  */
 export type Destination =
@@ -11,6 +11,7 @@ export type Destination =
   | 'pagePlus'
   | 'studio'
   | 'aura'
+  | 'aideAura'
   | 'index'
   | 'fil'
   | 'partager'
