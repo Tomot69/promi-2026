@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""L0 (vraie app, 20 nov. 2026) — LES QUATRE PIÈCES REPRISES DU PROTOTYPE, TELLES QUELLES (Tom : « seuls le moteur, le tracé, les flaques et les
+"""L0 (vraie app, 20 nov. 2026) — LES CINQ PIÈCES REPRISES (la cinquième, le moteur de la Pelote : lot 6) DU PROTOTYPE, TELLES QUELLES (Tom : « seuls le moteur, le tracé, les flaques et les
 jetons sont repris, chacun derrière une interface typée »). Cet outil COPIE, octet pour octet, depuis le prototype (la racine du dépôt) :
   promi-moteur.js                        → promi/src/moteur/repris/promi-moteur.js
   variantes/trace-lettres.js + chemins    → promi/src/animation/repris/
@@ -35,6 +35,16 @@ man['animation/repris/pinceaux-traces.json'] = {'source': 'app.html#lot-PINCEAU-
 if not os.path.exists(_dst) or open(_dst, encoding='utf-8').read() != _txt:
     diff.append(_dst)
     if '--verifie' not in sys.argv: os.makedirs(os.path.dirname(_dst), exist_ok=True); open(_dst, 'w', encoding='utf-8').write(_txt)
+# ⚑ lot 6 (Tom, 28 nov. 2026 : « Oui, le reprendre ») — LA CINQUIÈME PIÈCE : LE MOTEUR DE LA PELOTE (lot-AURA-PELOTE-MOTEUR : le velours, ses
+# îles, son semis, son peintre WebGL 2 ; il ne vit que dans le prototype). Le texte du bloc, octet pour octet (entre la balise et `</script>`),
+# chargé par sa façade (promi/src/moteur/pelote.ts) et par elle seule.
+_m2 = re.search(r'<script id="lot-AURA-PELOTE-MOTEUR">\n(.*?)</script>', _S, re.S)
+_pel = _m2.group(1).encode('utf-8')
+_dst2 = 'promi/src/moteur/repris/pelote-moteur.js'
+man['moteur/repris/pelote-moteur.js'] = {'source': 'app.html#lot-AURA-PELOTE-MOTEUR', 'sha256': hashlib.sha256(_pel).hexdigest(), 'octets': len(_pel)}
+if not os.path.exists(_dst2) or open(_dst2, 'rb').read() != _pel:
+    diff.append(_dst2)
+    if '--verifie' not in sys.argv: open(_dst2, 'wb').write(_pel)
 txt = json.dumps(man, ensure_ascii=False, indent=1) + '\n'
 f = 'promi/src/repris.json'
 if not os.path.exists(f) or open(f, encoding='utf-8').read() != txt:

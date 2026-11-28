@@ -33,5 +33,10 @@
   "source": "app.html#lot-PINCEAU-data",
   "sha256": "f6bf59b62958bc7ba9a2e7177c06455ab40d176fbe003a759cc5528c41a616c4",
   "octets": 68065
+ },
+ "moteur/repris/pelote-moteur.js": {
+  "source": "app.html#lot-AURA-PELOTE-MOTEUR",
+  "sha256": "84dbd8f4d957fea15a66a01c09f9301f3962a0bbbd3c2e16a20afc055091c760",
+  "octets": 205388
  }
 }

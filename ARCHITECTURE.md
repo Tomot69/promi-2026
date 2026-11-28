@@ -7,8 +7,11 @@ puisse la faire vivre pendant des années. **Rien ne démarre avant l'accord de 
 
 ## ⚑ L0 — LA VRAIE APP EST COMMENCÉE (chef de chantier et Tom, 20 nov. 2026, L0). RÈGLE PERMANENTE. Le plan : PLAN-APP.md.
 - **Le prototype `app.html` (main = v214b) est le CAHIER DES CHARGES FIGÉ** : on n'y touche plus, sauf correction demandée par Tom. La vraie app vit dans `promi/`.
-- **iOS et Android sur une seule base : Capacitor, TypeScript strict.** Écrite de zéro ; seuls le moteur, le tracé, les flaques et les jetons sont repris
-  (copies octet pour octet, `outils/reprendre.py`, `promi/src/repris.json`), chacun derrière une interface typée. Aucune autre ligne d'`app.html` n'est copiée.
+- **iOS et Android sur une seule base : Capacitor, TypeScript strict.** Écrite de zéro ; seuls le moteur, le tracé, les flaques, les jetons et le moteur de la Pelote sont
+  repris (copies octet pour octet, `outils/reprendre.py`, `promi/src/repris.json`), chacun derrière une interface typée. Aucune autre ligne d'`app.html` n'est copiée.
+  ⚑ Lot 6 (Tom, 28 nov. 2026 : « Oui, le reprendre ») : **le moteur de la Pelote est la cinquième pièce** — le bloc `lot-AURA-PELOTE-MOTEUR` du prototype
+  (le velours, ses îles, son semis, son peintre WebGL 2 et son secours), copié tel quel dans `promi/src/moteur/repris/pelote-moteur.js`, derrière UNE
+  façade (`src/moteur/pelote.ts`), seule à toucher `PeloteMoteur` et ses réglages `window._pelote…` ; le lint l'impose (`no-restricted-syntax`).
 - **Un état unique** (`src/etat/magasin.ts`), un propriétaire par information ; **une seule horloge** (`src/animation/horloge.ts`, posée à la place des
   minuteurs du navigateur : elle mène aussi les pièces reprises) ; **la façade du moteur** (`src/moteur/facade.ts`), seule à toucher `window.Toile` (le lint l'impose) ;
   **un seul système de tracé et de transitions** (C-271, C-279) ; **les jetons générés** (`outils/jetons_engendrer.py`, jamais retouchés) ; **un schéma versionné**
@@ -26,7 +29,7 @@ puisse la faire vivre pendant des années. **Rien ne démarre avant l'accord de 
 ## ⚑ LES RÈGLES DE LA VRAIE APP (Tom, 17 nov. 2026 — elles passent avant tout le reste de ce document)
 
 1. **Le prototype emballé ne sera JAMAIS publié.** La preuve Capacitor (`preuve-capacitor`) sert à mesurer, et c'est tout.
-2. **La vraie app est écrite de zéro en TypeScript strict.** Le seul code repris : le moteur, le tracé, les flaques et les jetons — chacun derrière une
+2. **La vraie app est écrite de zéro en TypeScript strict.** Le seul code repris : le moteur, le tracé, les flaques, les jetons et le moteur de la Pelote (lot 6) — chacun derrière une
    interface typée et documentée. **Les 53 appels au moteur passent par UNE façade TypeScript (`src/moteur/facade.ts`), et nulle part ailleurs.**
 3. **Un état unique, un seul propriétaire par information, aucune minuterie dispersée : une seule horloge d'animation.**
 4. **Les jetons : UNE source, le JSON**, d'où un outil RANGÉ DANS LE DÉPÔT (`outils/`, jamais `scratchpad/`) GÉNÈRE le CSS et le TypeScript. Plus aucune
@@ -180,6 +183,7 @@ promi/
 │  ├─ etat/                        magasin.ts (l'état unique) · actions/ (planter, tenir, renommer, effacer…) · selecteurs.ts · abonnements
 │  ├─ metier/                      fonctions pures : parole, nature, deux états, parts, échéance, cercle, (délier)
 │  ├─ moteur/                      promi-moteur.js (repris, lecture seule) · facade.ts (les 53 appels, typés) · types.ts
+│  │                               pelote-moteur.js (repris, lot 6) · pelote.ts (sa façade, la seule à le toucher)
 │  ├─ animation/                   horloge.ts (la seule) · trace/ (trace-lettres + chemins, repris) · flaques/ (repris) · glisse.ts
 │  ├─ design/                      jetons.css · jetons.ts (générés) · composants/ (plateau, barre, trait, pastille, carte, mur, encart « Un mot… »…)
 │  ├─ ecrans/                      accueil · page-plus · fiche · peaufiner · index · fil · aura · studio · partager · reglages · onboarding · guide

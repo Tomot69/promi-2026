@@ -29,8 +29,13 @@ async function zone(A: Page, sel: string): Promise<[number, number, number, numb
     const k = D.width / 390;
     const e = document.querySelector(sel)!;
     const r = e.getBoundingClientRect();
-    // une zone de texte : sa première ligne seulement (le texte d'exemple) — le prototype agrandit la NOTE d'une ligne dès la première lettre
-    // (`caleZone`, cercle-mur : `nbLignes` lit 2 pour « a ») ; la ligne du bas qui descend n'est pas l'objet de ce juge (écart nommé, PLAN-APP)
+    // la NOTE de Peaufiner (Tom, 28 nov. 2026 : « comme le prototype, mais en douceur ») : toute sa zone, et la place où elle grandit (deux lignes
+    // de plus) — la ligne d'aide qui descend est jugée ; une autre zone de texte (la DESCRIPTION d'un Cercle) : sa première ligne
+    const z = e.closest('.s2-zone');
+    if (z) {
+      const q = z.getBoundingClientRect();
+      return [(q.left - D.left) / k - 8, (q.top - D.top) / k - 8, q.width / k + 16, q.height / k + 2 * 22.5 + 16];
+    }
     const h = e.tagName === 'TEXTAREA' ? (parseFloat(getComputedStyle(e).lineHeight) || 22) / 1 + 4 : r.height / k + 8;
     return [(r.left - D.left) / k - 8, (r.top - D.top) / k - 8, r.width / k + 16, h + 8];
   }, sel)) as [number, number, number, number];
@@ -99,13 +104,19 @@ async function relever(
   A: Page,
   z: [number, number, number, number],
   sel: string,
-): Promise<{ im: Buffer; copie: boolean; cache: boolean }> {
+): Promise<{ im: Buffer; copie: boolean; cache: boolean; zh: number }> {
   const im = await prise(A, z);
-  const r = (await A.evaluate(
-    (sel) => [!!document.querySelector('.ch-fantome'), document.querySelector(sel)!.classList.contains('ch-phx')],
-    sel,
-  )) as [boolean, boolean];
-  return { im, copie: r[0], cache: r[1] };
+  const r = (await A.evaluate((sel) => {
+    const e = document.querySelector(sel)!;
+    const z = e.closest('.s2-zone');
+    const k = document.getElementById('device')!.getBoundingClientRect().width / 390;
+    return [
+      !!document.querySelector('.ch-fantome'),
+      e.classList.contains('ch-phx'),
+      z ? Math.round((z.getBoundingClientRect().height / k) * 10) / 10 : 0,
+    ];
+  }, sel)) as [boolean, boolean, number];
+  return { im, copie: r[0], cache: r[1], zh: r[2] };
 }
 
 /**
@@ -121,7 +132,7 @@ async function juger(P: Page, A: Page, sel: string, nom: string, repos: string):
   for (const e of ['focus', 'lettre', 'efface', 'quitte'] as const) {
     const depart = await prise(A, z);
     await Promise.all([agir(P, sel, e), agir(A, sel, e)]);
-    const fa: Array<{ im: Buffer; copie: boolean; cache: boolean }> = [];
+    const fa: Array<{ im: Buffer; copie: boolean; cache: boolean; zh: number }> = [];
     for (let n = 0; n < 50; n++) {
       await A.waitForTimeout(25);
       await images(A, 1);
@@ -133,14 +144,21 @@ async function juger(P: Page, A: Page, sel: string, nom: string, repos: string):
     writeFileSync(join(RES, `${nom}-${e}-prototype.png`), ip);
     writeFileSync(join(RES, `${nom}-${e}-app.png`), ia);
     const d = ecart(etendre(ip, z), etendre(ia, z));
-    // la lettre tapée dans une zone de texte : le prototype la décale (sa zone grandit d'une ligne, `caleZone` — l'écart nommé plus haut) ;
-    // le texte d'exemple, lui, est parti des deux côtés (le contrôle qui suit)
-    const zt = await A.evaluate((sel) => document.querySelector(sel)!.tagName === 'TEXTAREA', sel);
-    if (!(e === 'lettre' && zt))
+    expect(
+      { n: d.n, boite: d.boite },
+      `${nom}, ${e}, posé : la zone du champ au pixel (bords lissés hors macOS : ${String(d.bords)})`,
+    ).toEqual({ n: 0, boite: null });
+    // la NOTE qui grandit à la première lettre (et rapetisse tout effacé) : en douceur — sa hauteur passe par des valeurs intermédiaires (C-271)
+    if (
+      (e === 'lettre' || e === 'efface') &&
+      (await A.evaluate((sel) => !!document.querySelector(sel)!.closest('.s2-zone'), sel))
+    ) {
+      const hs = new Set(fa.map((f) => f.zh));
       expect(
-        { n: d.n, boite: d.boite },
-        `${nom}, ${e}, posé : la zone du champ au pixel (bords lissés hors macOS : ${String(d.bords)})`,
-      ).toEqual({ n: 0, boite: null });
+        [...hs].filter((x) => x > 118.5 && x < 140).length,
+        `${nom}, ${e} : la zone de la NOTE glisse de 118 à 140,5 pt (hauteurs relevées : ${[...hs].join(', ')})`,
+      ).toBeGreaterThanOrEqual(3);
+    }
     const ph = await Promise.all(
       [P, A].map((pg) => pg.evaluate((sel) => document.querySelector(sel)!.getAttribute('placeholder'), sel)),
     );

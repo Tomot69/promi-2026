@@ -1011,9 +1011,11 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       const w = window as unknown as {
         __m: Array<{ ph: number; barre: number; t: number }>;
         __partis: string[];
+        __partisCharge: string[];
         __on: boolean;
       };
       w.__m = [];
+      w.__partisCharge = [];
       w.__partis = [];
       w.__on = true;
       const cs = document.getElementById('createSheet')!;
@@ -1022,7 +1024,11 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
         (s.borderTopStyle !== 'none' && parseFloat(s.borderTopWidth) > 0.5) ||
         !/rgba\(.*,\s*0\)$|transparent/.test(s.backgroundColor) ||
         false;
+      let tAv = performance.now();
       const f = (): void => {
+        // une image longue (la machine chargée) : un départ en flaques de 300 ms peut y tenir tout entier — ce qui y part n'est pas jugé
+        const longue = performance.now() - tAv > 34;
+        tAv = performance.now();
         const C = cs.getBoundingClientRect();
         const r = (sel: string): number => {
           const e = cs.querySelector(sel);
@@ -1039,12 +1045,19 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
           if (o.flaques || o.hors) continue;
           // un nœud rebâti à sa place (même rôle, même coin à 2 pt : « DÉJÀ PROMIS » se recompose à chaque frappe ; sa copie prend sa
           // place dans la tâche de la validation) n'est pas un départ
+          // ⚑ 28 nov. 2026 (Tom : « aucun test instable ; nomme la cause ») — LA CAUSE, relevée départ par départ : la rangée « DÉJÀ PROMIS »
+          // est REBÂTIE à chaque lettre (ses nœuds neufs à la même place dans la rangée) pendant qu'elle GLISSE (la phrase gagne une ligne en
+          // cours de frappe, C-278 ④) ; d'une image à l'autre la rangée entière a bougé de 3 à 26 pt — comparé sur l'ÉCRAN à 2 pt près, le
+          // nœud neuf n'était pas « à sa place », et le juge comptait un départ. La place se compare donc DANS la rangée qui le porte
+          // (`.ppo-dejas`, ou la copie de C-303 qui descend) : même rôle, même coin à 2 pt dans son conteneur.
           const remplace = [...cs.querySelectorAll(o.sel)].some((x) => {
             if (!ici(x)) return false;
             const q = x.getBoundingClientRect();
-            return Math.abs(q.left - o.r[0]!) <= 2 && Math.abs(q.top - o.r[1]!) <= 2;
+            const h = x.closest('.ppo-dejas, .ppo-copie');
+            const H = h ? h.getBoundingClientRect() : { left: 0, top: 0 };
+            return Math.abs(q.left - H.left - o.r[0]!) <= 2 && Math.abs(q.top - H.top - o.r[1]!) <= 2;
           });
-          if (!remplace) w.__partis.push(o.nom);
+          if (!remplace) (longue ? w.__partisCharge : w.__partis).push(o.nom);
         }
         // (la phrase elle-même se recompose — ses mots qui changent : C-271, au 2c ; on juge ici ce que ce lot fait paraître et partir)
         for (const e of cs.querySelectorAll('.ppo-dejas *, .ppo-copie *, #csPinceau, .pp-garder, #csBotBar')) {
@@ -1052,10 +1065,13 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
           if (s.display === 'none' || s.visibility === 'hidden' || (e as HTMLElement).closest('[hidden]')) continue;
           if (!peint(s) && !(e.textContent ?? '').trim()) continue;
           const b = e.getBoundingClientRect();
+          // la place DANS son conteneur (la rangée « DÉJÀ PROMIS » ou sa copie : elles glissent) ; sinon sur l'écran
+          const hc = e.closest('.ppo-dejas, .ppo-copie');
+          const Hc = hc && hc !== e ? hc.getBoundingClientRect() : { left: 0, top: 0 };
           vus.set(e, {
             nom: `${e.className || e.id} « ${(e.textContent ?? '').trim().slice(0, 20)} »`,
             sel: e.id ? '#' + e.id : '.' + String(e.className).trim().split(/\s+/)[0]!,
-            r: [b.left, b.top],
+            r: [b.left - Hc.left, b.top - Hc.top],
             flaques: !!(e as HTMLElement).closest('[data-flaques-mode="couvre"]'),
             hors: b.top > C.bottom - 1 || !b.height,
           });
@@ -1138,10 +1154,25 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
         Math.abs(ouvert[i0]!.ph - phPosee),
         'la première image qui bouge n’est pas la place finale',
       ).toBeGreaterThan(course * 0.3);
-      const pas = Math.max(...ouvert.slice(i0).map((m, k, a) => (k ? Math.abs(m.ph - a[k - 1]!.ph) : 0)));
-      expect(pas, `aucun pas au-delà de 35 % de la course (${course.toFixed(0)} pt)`).toBeLessThanOrEqual(
-        course * 0.35 + 0.5,
-      );
+      // ⚑ 28 nov. 2026 (Tom : « aucun test instable ; nomme la cause ») — LA CAUSE DE L'INSTABILITÉ : le mouvement suit l'HORLOGE (360 ms) ;
+      // sous une charge du Mac (40 à 130 relevés : un autre projet), une image dure 100 à 250 ms et le mouvement y avance d'autant — un pas
+      // de 40 à 50 % de la course, sans qu'aucune image n'ait sauté. Un pas ne se juge donc que sur une image PROPRE (34 ms au plus) — ce que
+      // `sauts` de page-plus-2c fait déjà — ; moins de trois images propres pendant le mouvement : la cadence n'est pas jugée (C-227 §5), et
+      // le test le dit (son annotation), il ne passe pas en silence.
+      const propres = ouvert
+        .slice(i0)
+        .map((m, k, a) => (k && m.t - a[k - 1]!.t <= 34 ? Math.abs(m.ph - a[k - 1]!.ph) : null))
+        .filter((x): x is number => x != null);
+      if (propres.length < 3)
+        test.info().annotations.push({
+          type: 'non jugé',
+          description: `cadence du mouvement de la saisie (${nat}) : ${String(propres.length)} image(s) propre(s) — la machine chargée`,
+        });
+      else
+        expect(
+          Math.max(...propres),
+          `aucun pas au-delà de 35 % de la course (${course.toFixed(0)} pt), sur une image propre`,
+        ).toBeLessThanOrEqual(course * 0.35 + 0.5);
     }
     if (nat !== 'nuee') {
       const d = await page.evaluate(() => {
@@ -1187,10 +1218,10 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     await posee(page);
     await page.waitForTimeout(300);
     const R = (await page.evaluate(() => {
-      const w = window as unknown as { __m: unknown; __partis: string[]; __on: boolean };
+      const w = window as unknown as { __m: unknown; __partis: string[]; __partisCharge: string[]; __on: boolean };
       w.__on = false;
-      return { m: w.__m, partis: w.__partis };
-    })) as { m: Array<{ ph: number; barre: number; t: number }>; partis: string[] };
+      return { m: w.__m, partis: w.__partis, charge: w.__partisCharge };
+    })) as { m: Array<{ ph: number; barre: number; t: number }>; partis: string[]; charge: string[] };
     const e2 = await etat(page);
     expect(e2.base, 'revenue : l’onde à sa place').toBeGreaterThan(144);
     // le retour part dans la tâche de Retour, de la place de saisie (jamais d'un coup) — sur toute machine
@@ -1214,11 +1245,27 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       ).toBeGreaterThan(Math.abs(fin.ph - p0) * 0.3);
       const jFin = R.m.findIndex((m, k) => k > j0 && Math.abs(m.ph - fin.ph) < 0.5);
       const duree = R.m[jFin]!.t - Math.max(t0, R.m[Math.max(0, j0 - 1)]!.t);
-      expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeLessThanOrEqual(460);
-      expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
+      // ⚑ 28 nov. 2026 — la durée se lit sur les images : une image longue au début ou à la fin la fausse de toute sa longueur (la cause de
+      // l'instabilité, sous charge) ; elle ne se juge que si les images du mouvement sont propres (34 ms au plus)
+      const longues = R.m.slice(Math.max(1, j0 - 1), jFin + 1).filter((m, k, a) => k && m.t - a[k - 1]!.t > 34).length;
+      if (longues)
+        test.info().annotations.push({
+          type: 'non jugé',
+          description: `durée du retour de la saisie (${nat}) : ${String(longues)} image(s) longue(s) — la machine chargée`,
+        });
+      else {
+        expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeLessThanOrEqual(460);
+        expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
+      }
     }
     // image par image : sur le Mac (hors du Mac le mouvement entier tient dans une image de 0,7 s — tout y « part d'un coup »)
+    // ⚑ 28 nov. 2026 — ce qui part dans une image longue (la machine chargée) : non jugé, et dit ; dans une image propre : jugé
     if (MAC_DE_TOM) expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
+    if (MAC_DE_TOM && R.charge.length)
+      test.info().annotations.push({
+        type: 'non jugé',
+        description: `départs dans une image longue (${nat}) : ${R.charge.join(', ')} — la machine chargée`,
+      });
     expect(
       await page.evaluate(
         () =>

@@ -1,6 +1,6 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — le lot 4b (les textes d'exemple des champs) et le dessin d'un Cercle
 
-**Installée le … — commit `…`** (lu sur le téléphone : `sh outils/version-iphone.sh`). Pour chaque point : **tenu**, **non tenu** ou **non vu**.
+**Installée le 27 nov. 2026 à 19 h 30 — commit `52cdb16`** (lu sur le téléphone : `sh outils/version-iphone.sh`). Pour chaque point : **tenu**, **non tenu** ou **non vu**.
 
 1. **La recherche de l'Index** — la toucher : « Rechercher » se détrace, « … » se trace ; tape une lettre : « … » part en se détraçant ;
    efface tout : « … » revient en se traçant ; touche ailleurs : « … » part, « Rechercher » revient. Rien ne paraît d'un coup.

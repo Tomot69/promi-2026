@@ -1,6 +1,8 @@
 // Le lint de la vraie app. Il porte trois règles de l'architecture (ARCHITECTURE.md, CLAUDE.md « la vraie app sera propre ») :
 //  · une seule horloge : hors de src/animation/horloge.ts, aucun setTimeout, setInterval, requestAnimationFrame, requestIdleCallback ;
 //  · le moteur derrière sa façade : hors de src/moteur/, personne ne touche `Toile` ni `window.Toile` ;
+//  · le moteur de la Pelote derrière SA façade (lot 6, la cinquième pièce reprise) : hors de src/moteur/pelote.ts, personne ne touche
+//    `PeloteMoteur`, ses réglages `window._pelote…`, ni son fichier repris ;
 //  · aucun écran n'importe un autre écran, ni le moteur repris.
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
@@ -61,6 +63,23 @@ export default tseslint.config(
   {
     files: ['src/moteur/**', 'src/animation/trace/**', 'src/animation/flaques/**'],
     rules: { 'no-restricted-imports': 'off', 'no-restricted-properties': 'off' },
+  },
+  {
+    files: ['src/**/*.ts'],
+    ignores: ['src/moteur/pelote.ts'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "Identifier[name='PeloteMoteur'], Identifier[name=/^_pelote/], Literal[value='PeloteMoteur']",
+          message: 'Le moteur de la Pelote passe par sa façade (src/moteur/pelote.ts).',
+        },
+        {
+          selector: 'ImportDeclaration[source.value=/pelote-moteur/]',
+          message: 'Le moteur de la Pelote ne se charge que par sa façade (src/moteur/pelote.ts).',
+        },
+      ],
+    },
   },
   {
     files: ['src/ecrans/**'],

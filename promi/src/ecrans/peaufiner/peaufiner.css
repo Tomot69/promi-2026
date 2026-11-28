@@ -82,7 +82,7 @@
   display: block;
   box-sizing: border-box;
   width: 292px;
-  height: 22.5px;
+  height: 56px;
   margin: 15.6px 0 0;
   padding: 0;
   border: 0;
@@ -106,8 +106,10 @@
   font: 700 14px/15.4px var(--f-libelle);
   white-space: nowrap;
 }
+/* le texte d'aide est attaché au BAS de la zone (le prototype : `bottom`) : quand la NOTE grandit d'une ligne, il descend avec elle */
 :is(#csPeauf, #dpdCorps) .s2-zone .s2-vis {
-  top: 83.6px;
+  top: auto;
+  bottom: 15px;
 }
 :is(#csPeauf, #dpdCorps) .s2-vis2 {
   display: block;

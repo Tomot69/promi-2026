@@ -5,8 +5,9 @@
 
 > ## ⚑ LA VRAIE APP — NOUVEAU CHAPITRE (chef de chantier et Tom, 20 nov. 2026, L0). RÈGLE PERMANENTE. Le plan : PLAN-APP.md.
 > - **Le prototype `app.html` (main = v214b) est le CAHIER DES CHARGES FIGÉ** : on n'y touche plus, sauf correction demandée par Tom. La vraie app vit dans `promi/`.
-> - **iOS et Android sur une seule base : Capacitor, TypeScript strict.** Écrite de zéro ; seuls le moteur, le tracé, les flaques et les jetons sont repris
->   (copies octet pour octet, `outils/reprendre.py`, `promi/src/repris.json`), chacun derrière une interface typée. Aucune autre ligne d'`app.html` n'est copiée.
+> - **iOS et Android sur une seule base : Capacitor, TypeScript strict.** Écrite de zéro ; seuls le moteur, le tracé, les flaques, les jetons et — ⚑ lot 6 (Tom, 28 nov. 2026 : « Oui, le reprendre ») — le moteur de la Pelote (`lot-AURA-PELOTE-MOTEUR`, la
+>   cinquième pièce) sont repris (copies octet pour octet, `outils/reprendre.py`, `promi/src/repris.json`), chacun derrière une interface typée ; le moteur de la Pelote
+>   derrière SA façade (`src/moteur/pelote.ts`), seule à toucher `PeloteMoteur` et ses réglages `window._pelote…` (le lint l'impose). Aucune autre ligne d'`app.html` n'est copiée.
 > - **Un état unique** (`src/etat/magasin.ts`), un propriétaire par information ; **une seule horloge** (`src/animation/horloge.ts`, posée à la place des
 >   minuteurs du navigateur : elle mène aussi les pièces reprises) ; **la façade du moteur** (`src/moteur/facade.ts`), seule à toucher `window.Toile` (le lint l'impose) ;
 >   **un seul système de tracé et de transitions** (C-271, C-279) ; **les jetons générés** (`outils/jetons_engendrer.py`, jamais retouchés) ; **un schéma versionné**
@@ -30,7 +31,7 @@
 
 > ## ⚑ LA VRAIE APP SERA PROPRE ET ÉVOLUTIVE, PAS RAFISTOLÉE — RÈGLE PERMANENTE (Tom, 17 nov. 2026, v207). ELLE S'APPLIQUE À TOUT LE PORTAGE.
 > - **Le prototype emballé (`preuve-capacitor`) ne sera JAMAIS publié** : il sert à mesurer, et c'est tout.
-> - **La vraie app est écrite de zéro en TypeScript strict.** Seul code repris : le moteur, le tracé, les flaques, les jetons — chacun derrière une interface
+> - **La vraie app est écrite de zéro en TypeScript strict.** Seul code repris : le moteur, le tracé, les flaques, les jetons et le moteur de la Pelote (lot 6) — chacun derrière une interface
 >   typée et documentée ; **les 53 appels au moteur passent par UNE façade TypeScript, et nulle part ailleurs.**
 > - **Un état unique, un seul propriétaire par information, aucune minuterie dispersée : une seule horloge d'animation.**
 > - **Les jetons : UNE source, le JSON** ; le CSS et le TypeScript (et le Swift) en sont GÉNÉRÉS par un outil rangé dans le dépôt (`outils/`), jamais dans

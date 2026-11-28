@@ -10,6 +10,68 @@ import { changerTexte } from '../../animation/trace/trace.ts';
 import { champExemple } from '../../animation/trace/retour.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { el, poserCroix, surToucher } from '../commun.ts';
+import { horloge } from '../../animation/horloge.ts';
+
+/**
+ * LA NOTE SUIT SES LIGNES (le prototype : `caleZone` de cercle-mur ; Tom, 28 nov. 2026 : « comme le prototype, mais en douceur », C-271).
+ * Mesuré sur le prototype (la NOTE d'une fiche, 18 pt, interligne 22,5) : vide, une ligne (la zone 118 pt) ; dès la première lettre, DEUX lignes
+ * (140,5) ; au-delà, autant que le texte (trois : 163) — le texte d'aide du bas descend d'autant, la suite de Peaufiner aussi. Le prototype pose
+ * ces hauteurs d'un coup ; ici la zone et sa ligne d'écriture y GLISSENT (360 ms, aller-retour quadratique, la grammaire des rangées qui se
+ * déplient), à l'horloge unique. « Réduire les animations » : d'un coup.
+ */
+/** HT : la ligne d'écriture fait 56 pt au moins (le prototype : `rows="2"`) — le jambage d'un « j » n'y est pas rogné */
+const NOTE = { H0: 118, LH: 22.5, HT: 56, MARGE1: 15.6, MARGE: 16, DUREE: 360 } as const;
+function caleNote(zone: HTMLElement, ta: HTMLTextAreaElement): (anime: boolean) => void {
+  let n = 1;
+  let anim: { de: number; vers: number; t0: number } | null = null;
+  const lignes = (): number => {
+    if (!ta.value) return 1;
+    const h = ta.style.height;
+    ta.style.height = '0px';
+    const k = Math.max(1, Math.round(ta.scrollHeight / NOTE.LH));
+    ta.style.height = h;
+    return Math.max(2, k);
+  };
+  const poser = (x: number): void => {
+    zone.style.height = `${String(NOTE.H0 + (x - 1) * NOTE.LH)}px`;
+    ta.style.height = `${String(Math.max(NOTE.HT, x * NOTE.LH))}px`;
+    ta.style.marginTop = `${String(NOTE.MARGE1 + (NOTE.MARGE - NOTE.MARGE1) * Math.min(1, x - 1))}px`;
+  };
+  const courant = (): number => {
+    const z = parseFloat(zone.style.height);
+    return Number.isFinite(z) ? (z - NOTE.H0) / NOTE.LH + 1 : n;
+  };
+  const reduit = (): boolean => {
+    try {
+      return matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {
+      return false;
+    }
+  };
+  return (anime: boolean): void => {
+    const v = lignes();
+    if (v === n && !anim) return;
+    const de = courant();
+    n = v;
+    if (!anime || reduit() || de === v) {
+      anim = null;
+      poser(v);
+      return;
+    }
+    const h = horloge();
+    const a = { de, vers: v, t0: h.maintenant() };
+    anim = a;
+    const pas = (): void => {
+      if (anim !== a) return;
+      const u = Math.min(1, (h.maintenant() - a.t0) / NOTE.DUREE);
+      const e = u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u);
+      poser(a.de + (a.vers - a.de) * e);
+      if (u < 1) h.image(pas);
+      else anim = null;
+    };
+    h.image(pas);
+  };
+}
 
 /** les pastilles d'AVANT (C-197) : demain · 1 sem. · 1 mois · une date… (le calendrier) · un jour (aucune échéance) */
 const JOURS: readonly (number | null | 'date')[] = [1, 7, 30, 'date', null];
@@ -114,12 +176,20 @@ export function creerPeauf(hote: HTMLElement): Peauf {
       // lot 4b (C-271) : le texte d'exemple part et revient en se traçant (la brique commune)
       champExemple(ta, o.vide);
       champSansEmoji(ta);
-      ta.addEventListener('input', () => {
-        o.change(ta.value);
-      });
       const zv = el('div', { class: 's2-vis' });
       zv.textContent = o.vis;
       zone.append(zl, ta, zv);
+      // la zone suit ses lignes (le prototype : `caleZone`, cercle-mur), EN DOUCEUR (Tom, 28 nov. 2026, C-271) ; une note déjà écrite : posée
+      // telle quelle, dès que la zone est dans la page
+      const cale = caleNote(zone, ta);
+      ta.addEventListener('input', () => {
+        o.change(ta.value);
+        cale(true);
+      });
+      if (o.valeur)
+        horloge().image(() => {
+          cale(false);
+        });
       return zone;
     },
     pieces(o) {

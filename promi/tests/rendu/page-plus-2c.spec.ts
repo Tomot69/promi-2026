@@ -101,6 +101,13 @@ function sauts(H: Releve): [number, string, number][] {
       // sinon le fil était occupé au milieu de l'image, et un mouvement mené par l'horloge y rattrape le temps perdu (un à-coup de la charge,
       // pas un changement sec)
       if (v <= 2 || dt > 34 || dn > 34 || Math.abs(dn - dt) > 8) return;
+      // ⚑ 28 nov. 2026 (Tom : « aucun test instable ; nomme la cause ») — LA CAUSE DE L'INSTABILITÉ, relevée image par image (valider, sous une
+      // charge du Mac de 40 à 130 : un autre projet) : le mouvement de la fermeture du clavier suit l'HORLOGE ; une image de 250 ms le laisse en
+      // retard sur son heure, et l'image PROPRE qui la suit (30 ms) le rattrape — 58 à 124 pt d'un coup, comptés comme un saut alors que rien
+      // n'a sauté : c'est la charge. Une image ne se juge donc que si la PRÉCÉDENTE était propre aussi (la première image du geste, elle, se juge
+      // toujours : un changement sec au départ reste pris — la sonde `continu-saut`).
+      const pr = d[i - 1];
+      if (pr && (pr[2] > 34 || pr[3] > 34 || Math.abs(pr[3] - pr[2]) > 8)) return;
       // la vitesse des images voisines, longues comprises : une image courte entre deux longues (la machine chargée) n'est pas un saut si la
       // phrase allait déjà à cette vitesse ; un changement SEC, lui, a des voisines immobiles (le prototype ne jugeait que des voisines de
       // 34 ms au plus — entre deux longues, toute image courte d'un glissement y était un « saut »)
